@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+body{
+    overflow: hidden;
+}
+
+main{
+    overflow-y: auto;
+    height: 100vh;
+}
+
+
+.scrollbar::-webkit-scrollbar {
+    background-color: transparent;
+    width: 8px;
+}
+
+.scrollbar:hover::-webkit-scrollbar {
+    width: 8px;
+}
+.scrollbar:hover::-webkit-scrollbar-track {
+    background: linear-gradient(0deg, rgb(220, 200, 246) 0%, rgb(216, 216, 255) 100%);
+}
+
+.scrollbar:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+.form__group {
+    @apply mb-3;
+}
+
+.form__label{
+    @apply block text-sm text-gray-900 mb-1;
+}
+
+.form__control{
+    @apply w-full px-2 py-1.5 border border-gray-200 focus:border-indigo-500 focus:outline-none focus:ring-0 rounded placeholder:text-sm disabled:bg-gray-100;
+}
