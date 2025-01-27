@@ -1,57 +1,66 @@
 <script setup>
 
 import Default from "@/layouts/Default.vue";
-import {ref} from "vue";
-import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
+import {onMounted, ref} from "vue";
+import { Carousel, Slide} from 'vue3-carousel'
+import {useAccountStore} from "@/stores/account.js";
+import {storeToRefs} from "pinia";
+import currency from "../utils/currency.js";
+import WalletComponent from "@/components/WalletComponent.vue";
+import DialogComponent from "@/components/DialogComponent.vue";
 
-const depositModal = ref(false);
+const accountStore = useAccountStore();
+const {accounts} = storeToRefs(accountStore);
+
+const transactions = ref({});
 const deposit = () => {
-  depositModal.value = true;
+  accountStore.deposit = true;
 }
 const withdraw = () => {
-  depositModal.value = true;
+  accountStore.withdraw = true;
 }
 const carouselConfig = {
-  itemsToShow: 2.5,
-  wrapAround: true,
-  gap: 10
-}
-
-const mobileBank = {
   itemsToShow: 3.5,
   wrapAround: true,
   gap: 10
 }
 
+const getAccountsList = async () => {
+  await accountStore.all();
+}
+
+const latestTransactions = async () => {
+  transactions.value = await accountStore.getTransactions();
+}
+
+
+onMounted(() => {
+  getAccountsList();
+  latestTransactions();
+})
 </script>
 
 <template>
   <Default>
     <section class="bg-gray-100 p-2">
       <div class="bg-white rounded-md p-4">
-        <div class="block font-semibold text-base mb-2">
-          <span class="block font-semibold text-base">Total Balance</span>
-          <h2 class="block font-semibold text-2xl">$ 2,562.50</h2>
-        </div>
+        <WalletComponent/>
         <div class="flex items-center justify-between">
           <button type="button" @click="deposit" class="bg-indigo-500 text-white px-6 py-1.5 rounded-md cursor-pointer">Deposit</button>
-          <button type="button" @click="withdraw" class="bg-red-500 text-white px-6 py-1.5 rounded-md cursor-pointer">Deposit</button>
+          <button type="button" @click="withdraw" class="bg-red-500 text-white px-6 py-1.5 rounded-md cursor-pointer">Withdraw</button>
         </div>
       </div>
     </section>
 
     <section class="bg-gray-100 p-2">
       <Carousel v-bind="carouselConfig">
-        <Slide v-for="slide in 10" :key="slide">
+        <Slide v-for="account in accounts.data" :key="account.id">
           <div class="carousel__item relative gap-4">
-            <img alt="card" src="/account/2.png" class="object-cover">
+            <img alt="card" :src="account.banner_url" class="object-cover">
             <div class="min-h-full flex flex-col absolute top-0 p-2.5">
               <div class="flex-1">
-                <h3 class="font-semibold">City Bank</h3>
-                <small class="font-semibold">Md. Maidul Islam</small>
-              </div>
-              <div class="flex-none">
-                <span class="font-semibold ">2500.00</span>
+                <h3 class="font-semibold">{{account.name}}</h3>
+                <small class="font-semibold">{{currency(account.balance)}}</small>
               </div>
             </div>
           </div>
@@ -59,23 +68,7 @@ const mobileBank = {
       </Carousel>
     </section>
 
-    <section class="bg-gray-100 p-2">
-      <Carousel v-bind="mobileBank">
-        <Slide v-for="slide in 10" :key="slide">
-          <div class="carousel__item relative gap-4">
-            <img alt="card" src="/account/2.png" class="object-cover">
-            <div class="min-h-full flex flex-col absolute top-0 p-2.5">
-              <div class="flex-1">
-                <h3 class="font-semibold">Bkash</h3>
-                <small class="font-semibold">2500.00</small>
-              </div>
-            </div>
-          </div>
-        </Slide>
-      </Carousel>
-    </section>
-
-    <section class="bg-white p-2">
+    <section class="bg-gray-100 p-4">
       <div class="flex items-center justify-between py-2">
         <h3 class="font-semibold text-base">Latest transactions</h3>
         <a href="#" class="text-right text-red-500">
@@ -84,50 +77,31 @@ const mobileBank = {
           </svg>
         </a>
       </div>
-      <div class="w-full">
-        <a href="#" v-for="item in 5" class="bg-gray-100 p-2 flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <img src="/account/city.png" alt="img" class="h-8 w-auto">
-            <div class="mr-2">
-              <strong>City Bank</strong>
-              <p class="text-xs">Shopping</p>
+
+      <div class="w-full bg-white">
+        <template v-if="transactions.data">
+          <a href="#" v-for="item in transactions.data" class="p-4 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <img src="/account/city.png" alt="img" class="h-8 w-auto">
+              <div class="mr-2">
+                <strong>{{item.account?.name}}</strong>
+                <p class="text-xs">{{item.account?.number}}</p>
+              </div>
             </div>
-          </div>
-          <div class="flex-none">
-            <span class="text-red-500"> -150</span>
-          </div>
-        </a>
+            <div class="flex-none">
+              <span v-if="item.type === 'credit'" class="text-indigo-500">{{currency(item.amount)}}</span>
+              <span v-if="item.type === 'debit'" class="text-red-500">{{currency(item.amount)}}</span>
+            </div>
+          </a>
+        </template>
+
+        <template v-else>
+          <p>Wait...</p>
+        </template>
+
       </div>
     </section>
 
-
-    <dialog v-if="depositModal" class="fixed w-full mx-auto bottom-0 left-0 right-0 bg-white rounded-t-xl z-50 flex items-center justify-center animate__animated animate__slideInUp">
-      <div class="p-4">
-        <div class="flex items-center justify-between">
-          <h2 class="text-lg font-bold mb-4">Deposit</h2>
-          <button type="button" class="cursor-pointer" @click="depositModal = false">X</button>
-        </div>
-        <form class="w-full max-w-sm">
-          <div class="form__group">
-            <label class="form__label">From</label>
-            <select class="form__control">
-              <option>Investment (*** 7284)</option>
-              <option>Saving (*** 1234)</option>
-              <option>Checking (*** 5678)</option>
-            </select>
-          </div>
-
-          <div class="form__group">
-            <label class="form__label">Enter Amount</label>
-            <input type="number" class="form__control" placeholder="Enter amount" value="768"/>
-          </div>
-
-          <div class="flex justify-center">
-            <button type="submit" class="w-full bg-indigo-500 text-white px-6 py-1.5 rounded-md cursor-pointer">Deposit</button>
-          </div>
-        </form>
-      </div>
-    </dialog>
-
+    <DialogComponent/>
   </Default>
 </template>

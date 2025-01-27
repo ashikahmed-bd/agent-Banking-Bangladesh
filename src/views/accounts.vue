@@ -1,15 +1,6 @@
 <script setup>
-
 import Default from "@/layouts/Default.vue";
-import {ref} from "vue";
-
-const depositModal = ref(false);
-const deposit = () => {
-  depositModal.value = true;
-}
-const withdraw = () => {
-  depositModal.value = true;
-}
+import WalletComponent from "@/components/WalletComponent.vue";
 
 </script>
 
@@ -17,10 +8,7 @@ const withdraw = () => {
   <Default>
     <section class="bg-gray-100 p-2">
       <div class="bg-white rounded-md p-4">
-        <div class="block font-semibold text-base mb-2">
-          <span class="block font-semibold text-base">Total Balance</span>
-          <h2 class="block font-semibold text-2xl">$ 2,562.50</h2>
-        </div>
+        <WalletComponent/>
       </div>
     </section>
 
