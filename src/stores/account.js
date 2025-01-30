@@ -11,6 +11,7 @@ export const useAccountStore = defineStore('account', {
     deposit: false,
     withdraw: false,
     accounts: {},
+    balance: 0,
     errors: {},
   }),
 
@@ -40,6 +41,7 @@ export const useAccountStore = defineStore('account', {
       try {
         const response = await axiosInstance.get('/api/account/balance');
         if (response.status === 200) {
+          this.balance = response.data.balance;
           return new Promise((resolve) => {
             resolve(response.data);
           });
@@ -49,6 +51,25 @@ export const useAccountStore = defineStore('account', {
           this.errors = error.response.data.errors;
           toastStore.error(error.response.data.message);
         }
+      }
+    },
+
+    async getTransactions (){
+      this.loading = true;
+      try {
+        const response = await axiosInstance.get(`/api/transaction/latest`);
+        if (response.status === 200) {
+          return new Promise((resolve) => {
+            resolve(response.data);
+          });
+        }
+      }catch (error) {
+        if (error.response){
+          this.errors = error.response.data.errors;
+          toastStore.error(error.response.data.message);
+        }
+      }finally {
+        this.loading = false;
       }
     },
 
@@ -62,6 +83,7 @@ export const useAccountStore = defineStore('account', {
         if (response.status === 200) {
           toastStore.success(response.data.message);
           this.deposit = false;
+          await this.getBalance();
           return new Promise((resolve) => {
             resolve(response.data);
           });
@@ -85,7 +107,8 @@ export const useAccountStore = defineStore('account', {
         });
         if (response.status === 200) {
           toastStore.success(response.data.message);
-          this.deposit = false;
+          this.withdraw = false;
+          await this.getBalance();
           return new Promise((resolve) => {
             resolve(response.data);
           });
@@ -101,21 +124,7 @@ export const useAccountStore = defineStore('account', {
     },
 
 
-    async getTransactions (){
-      try {
-        const response = await axiosInstance.get(`/api/transaction/latest`);
-        if (response.status === 200) {
-          return new Promise((resolve) => {
-            resolve(response.data);
-          });
-        }
-      }catch (error) {
-        if (error.response){
-          this.errors = error.response.data.errors;
-          toastStore.error(error.response.data.message);
-        }
-      }
-    },
+
 
 
   },

@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <header class="bg-indigo-700 text-white py-4 px-4">
+  <header class="bg-primary text-white py-4 px-4">
     <div class="flex items-center justify-between">
       <a href="/" class="logo">
         <img src="/logo.png" alt="logo">
