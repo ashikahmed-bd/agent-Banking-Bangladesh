@@ -88,7 +88,7 @@ onMounted(() => {
       </div>
 
       <div class="w-full bg-white rounded-xl p-4">
-        <template v-if="!transactions.data">
+        <template v-if="transactions.data">
           <a href="#" v-for="item in transactions.data" class="p-4 flex items-center justify-between">
             <div class="flex items-center gap-2">
               <img :src="item.account?.logo_url" alt="img" class="h-8 w-auto">
@@ -105,7 +105,7 @@ onMounted(() => {
         </template>
 
         <template v-else>
-          <div role='status' class='flex max-w-full animate-pulse'>
+          <div v-for="item in 5" role='status' class='flex max-w-full animate-pulse'>
             <div class='flex-shrink-0'>
               <span class='flex justify-center items-center bg-gray-300 w-12 h-12 '></span>
             </div>
