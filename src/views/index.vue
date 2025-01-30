@@ -73,7 +73,7 @@ onMounted(() => {
     </section>
 
     <section class="bg-gray-100 px-4 py-4">
-      <div class="bg-white rounded-xl flex items-center justify-between p-4 border-b border-gray-300 border-dashed">
+      <div class="bg-white rounded-t-xl flex items-center justify-between p-4 border-b border-gray-300 border-dashed">
         <h3 class="flex items-center gap-2 font-semibold text-base">
           Latest transactions
           <button type="button" @click="reloadTransactions()" class="cursor-pointer text-primary">
@@ -87,9 +87,9 @@ onMounted(() => {
         </a>
       </div>
 
-      <div class="w-full bg-white rounded-xl p-4">
+      <div class="w-full bg-white rounded-b-xl p-4">
         <template v-if="transactions.data">
-          <a href="#" v-for="item in transactions.data" class="p-4 flex items-center justify-between">
+          <a href="#" v-for="item in transactions.data" class="py-4 flex items-center justify-between">
             <div class="flex items-center gap-2">
               <img :src="item.account?.logo_url" alt="img" class="h-8 w-auto">
               <div class="mr-2">
