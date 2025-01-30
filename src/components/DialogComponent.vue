@@ -46,9 +46,9 @@ onMounted(() => {
 <template>
   <dialog v-if="accountStore.deposit" class="w-full animate__animated animate__slideInUp bg-white bottom-0 fixed flex items-center justify-center max-w-sm mx-auto rounded-t-xl z-50">
     <div class="w-full p-4">
-      <div class="flex items-center justify-between">
+      <div class="flex items-center justify-between border-b border-gray-300 border-dashed mb-3">
         <h2 class="text-lg font-bold mb-4">Deposit</h2>
-        <button type="button" class="cursor-pointer" @click="accountStore.deposit = false">
+        <button type="button" class="cursor-pointer text-red-500" @click="accountStore.deposit = false">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
           </svg>
@@ -76,9 +76,9 @@ onMounted(() => {
 
   <dialog v-if="accountStore.withdraw" class="w-full animate__animated animate__slideInUp bg-white bottom-0 fixed flex items-center justify-center max-w-sm mx-auto rounded-t-xl z-50">
     <div class="w-full p-4">
-      <div class="flex items-center justify-between">
+      <div class="flex items-center justify-between border-b border-gray-300 border-dashed mb-3">
         <h2 class="text-lg font-bold mb-4">Withdraw</h2>
-        <button type="button" class="cursor-pointer" @click="accountStore.withdraw = false">
+        <button type="button" class="cursor-pointer text-red-500" @click="accountStore.withdraw = false">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
           </svg>

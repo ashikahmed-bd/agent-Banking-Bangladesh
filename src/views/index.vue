@@ -20,7 +20,7 @@ const withdraw = () => {
   accountStore.withdraw = true;
 }
 const carouselConfig = {
-  itemsToShow: 3.5,
+  itemsToShow: 3,
   wrapAround: true,
   gap: 10
 }
@@ -52,7 +52,7 @@ onMounted(() => {
       </div>
     </section>
 
-    <section class="bg-gray-100 p-2">
+    <section class="bg-white p-2">
       <Carousel v-bind="carouselConfig">
         <Slide v-for="account in accounts.data" :key="account.id">
           <div class="carousel__item relative gap-4">
@@ -89,7 +89,7 @@ onMounted(() => {
               </div>
             </div>
             <div class="flex-none">
-              <span v-if="item.type === 'credit'" class="text-indigo-500">{{currency(item.amount)}}</span>
+              <span v-if="item.type === 'credit'" class="text-green-500">{{currency(item.amount)}}</span>
               <span v-if="item.type === 'debit'" class="text-red-500">{{currency(item.amount)}}</span>
             </div>
           </a>
