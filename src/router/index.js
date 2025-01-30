@@ -11,15 +11,15 @@ const router = createRouter({
     },
 
     {
-      path: '/accounts',
-      name: 'accounts',
-      component: () => import('../views/accounts.vue'),
-    },
-
-    {
       path: '/wallet',
       name: 'wallet',
       component: () => import('../views/wallet.vue'),
+    },
+
+    {
+      path: '/customers',
+      name: 'customers',
+      component: () => import('../views/customers.vue'),
     },
 
     {

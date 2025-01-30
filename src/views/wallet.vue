@@ -1,44 +1,62 @@
 <script setup>
-
 import Default from "@/layouts/Default.vue";
-import {ref} from "vue";
+import {useAccountStore} from "@/stores/account.js";
+import {storeToRefs} from "pinia";
+import {onMounted} from "vue";
+import currency from "../utils/currency.js";
 
-const depositModal = ref(false);
-const deposit = () => {
-  depositModal.value = true;
-}
-const withdraw = () => {
-  depositModal.value = true;
+const accountStore = useAccountStore();
+const {accounts, balance} = storeToRefs(accountStore);
+
+const getAccountsList = async () => {
+  await accountStore.all();
 }
 
+const getBalance = async () => {
+  await accountStore.getBalance();
+}
+
+onMounted(() => {
+  getAccountsList();
+  getBalance();
+})
 </script>
 
 <template>
   <Default>
     <section class="bg-gray-100 p-2">
       <div class="bg-white rounded-md p-4">
-        <div class="block font-semibold text-base mb-2">
-          <span class="block font-semibold text-base">Total Balance</span>
-          <h2 class="block font-semibold text-2xl">$ 2,562.50</h2>
+        <div class="flex items-center justify-between mb-4">
+          <div class="w-full flex items-center">
+            <img src="/cash.png" alt="cash" class="h-10 w-auto">
+            <div class="block font-semibold text-base ml-2">
+              <span class="block font-semibold text-base">Total Cash</span>
+              <h2 class="block font-semibold text-xl">{{currency(balance.cash)}}</h2>
+            </div>
+          </div>
+
+          <div class="w-full flex items-center">
+
+
+          </div>
         </div>
       </div>
     </section>
 
     <section class="bg-gray-100 p-2">
       <div class="bg-white rounded-md p-4">
-        <h3 class="font-semibold text-lg border-b border-dashed border-gray-300">Customer List (10)</h3>
+        <h3 class="font-semibold text-base">Total Balance: {{currency(balance.wallet)}}</h3>
         <div class="w-full divide-y divide-dashed divide-gray-200">
-          <a href="#" v-for="item in 10" class="py-2  flex items-center justify-between">
+          <a href="#" v-for="account in accounts.data" :key="account.id" class="py-2  flex items-center justify-between">
             <div class="flex items-center gap-2">
-              <img src="/user.png" alt="img" class="h-8 w-auto">
+              <img :src="account.logo_url" alt="img" class="h-8 w-auto">
               <div class="mr-2">
-                <strong>Ashik Ahmed</strong>
-                <p class="text-xs">01911742233</p>
+                <strong>{{account.name}}</strong>
+                <p class="text-xs">{{account.number}}</p>
               </div>
             </div>
             <div class="flex-none">
-              <p class="text-green-500">1500</p>
-              <p class="text-red-500">500</p>
+              <span class="text-primary">{{currency(account.balance)}}</span>
             </div>
           </a>
         </div>

@@ -59,10 +59,10 @@ onMounted(() => {
     <section class="bg-white px-4 py-4">
       <Carousel v-bind="carouselConfig">
         <Slide v-for="account in accounts.data" :key="account.id">
-          <div class="carousel__item bg-white relative gap-4">
-            <img alt="card" :src="account.banner_url" class="object-cover">
+          <div class="carousel__item overflow-hidden  relative gap-4">
+            <img alt="card" :src="account.banner_url" class="object-cover rounded-xl">
             <div class="min-h-full flex flex-col absolute top-0 p-2.5">
-              <div class="flex-1">
+              <div class="flex-1 text-white">
                 <h3 class="font-semibold">{{account.name}}</h3>
                 <small class="font-semibold">{{currency(account.balance)}}</small>
               </div>

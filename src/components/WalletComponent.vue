@@ -19,15 +19,21 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex items-center gap-4 mb-4">
-    <div class="block font-semibold text-base mb-2">
-      <span class="block font-semibold text-base">Total Cash</span>
-      <h2 class="block font-semibold text-2xl">{{currency(balance.cash)}}</h2>
+  <div class="flex items-center justify-between mb-4">
+    <div class="w-full flex items-center">
+      <img src="/cash.png" alt="cash" class="h-10 w-auto">
+      <div class="block font-semibold text-base ml-2">
+        <span class="block font-semibold text-base">Total Cash</span>
+        <h2 class="block font-semibold text-xl">{{currency(balance.cash)}}</h2>
+      </div>
     </div>
 
-    <div class="block font-semibold text-base mb-2">
-      <span class="block font-semibold text-base">Total Wallet</span>
-      <h2 class="block font-semibold text-2xl">{{currency(balance.wallet)}}</h2>
+    <div class="w-full flex items-center">
+      <img src="/cash.png" alt="cash" class="h-10 w-auto">
+      <div class="block font-semibold text-base ml-2">
+        <span class="block font-semibold text-base">Total Wallet</span>
+        <h2 class="block font-semibold text-xl">{{currency(balance.wallet)}}</h2>
+      </div>
     </div>
   </div>
 </template>
