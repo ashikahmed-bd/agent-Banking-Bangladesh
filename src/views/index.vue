@@ -47,7 +47,7 @@ onMounted(() => {
 <template>
   <Default>
     <section class="bg-gray-100 px-4 py-4">
-      <div class="bg-white rounded-md p-4">
+      <div class="bg-white rounded-xl p-4">
         <WalletComponent/>
         <div class="flex items-center justify-between">
           <button type="button" @click="deposit" class="bg-primary text-white px-6 py-1.5 rounded-md cursor-pointer">Deposit</button>
@@ -56,7 +56,7 @@ onMounted(() => {
       </div>
     </section>
 
-    <section class="bg-gray-100 px-4 py-4">
+    <section class="bg-white px-4 py-4">
       <Carousel v-bind="carouselConfig">
         <Slide v-for="account in accounts.data" :key="account.id">
           <div class="carousel__item bg-white relative gap-4">
@@ -73,7 +73,7 @@ onMounted(() => {
     </section>
 
     <section class="bg-gray-100 px-4 py-4">
-      <div class="bg-white flex items-center justify-between p-4 border-b border-gray-300 border-dashed">
+      <div class="bg-white rounded-xl flex items-center justify-between p-4 border-b border-gray-300 border-dashed">
         <h3 class="flex items-center gap-2 font-semibold text-base">
           Latest transactions
           <button type="button" @click="reloadTransactions()" class="cursor-pointer text-primary">
@@ -87,8 +87,8 @@ onMounted(() => {
         </a>
       </div>
 
-      <div class="w-full bg-white p-4">
-        <template v-if="transactions.data">
+      <div class="w-full bg-white rounded-xl p-4">
+        <template v-if="!transactions.data">
           <a href="#" v-for="item in transactions.data" class="p-4 flex items-center justify-between">
             <div class="flex items-center gap-2">
               <img :src="item.account?.logo_url" alt="img" class="h-8 w-auto">
@@ -105,7 +105,15 @@ onMounted(() => {
         </template>
 
         <template v-else>
-          <p>Wait...</p>
+          <div role='status' class='flex max-w-full animate-pulse'>
+            <div class='flex-shrink-0'>
+              <span class='flex justify-center items-center bg-gray-300 w-12 h-12 '></span>
+            </div>
+            <div class='ml-4 mt-2 w-full'>
+              <h3 class='h-3 bg-gray-300 rounded-full w-90 mb-4'></h3>
+              <p class='h-2 bg-gray-300 rounded-full w-80 mb-2.5'></p>
+            </div>
+          </div>
         </template>
 
       </div>

@@ -22,7 +22,7 @@ export const useAccountStore = defineStore('account', {
   actions: {
     async all (){
       try {
-        const response = await axiosInstance.get('/api/account/all');
+        const response = await axiosInstance.get('/api/accounts');
         if (response.status === 200) {
           this.accounts = response.data;
           return new Promise((resolve) => {
@@ -41,7 +41,7 @@ export const useAccountStore = defineStore('account', {
       try {
         const response = await axiosInstance.get('/api/account/balance');
         if (response.status === 200) {
-          this.balance = response.data.balance;
+          this.balance = response.data;
           return new Promise((resolve) => {
             resolve(response.data);
           });

@@ -44,8 +44,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <dialog v-if="accountStore.deposit" class="w-full shadow-2xl animate__animated animate__fadeIn bg-white fixed top-50 flex items-center justify-center max-w-sm mx-auto rounded-t-xl z-50">
-    <div class="w-full p-4">
+  <dialog v-if="accountStore.deposit" class="w-full shadow-2xl animate__animated animate__fadeIn bg-white rounded-xl fixed top-50 flex items-center justify-center max-w-sm mx-auto rounded-t-xl z-50">
+    <div class="w-full px-4 py-8">
       <div class="flex items-center justify-between border-b border-gray-300 border-dashed mb-3">
         <h2 class="text-lg font-bold mb-4">Deposit</h2>
         <button type="button" class="cursor-pointer text-red-500" @click="accountStore.deposit = false">
@@ -74,8 +74,8 @@ onMounted(() => {
   </dialog>
 
 
-  <dialog v-if="accountStore.withdraw" class="w-full shadow-2xl animate__animated animate__fadeIn bg-white fixed top-50 flex items-center justify-center max-w-sm mx-auto rounded-t-xl z-50">
-    <div class="w-full p-4">
+  <dialog v-if="accountStore.withdraw" class="w-full shadow-2xl animate__animated animate__fadeIn bg-white rounded-xl fixed top-50 flex items-center justify-center max-w-sm mx-auto rounded-t-xl z-50">
+    <div class="w-full px-4 py-8">
       <div class="flex items-center justify-between border-b border-gray-300 border-dashed mb-3">
         <h2 class="text-lg font-bold mb-4">Withdraw</h2>
         <button type="button" class="cursor-pointer text-red-500" @click="accountStore.withdraw = false">
