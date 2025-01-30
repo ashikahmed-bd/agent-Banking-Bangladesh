@@ -54,10 +54,10 @@ export const useAccountStore = defineStore('account', {
       }
     },
 
-    async getTransactions (){
+    async getLatestTransactions (){
       this.loading = true;
       try {
-        const response = await axiosInstance.get(`/api/transaction/latest`);
+        const response = await axiosInstance.get('/api/transaction/latest');
         if (response.status === 200) {
           return new Promise((resolve) => {
             resolve(response.data);

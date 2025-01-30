@@ -1,6 +1,6 @@
 import './assets/main.css'
 import 'vue3-carousel/carousel.css'
-import './assets/animate.min.css'
+// import './assets/animate.min.css'
 
 import "vue-toastification/dist/index.css";
 import Toast from "vue-toastification";

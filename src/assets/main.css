@@ -1,7 +1,14 @@
 @import "tailwindcss";
 @theme {
     --color-primary: oklch(0.404 0.226 283.072);
+
+    --font-body: Inter, sans-serif;
+
+
 }
+
+
+
 body{
     overflow: hidden;
 }

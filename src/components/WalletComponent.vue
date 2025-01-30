@@ -29,7 +29,7 @@ onMounted(() => {
     </div>
 
     <div class="w-full flex items-center">
-      <img src="/cash.png" alt="cash" class="h-10 w-auto">
+      <img src="/wallet.png" alt="cash" class="h-10 w-auto">
       <div class="block font-semibold text-base ml-2">
         <span class="block font-semibold text-base">Total Wallet</span>
         <h2 class="block font-semibold text-xl">{{currency(balance.wallet)}}</h2>
