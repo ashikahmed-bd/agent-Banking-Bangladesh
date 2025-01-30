@@ -2,6 +2,7 @@
 
 import Default from "@/layouts/Default.vue";
 import {ref} from "vue";
+import IconPlus from "@/components/icons/IconPlus.vue";
 
 const depositModal = ref(false);
 const deposit = () => {
@@ -26,7 +27,13 @@ const withdraw = () => {
 
     <section class="bg-gray-100 p-2">
       <div class="bg-white rounded-md p-4">
-        <h3 class="font-semibold text-lg border-b border-dashed border-gray-300">Customer List (10)</h3>
+        <div class="flex items-center justify-between border-b border-dashed border-gray-300 py-4">
+          <h3 class="font-semibold text-lg">Customer List (10)</h3>
+          <button type="button" class="bg-primary text-white p-2 rounded-full cursor-pointer">
+            <IconPlus class="size-5"/>
+          </button>
+        </div>
+
         <div class="w-full divide-y divide-dashed divide-gray-200">
           <a href="#" v-for="item in 10" class="py-2  flex items-center justify-between">
             <div class="flex items-center gap-2">

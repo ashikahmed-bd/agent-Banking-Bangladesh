@@ -34,10 +34,9 @@ onMounted(() => {
               <h2 class="block font-semibold text-xl">{{currency(balance.cash)}}</h2>
             </div>
           </div>
-
-          <div class="w-full flex items-center">
-
-
+          <div class="flex items-center gap-2">
+            <button type="button" class="bg-green-500 text-white px-6 py-1.5 rounded-md cursor-pointer">Credit</button>
+            <button type="button" class="bg-red-500 text-white px-6 py-1.5 rounded-md cursor-pointer">Debit</button>
           </div>
         </div>
       </div>
