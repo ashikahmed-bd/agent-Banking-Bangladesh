@@ -44,7 +44,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <dialog v-if="accountStore.deposit" class="w-full shadow-2xl animate__animated animate__slideInDown bg-white fixed top-50 flex items-center justify-center max-w-sm mx-auto rounded-t-xl z-50">
+  <dialog v-if="accountStore.deposit" class="w-full shadow-2xl animate__animated animate__slideInUp bg-white fixed top-50 flex items-center justify-center max-w-sm mx-auto rounded-t-xl z-50">
     <div class="w-full p-4">
       <div class="flex items-center justify-between border-b border-gray-300 border-dashed mb-3">
         <h2 class="text-lg font-bold mb-4">Deposit</h2>
@@ -74,7 +74,7 @@ onMounted(() => {
   </dialog>
 
 
-  <dialog v-if="accountStore.withdraw" class="w-full shadow-2xl animate__animated animate__slideInDown bg-white fixed top-50 flex items-center justify-center max-w-sm mx-auto rounded-t-xl z-50">
+  <dialog v-if="accountStore.withdraw" class="w-full shadow-2xl animate__animated animate__slideInUp bg-white fixed top-50 flex items-center justify-center max-w-sm mx-auto rounded-t-xl z-50">
     <div class="w-full p-4">
       <div class="flex items-center justify-between border-b border-gray-300 border-dashed mb-3">
         <h2 class="text-lg font-bold mb-4">Withdraw</h2>
