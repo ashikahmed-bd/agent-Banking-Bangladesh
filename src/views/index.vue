@@ -60,7 +60,7 @@ onMounted(() => {
       <div class="@container">
         <Carousel v-bind="carouselConfig">
           <Slide v-for="account in accounts.data" :key="account.id">
-            <div class="carousel__item overflow-hidden  relative gap-4">
+            <div class="carousel__item overflow-hidden z-10 relative gap-4">
               <img alt="card" src="/wallet-bg.png" class="object-cover rounded-xl">
               <div class="min-h-full flex flex-col absolute top-0 p-2.5">
                 <div class="flex-1 text-white">
@@ -121,7 +121,6 @@ onMounted(() => {
         </div>
       </div>
     </section>
-
 
     <DialogComponent/>
 

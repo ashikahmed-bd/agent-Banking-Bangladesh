@@ -6,6 +6,7 @@ import {onMounted, reactive} from "vue";
 import currency from "../utils/currency.js";
 import BaseButton from "@/components/BaseButton.vue";
 import {useWalletStore} from "@/stores/wallet.js";
+import BaseModal from "@/components/BaseModal.vue";
 
 const accountStore = useAccountStore();
 const walletStore = useWalletStore();
@@ -85,48 +86,42 @@ onMounted(() => {
       </div>
     </section>
 
-
-    <dialog v-if="walletStore.deposit" class="w-full px-4 shadow-2xl bg-white rounded-xl fixed top-50 flex items-center justify-center max-w-sm mx-auto z-50">
-      <div class="w-full px-4 py-8">
-        <div class="flex items-center justify-between border-b border-gray-300 border-dashed mb-3">
-          <h2 class="text-lg font-bold mb-4">Cash Deposit</h2>
-          <button type="button" class="cursor-pointer text-red-500" @click="walletStore.deposit = false">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-        <form @submit.prevent="cashDeposit" class="w-full max-w-sm">
-          <div class="form__group">
-            <label class="form__label">Enter Amount</label>
-            <input type="number" v-model="form.amount" class="form__control" placeholder="Enter amount"/>
-          </div>
-          <BaseButton class="w-full" :loading="walletStore.loading">submit</BaseButton>
-        </form>
+    <BaseModal :show="walletStore.deposit">
+      <div class="flex items-center justify-between border-b border-gray-300 border-dashed mb-3">
+        <h2 class="text-lg font-bold mb-4">Cash Deposit</h2>
+        <button type="button" class="cursor-pointer text-red-500" @click="walletStore.deposit = false">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+          </svg>
+        </button>
       </div>
-    </dialog>
-
-
-    <dialog v-if="walletStore.withdraw" class="w-full px-4 shadow-2xl bg-white rounded-xl fixed top-50 flex items-center justify-center max-w-sm mx-auto z-50">
-      <div class="w-full px-4 py-8">
-        <div class="flex items-center justify-between border-b border-gray-300 border-dashed mb-3">
-          <h2 class="text-lg font-bold mb-4">Cash Withdraw</h2>
-          <button type="button" class="cursor-pointer text-red-500" @click="walletStore.withdraw = false">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-            </svg>
-          </button>
+      <form @submit.prevent="cashDeposit" class="w-full max-w-sm">
+        <div class="form__group">
+          <label class="form__label">Enter Amount</label>
+          <input type="number" v-model="form.amount" class="form__control" placeholder="Enter amount"/>
         </div>
-        <form @submit.prevent="cashWithdraw" class="w-full max-w-sm">
-          <div class="form__group">
-            <label class="form__label">Enter Amount</label>
-            <input type="number" v-model="form.amount" class="form__control" placeholder="Enter amount"/>
-          </div>
-          <BaseButton class="w-full" :loading="walletStore.loading">submit</BaseButton>
-        </form>
-      </div>
-    </dialog>
+        <BaseButton class="w-full" :loading="walletStore.loading">submit</BaseButton>
+      </form>
+    </BaseModal>
 
+
+    <BaseModal :show="walletStore.withdraw">
+      <div class="flex items-center justify-between border-b border-gray-300 border-dashed mb-3">
+        <h2 class="text-lg font-bold mb-4">Cash Withdraw</h2>
+        <button type="button" class="cursor-pointer text-red-500" @click="walletStore.withdraw = false">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <form @submit.prevent="cashWithdraw" class="w-full max-w-sm">
+        <div class="form__group">
+          <label class="form__label">Enter Amount</label>
+          <input type="number" v-model="form.amount" class="form__control" placeholder="Enter amount"/>
+        </div>
+        <BaseButton class="w-full" :loading="walletStore.loading">submit</BaseButton>
+      </form>
+    </BaseModal>
 
   </Default>
 </template>

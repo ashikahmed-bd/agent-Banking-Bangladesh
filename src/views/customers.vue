@@ -6,6 +6,7 @@ import IconPlus from "@/components/icons/IconPlus.vue";
 import currency from "@/utils/currency.js";
 import BaseButton from "@/components/BaseButton.vue";
 import {useCustomerStore} from "@/stores/customer.js";
+import BaseModal from "@/components/BaseModal.vue";
 
 const customerStore = useCustomerStore();
 
@@ -77,38 +78,34 @@ const onSubmit = async () => {
       </div>
     </section>
 
-
-    <div v-if="customerStore.modal" class="fixed inset-0 bg-black/75 px-4 flex items-center justify-center">
-      <div class="bg-white rounded-lg shadow-lg p-6 w-96">
-        <div class="flex justify-between items-center border-b border-gray-300 border-dashed pb-3">
-          <h2 class="text-xl font-semibold">Add Customer</h2>
-          <button type="button" class="cursor-pointer text-red-500" @click="customerStore.modal = false">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-
-        <div class="mt-4">
-          <form @submit.prevent="onSubmit" class="w-full max-w-sm">
-            <div class="form__group">
-              <label class="form__label">Enter Name</label>
-              <input type="text" v-model="form.name" class="form__control" placeholder="Enter name"/>
-            </div>
-            <div class="form__group">
-              <label class="form__label">Enter Phone</label>
-              <input type="text" v-model="form.phone" class="form__control" placeholder="Enter phone"/>
-            </div>
-            <div class="form__group">
-              <label class="form__label">Enter Amount</label>
-              <input type="number" v-model="form.amount" class="form__control" placeholder="Enter amount"/>
-            </div>
-            <BaseButton class="w-full" :loading="customerStore.loading">submit</BaseButton>
-          </form>
-        </div>
-
+    <BaseModal :show="customerStore.modal">
+      <div class="flex justify-between items-center border-b border-gray-300 border-dashed pb-3">
+        <h2 class="text-xl font-semibold">Add Customer</h2>
+        <button type="button" class="cursor-pointer text-red-500" @click="customerStore.modal = false">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+          </svg>
+        </button>
       </div>
-    </div>
+
+      <div class="mt-4">
+        <form @submit.prevent="onSubmit" class="w-full max-w-sm">
+          <div class="form__group">
+            <label class="form__label">Enter Name</label>
+            <input type="text" v-model="form.name" class="form__control" placeholder="Enter name"/>
+          </div>
+          <div class="form__group">
+            <label class="form__label">Enter Phone</label>
+            <input type="text" v-model="form.phone" class="form__control" placeholder="Enter phone"/>
+          </div>
+          <div class="form__group">
+            <label class="form__label">Enter Amount</label>
+            <input type="number" v-model="form.amount" class="form__control" placeholder="Enter amount"/>
+          </div>
+          <BaseButton class="w-full" :loading="customerStore.loading">submit</BaseButton>
+        </form>
+      </div>
+    </BaseModal>
 
   </Default>
 </template>
