@@ -19,9 +19,13 @@ export const useCustomerStore = defineStore('customer', {
 
   actions: {
 
-    async all (){
+    async all (limit){
       try {
-        const response = await axiosInstance.get('/api/customers');
+        const response = await axiosInstance.get('/api/customers', {
+          params: {
+            limit: limit,
+          }
+        });
         if (response.status === 200) {
           this.customers = response.data;
           return new Promise((resolve) => {
@@ -41,8 +45,9 @@ export const useCustomerStore = defineStore('customer', {
       this.loading = true;
       try {
         const response = await axiosInstance.post('/api/customer/store',formData);
-        if (response.status === 200) {
+        if (response.status === 201) {
           toastStore.success(response.data.message);
+          this.modal = false;
           return new Promise((resolve) => {
             resolve(response.data);
           });
