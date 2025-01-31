@@ -61,7 +61,7 @@ onMounted(() => {
         <Carousel v-bind="carouselConfig">
           <Slide v-for="account in accounts.data" :key="account.id">
             <div class="carousel__item overflow-hidden  relative gap-4">
-              <img alt="card" :src="account.banner_url" class="object-cover rounded-xl">
+              <img alt="card" src="/wallet-bg.png" class="object-cover rounded-xl">
               <div class="min-h-full flex flex-col absolute top-0 p-2.5">
                 <div class="flex-1 text-white">
                   <h3 class="font-semibold">{{account.name}}</h3>

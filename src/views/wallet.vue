@@ -2,10 +2,13 @@
 import Default from "@/layouts/Default.vue";
 import {useAccountStore} from "@/stores/account.js";
 import {storeToRefs} from "pinia";
-import {onMounted} from "vue";
+import {onMounted, reactive} from "vue";
 import currency from "../utils/currency.js";
+import BaseButton from "@/components/BaseButton.vue";
+import {useWalletStore} from "@/stores/wallet.js";
 
 const accountStore = useAccountStore();
+const walletStore = useWalletStore();
 const {accounts, balance} = storeToRefs(accountStore);
 
 const getAccountsList = async () => {
@@ -14,6 +17,26 @@ const getAccountsList = async () => {
 
 const getBalance = async () => {
   await accountStore.getBalance();
+}
+
+const form = reactive({
+  amount: '',
+})
+
+
+const cashDeposit = async () => {
+  await walletStore.getDeposit(form);
+  await getBalance();
+  // Reset the form after submission
+  form.amount = ''
+}
+
+
+const cashWithdraw = async () => {
+  await walletStore.getWithdraw(form);
+  await getBalance();
+  // Reset the form after submission
+  form.amount = ''
 }
 
 onMounted(() => {
@@ -35,8 +58,8 @@ onMounted(() => {
             </div>
           </div>
           <div class="flex items-center gap-2">
-            <button type="button" class="bg-green-500 text-white px-6 py-1.5 rounded-md cursor-pointer">Credit</button>
-            <button type="button" class="bg-red-500 text-white px-6 py-1.5 rounded-md cursor-pointer">Debit</button>
+            <button type="button" @click="walletStore.deposit = true" class="bg-green-500 text-white px-6 py-1.5 rounded-md cursor-pointer">Credit</button>
+            <button type="button" @click="walletStore.withdraw = true"  class="bg-red-500 text-white px-6 py-1.5 rounded-md cursor-pointer">Debit</button>
           </div>
         </div>
       </div>
@@ -61,6 +84,49 @@ onMounted(() => {
         </div>
       </div>
     </section>
+
+
+    <dialog v-if="walletStore.deposit" class="shadow-2xl bg-white rounded-xl fixed top-50 flex items-center justify-center max-w-sm mx-auto z-50">
+      <div class="px-4 py-8">
+        <div class="flex items-center justify-between border-b border-gray-300 border-dashed mb-3">
+          <h2 class="text-lg font-bold mb-4">Cash Deposit</h2>
+          <button type="button" class="cursor-pointer text-red-500" @click="walletStore.deposit = false">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <form @submit.prevent="cashDeposit" class="w-full max-w-sm">
+          <div class="form__group">
+            <label class="form__label">Enter Amount</label>
+            <input type="number" v-model="form.amount" class="form__control" placeholder="Enter amount"/>
+          </div>
+          <BaseButton class="w-full" :loading="walletStore.loading">submit</BaseButton>
+        </form>
+      </div>
+    </dialog>
+
+
+    <dialog v-if="walletStore.withdraw" class="shadow-2xl bg-white rounded-xl fixed top-50 flex items-center justify-center max-w-sm mx-auto z-50">
+      <div class="px-4 py-8">
+        <div class="flex items-center justify-between border-b border-gray-300 border-dashed mb-3">
+          <h2 class="text-lg font-bold mb-4">Cash Withdraw</h2>
+          <button type="button" class="cursor-pointer text-red-500" @click="walletStore.withdraw = false">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <form @submit.prevent="cashWithdraw" class="w-full max-w-sm">
+          <div class="form__group">
+            <label class="form__label">Enter Amount</label>
+            <input type="number" v-model="form.amount" class="form__control" placeholder="Enter amount"/>
+          </div>
+          <BaseButton class="w-full" :loading="walletStore.loading">submit</BaseButton>
+        </form>
+      </div>
+    </dialog>
+
 
   </Default>
 </template>

@@ -39,7 +39,7 @@ export const useAccountStore = defineStore('account', {
 
     async getBalance (){
       try {
-        const response = await axiosInstance.get('/api/account/balance');
+        const response = await axiosInstance.get('/api/balance');
         if (response.status === 200) {
           this.balance = response.data;
           return new Promise((resolve) => {
@@ -57,7 +57,7 @@ export const useAccountStore = defineStore('account', {
     async getLatestTransactions (){
       this.loading = true;
       try {
-        const response = await axiosInstance.get('/api/transaction/latest');
+        const response = await axiosInstance.get('/api/latest-transaction');
         if (response.status === 200) {
           return new Promise((resolve) => {
             resolve(response.data);
@@ -122,9 +122,6 @@ export const useAccountStore = defineStore('account', {
         this.loading = false;
       }
     },
-
-
-
 
 
   },

@@ -10,11 +10,11 @@ export const useAuthStore = defineStore('auth', {
     errors: {},
   }),
 
-  // persist: true,
+  persist: true,
 
-  persist: {
-    paths: ['token', 'user', 'role'],
-  },
+  // persist: {
+  //   paths: ['token', 'user'],
+  // },
 
   getters: {
     loggedIn: state => !!state.token,
@@ -27,10 +27,8 @@ export const useAuthStore = defineStore('auth', {
       try {
         const response = await axiosInstance.post("/api/auth/login", formData);
         if (response.status === 200){
-          this.token = response.data?.data?.token;
-          this.user = response.data?.data?.user;
-          this.role = response.data?.data?.role;
-          console.log(response.data?.data);
+          this.token = response.data?.token;
+          this.user = response.data?.user;
           toastStore.success(response.data.message);
           setTimeout(() => {
             window.location.replace(import.meta.env.BASE_URL);
@@ -50,10 +48,10 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
-    async me(){
+    async getUser(){
       const toastStore = useToastStore();
       try {
-        const response = await axiosInstance.get('/api/me');
+        const response = await axiosInstance.get('/api/user');
         this.user = response.data.data;
         if (response.status === 200) {
           return new Promise((resolve) => {
@@ -71,7 +69,7 @@ export const useAuthStore = defineStore('auth', {
     async logout(){
       this.loading = true;
       try {
-        const response = await axiosInstance.post('/api/auth/logout');
+        const response = await axiosInstance.post('/api/logout');
         if (response.status === 200) {
           const toastStore = useToastStore();
           toastStore.success(response.data.message);
