@@ -74,6 +74,9 @@ export const useAuthStore = defineStore('auth', {
           const toastStore = useToastStore();
           toastStore.success(response.data.message);
           this.$reset();
+          setTimeout(() => {
+            window.location.replace(import.meta.env.BASE_URL);
+          }, 1000);
           return new Promise((resolve) => {
             resolve(response);
           });

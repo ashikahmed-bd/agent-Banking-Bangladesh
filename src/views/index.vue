@@ -21,7 +21,7 @@ const withdraw = () => {
   accountStore.withdraw = true;
 }
 const carouselConfig = {
-  itemsToShow: 3,
+  itemsToShow: 2,
   wrapAround: true,
   gap: 10
 }
@@ -56,7 +56,7 @@ onMounted(() => {
       </div>
     </section>
 
-    <section class="px-4 py-4">
+    <section class="px-4 py-2">
       <div class="@container">
         <Carousel v-bind="carouselConfig">
           <Slide v-for="account in accounts.data" :key="account.id">
