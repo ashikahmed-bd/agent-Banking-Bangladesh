@@ -78,7 +78,7 @@ const onSubmit = async () => {
     </section>
 
 
-    <dialog v-if="customerStore.modal" class="w-full shadow-2xl bg-white rounded-xl fixed top-50 flex items-center justify-center max-w-sm mx-auto z-50">
+    <dialog v-if="customerStore.modal" class="w-full px-4 shadow-2xl bg-white rounded-xl fixed top-50 flex items-center justify-center max-w-sm mx-auto z-50">
       <div class="w-full px-4 py-8">
         <div class="flex items-center justify-between border-b border-gray-300 border-dashed mb-3">
           <h2 class="text-lg font-bold mb-4">Add Customer</h2>

@@ -86,8 +86,8 @@ onMounted(() => {
     </section>
 
 
-    <dialog v-if="walletStore.deposit" class="shadow-2xl bg-white rounded-xl fixed top-50 flex items-center justify-center max-w-sm mx-auto z-50">
-      <div class="px-4 py-8">
+    <dialog v-if="walletStore.deposit" class="w-full px-4 shadow-2xl bg-white rounded-xl fixed top-50 flex items-center justify-center max-w-sm mx-auto z-50">
+      <div class="w-full px-4 py-8">
         <div class="flex items-center justify-between border-b border-gray-300 border-dashed mb-3">
           <h2 class="text-lg font-bold mb-4">Cash Deposit</h2>
           <button type="button" class="cursor-pointer text-red-500" @click="walletStore.deposit = false">
@@ -107,8 +107,8 @@ onMounted(() => {
     </dialog>
 
 
-    <dialog v-if="walletStore.withdraw" class="shadow-2xl bg-white rounded-xl fixed top-50 flex items-center justify-center max-w-sm mx-auto z-50">
-      <div class="px-4 py-8">
+    <dialog v-if="walletStore.withdraw" class="w-full px-4 shadow-2xl bg-white rounded-xl fixed top-50 flex items-center justify-center max-w-sm mx-auto z-50">
+      <div class="w-full px-4 py-8">
         <div class="flex items-center justify-between border-b border-gray-300 border-dashed mb-3">
           <h2 class="text-lg font-bold mb-4">Cash Withdraw</h2>
           <button type="button" class="cursor-pointer text-red-500" @click="walletStore.withdraw = false">
