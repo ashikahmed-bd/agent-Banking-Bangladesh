@@ -12,10 +12,10 @@ const logout = async () => {
 </script>
 
 <template>
-  <div class="h-screen flex flex-col">
+  <div class="min-h-screen w-full flex flex-col bg-gray-100 text-gray-900">
     <Header/>
 
-    <main class="container mx-auto bg-gray-100 mb-16">
+    <main class="flex-1 p-4 overflow-auto">
       <slot/>
     </main>
 
