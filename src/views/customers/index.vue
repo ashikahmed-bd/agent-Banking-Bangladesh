@@ -44,8 +44,8 @@ onMounted(() => {
 
 <template>
   <Default>
-    <section class="bg-gray-100 px-4 py-2">
-      <div class="bg-white rounded-xl shadow px-4 py-2">
+    <section class="px-4 py-2">
+      <div class="bg-white rounded-xl px-4 py-2">
         <div class="flex items-center justify-between mb-4">
           <div class="w-full flex items-center">
             <img src="/cash.png" alt="cash" class="h-10 w-auto">
@@ -67,7 +67,7 @@ onMounted(() => {
     </section>
 
     <section class="px-4 py-2">
-      <div class="bg-white rounded-md px-4 py-2">
+      <div class="bg-white rounded-xl px-4 py-2">
         <div class="flex items-center justify-between border-b border-dashed border-gray-300 py-4">
           <h3 class="font-semibold text-lg">Customer List</h3>
           <button type="button" @click="customerStore.modal = !customerStore.modal" class="bg-primary text-white p-2 rounded-full cursor-pointer">
@@ -75,7 +75,7 @@ onMounted(() => {
           </button>
         </div>
 
-        <div class="w-full overflow-y-auto scrollbar divide-y divide-dashed divide-gray-200">
+        <div class="w-full h-screen overflow-y-auto scrollbar divide-y divide-dashed divide-gray-200">
           <template v-if="customers.data">
             <RouterLink :to="{name: 'customer.show', params: {id: customer.id}}" v-for="customer in customers.data" :key="customer.id" class="py-2  flex items-center justify-between">
               <div class="flex items-center gap-2">
@@ -121,8 +121,8 @@ onMounted(() => {
             <input type="text" v-model="form.name" class="form__control" placeholder="Enter name"/>
           </div>
           <div class="form__group">
-            <label class="form__label">Enter Phone</label>
-            <input type="text" v-model="form.phone" class="form__control" placeholder="Enter phone"/>
+            <label class="form__label">Phone Number</label>
+            <input type="number" v-model="form.phone" class="form__control" placeholder="Enter phone"/>
           </div>
           <div class="form__group">
             <label class="form__label">Enter Amount</label>
