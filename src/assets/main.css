@@ -4,20 +4,10 @@
 
     --font-body: Inter, sans-serif;
 
+    --container: 32rem;
+
 
 }
-
-
-
-body{
-    overflow: hidden;
-}
-
-main{
-    overflow-y: auto;
-    height: 100vh;
-}
-
 
 .scrollbar::-webkit-scrollbar {
     background-color: transparent;
@@ -40,7 +30,7 @@ main{
 }
 
 .form__label{
-    @apply block text-sm text-gray-900 mb-1;
+    @apply block font-semibold text-sm text-gray-900 mb-1;
 }
 
 .form__control{

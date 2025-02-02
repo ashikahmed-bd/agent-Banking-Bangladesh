@@ -15,7 +15,7 @@ const logout = async () => {
   <div class="h-screen flex flex-col">
     <Header/>
 
-    <main class="bg-gray-100 mb-16">
+    <main class="container mx-auto mb-16">
       <slot/>
     </main>
 

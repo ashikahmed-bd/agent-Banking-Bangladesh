@@ -21,7 +21,8 @@ const getCustomers = async () => {
 const form = reactive({
   name: '',
   phone: '',
-  amount: '',
+  receivable: '',
+  payable: '',
 });
 
 const onSubmit = async () => {
@@ -29,7 +30,8 @@ const onSubmit = async () => {
 
   form.name = '';
   form.phone = '';
-  form.amount = '';
+  form.receivable = '';
+  form.payable = '';
   await getCustomers();
 }
 
@@ -73,9 +75,9 @@ onMounted(() => {
           </button>
         </div>
 
-        <div class="w-full divide-y divide-dashed divide-gray-200">
+        <div class="w-full overflow-y-auto scrollbar divide-y divide-dashed divide-gray-200">
           <template v-if="customers.data">
-            <a href="#" v-for="customer in customers.data" :key="customer.id" class="py-2  flex items-center justify-between">
+            <RouterLink :to="{name: 'customer.show', params: {id: customer.id}}" v-for="customer in customers.data" :key="customer.id" class="py-2  flex items-center justify-between">
               <div class="flex items-center gap-2">
                 <img src="/user.png" alt="img" class="h-8 w-auto">
                 <div class="mr-2">
@@ -92,7 +94,7 @@ onMounted(() => {
                   <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                 </svg>
               </div>
-            </a>
+            </RouterLink>
           </template>
 
           <template v-else>

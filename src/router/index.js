@@ -38,9 +38,19 @@ const router = createRouter({
     {
       path: '/customers',
       name: 'customers',
-      component: () => import('../views/customers.vue'),
+      component: () => import('../views/customers/index.vue'),
       meta: {
         title: 'Customers',
+        auth: true
+      },
+    },
+
+    {
+      path: '/customer/:id',
+      name: 'customer.show',
+      component: () => import('../views/customers/show.vue'),
+      meta: {
+        title: 'Customer show',
         auth: true
       },
     },

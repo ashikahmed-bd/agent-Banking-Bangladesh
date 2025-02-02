@@ -25,6 +25,7 @@ export const useWalletStore = defineStore('wallet', {
       try {
         const response = await axiosInstance.post(`/api/cash/deposit`, {
           amount: formData.amount,
+          note: formData.note,
         });
         if (response.status === 200) {
           toastStore.success(response.data.message);
@@ -50,6 +51,7 @@ export const useWalletStore = defineStore('wallet', {
       try {
         const response = await axiosInstance.post('/api/cash/withdraw', {
           amount: formData.amount,
+          note: formData.note,
         });
         if (response.status === 200) {
           toastStore.success(response.data.message);

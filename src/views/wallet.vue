@@ -22,6 +22,7 @@ const getBalance = async () => {
 
 const form = reactive({
   amount: '',
+  note: '',
 })
 
 
@@ -29,7 +30,8 @@ const cashDeposit = async () => {
   await walletStore.getDeposit(form);
   await getBalance();
   // Reset the form after submission
-  form.amount = ''
+  form.amount = '';
+  form.note = '';
 }
 
 
@@ -100,6 +102,10 @@ onMounted(() => {
           <label class="form__label">Enter Amount</label>
           <input type="number" v-model="form.amount" class="form__control" placeholder="Enter amount"/>
         </div>
+        <div class="form__group">
+          <label class="form__label">Note</label>
+          <input type="text" v-model="form.note" class="form__control" placeholder="Enter note"/>
+        </div>
         <BaseButton class="w-full" :loading="walletStore.loading">submit</BaseButton>
       </form>
     </BaseModal>
@@ -118,6 +124,10 @@ onMounted(() => {
         <div class="form__group">
           <label class="form__label">Enter Amount</label>
           <input type="number" v-model="form.amount" class="form__control" placeholder="Enter amount"/>
+        </div>
+        <div class="form__group">
+          <label class="form__label">Note</label>
+          <input type="text" v-model="form.note" class="form__control" placeholder="Enter note"/>
         </div>
         <BaseButton class="w-full" :loading="walletStore.loading">submit</BaseButton>
       </form>

@@ -47,7 +47,7 @@ onMounted(() => {
 <template>
   <Default>
     <section class="px-4 py-4">
-      <div class="bg-white rounded-xl shadow-2xl p-4">
+      <div class="bg-white rounded-xl p-4">
         <WalletComponent/>
         <div class="flex items-center justify-between">
           <button type="button" @click="deposit" class="bg-primary text-white px-6 py-1.5 rounded-md cursor-pointer">Deposit</button>
@@ -57,7 +57,7 @@ onMounted(() => {
     </section>
 
     <section class="px-4 py-2">
-      <div class="@container">
+      <div class="container">
         <Carousel v-bind="carouselConfig">
           <Slide v-for="account in accounts.data" :key="account.id">
             <div class="carousel__item overflow-hidden z-10 relative gap-4">
@@ -75,7 +75,7 @@ onMounted(() => {
     </section>
 
     <section class="px-4 py-4 flex flex-col flex-grow">
-      <div class="bg-white rounded-xl shadow-2xl">
+      <div class="bg-white rounded-xl">
         <div class="flex items-center justify-between p-4 border-b border-gray-300 border-dashed">
           <h3 class="flex items-center gap-2 font-semibold text-base">
             Latest transactions
