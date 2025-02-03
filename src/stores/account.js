@@ -79,6 +79,7 @@ export const useAccountStore = defineStore('account', {
       try {
         const response = await axiosInstance.post(`/api/account/${formData.account_id}/deposit`, {
           amount: formData.amount,
+          profit: formData.profit,
         });
         if (response.status === 200) {
           toastStore.success(response.data.message);
@@ -104,6 +105,7 @@ export const useAccountStore = defineStore('account', {
       try {
         const response = await axiosInstance.post(`/api/account/${formData.account_id}/withdraw`, {
           amount: formData.amount,
+          profit: formData.profit,
         });
         if (response.status === 200) {
           toastStore.success(response.data.message);

@@ -15,11 +15,13 @@ const getAccountsList = async () => {
 const deposit =  reactive({
   account_id: '',
   amount: '',
+  profit: '',
 });
 
 const withdraw =  reactive({
   account_id: '',
   amount: '',
+  profit: '',
 });
 
 const accountDeposit = async () => {
@@ -69,6 +71,11 @@ onMounted(() => {
         <input type="number" v-model="deposit.amount" class="form__control" placeholder="Enter amount"/>
       </div>
 
+      <div class="form__group">
+        <label class="form__label">Enter Profit</label>
+        <input type="number" v-model="deposit.profit" class="form__control" placeholder="Enter profit"/>
+      </div>
+
       <BaseButton class="w-full" :loading="accountStore.loading">submit</BaseButton>
     </form>
   </BaseModal>
@@ -94,6 +101,11 @@ onMounted(() => {
       <div class="form__group">
         <label class="form__label">Enter Amount</label>
         <input type="number" v-model="withdraw.amount" class="form__control" placeholder="Enter amount"/>
+      </div>
+
+      <div class="form__group">
+        <label class="form__label">Enter Profit</label>
+        <input type="number" v-model="withdraw.profit" class="form__control" placeholder="Enter profit"/>
       </div>
 
       <BaseButton class="w-full" :loading="accountStore.loading">submit</BaseButton>
