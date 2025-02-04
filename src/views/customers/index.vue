@@ -1,9 +1,7 @@
 <script setup>
-
 import Default from "@/layouts/Default.vue";
 import {onMounted, reactive, ref} from "vue";
 import IconPlus from "@/components/icons/IconPlus.vue";
-import currency from "@/utils/currency.js";
 import BaseButton from "@/components/BaseButton.vue";
 import {useCustomerStore} from "@/stores/customer.js";
 import BaseModal from "@/components/BaseModal.vue";
@@ -12,7 +10,7 @@ import {storeToRefs} from "pinia";
 const customerStore = useCustomerStore();
 const { customers } = storeToRefs(customerStore);
 
-const limit = ref(10)
+const limit = ref(10);
 
 const getCustomers = async () => {
   await customerStore.all(limit.value);
@@ -21,7 +19,7 @@ const getCustomers = async () => {
 const form = reactive({
   name: '',
   phone: '',
-  receivable: '',
+  due: '',
   payable: '',
 });
 
@@ -30,7 +28,7 @@ const onSubmit = async () => {
 
   form.name = '';
   form.phone = '';
-  form.receivable = '';
+  form.due = '';
   form.payable = '';
   await getCustomers();
 }
@@ -44,7 +42,7 @@ onMounted(() => {
 
 <template>
   <Default>
-    <section class="px-4 py-2">
+    <section class="py-2">
       <div class="bg-white rounded-xl px-4 py-2">
         <div class="flex items-center justify-between mb-4">
           <div class="w-full flex items-center">
@@ -66,7 +64,7 @@ onMounted(() => {
       </div>
     </section>
 
-    <section class="px-4 py-2">
+    <section class="py-2">
       <div class="bg-white rounded-xl px-4 py-2">
         <div class="flex items-center justify-between border-b border-dashed border-gray-300 py-4">
           <h3 class="font-semibold text-lg">Customer List</h3>
@@ -87,8 +85,9 @@ onMounted(() => {
               </div>
               <div class="flex-none flex items-center gap-4">
                 <div class="flex items-center gap-2">
-                  <p class="text-green-500">{{customer.receivable}}</p>
-                  <p class="text-red-500">{{customer.payable}}</p>
+                  <p v-if="customer.balance > 0" class="text-green-500">{{customer.balance}}</p>
+                  <p v-else-if="customer.balance === 0" class="text-gray-500">{{customer.balance}}</p>
+                  <p v-else class="text-red-500">{{customer.balance}}</p>
                 </div>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 text-primary">
                   <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
@@ -125,8 +124,13 @@ onMounted(() => {
             <input type="number" v-model="form.phone" class="form__control" placeholder="Enter phone"/>
           </div>
           <div class="form__group">
-            <label class="form__label">Enter Amount</label>
-            <input type="number" v-model="form.amount" class="form__control" placeholder="Enter amount"/>
+            <label class="form__label">Enter Due</label>
+            <input type="number" v-model="form.due" class="form__control" placeholder="Enter due"/>
+          </div>
+
+          <div class="form__group">
+            <label class="form__label">Enter Payable</label>
+            <input type="number" v-model="form.payable" class="form__control" placeholder="Enter payable"/>
           </div>
           <BaseButton class="w-full" :loading="customerStore.loading">submit</BaseButton>
         </form>

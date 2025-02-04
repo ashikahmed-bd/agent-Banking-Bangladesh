@@ -59,12 +59,12 @@ onMounted(() => {
         <div class="w-full mt-4">
           <form class="w-full grid grid-cols-2 gap-4">
             <div class="form__group">
-              <label class="form__label">Paid Amount</label>
-              <input type="number" v-model="form.receivable" class="form__control" placeholder="Enter paid amount"/>
+              <label class="form__label">Due Amount</label>
+              <input type="number" v-model="form.due" class="form__control" placeholder="Enter due amount"/>
             </div>
             <div class="form__group">
-              <label class="form__label">Due Amount</label>
-              <input type="number" v-model="form.payable" class="form__control" placeholder="Enter due amount"/>
+              <label class="form__label">Payable Amount</label>
+              <input type="number" v-model="form.payable" class="form__control" placeholder="Enter payable amount"/>
             </div>
             <div class="form__group col-span-2">
               <label class="form__label">Note</label>
