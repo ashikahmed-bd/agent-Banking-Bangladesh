@@ -1,63 +1,64 @@
 <script setup>
-
 import Default from "@/layouts/Default.vue";
 import {onMounted, reactive, ref} from "vue";
-import IconPlus from "@/components/icons/IconPlus.vue";
-import currency from "@/utils/currency.js";
 import BaseButton from "@/components/BaseButton.vue";
 import {useCustomerStore} from "@/stores/customer.js";
-import BaseModal from "@/components/BaseModal.vue";
 import {storeToRefs} from "pinia";
 import {useRoute} from "vue-router";
+import currency from "../../utils/currency.js";
 
 const customerStore = useCustomerStore();
-const { customers } = storeToRefs(customerStore);
+const { customer } = storeToRefs(customerStore);
 const route = useRoute();
 
-const limit = ref(10)
 
-const getCustomers = async () => {
-  await customerStore.all(limit.value);
+const getCustomer = async () => {
+  await customerStore.show(route.params.id);
 }
 
 const form = reactive({
   customer_id: route.params.id,
-  receivable: '',
+  due: '',
   payable: '',
   note: '',
 });
 
 const onSubmit = async () => {
-  await customerStore.store(form);
-  form.receivable = '';
+  await customerStore.payment(form);
+  form.due = '';
   form.payable = '';
   form.note = '';
-  await getCustomers();
+  await getCustomer();
 }
 
 
 
 onMounted(() => {
-  getCustomers();
+  getCustomer();
 })
 </script>
 
 <template>
   <Default>
-    <section class="bg-gray-100 px-4 py-2">
+    <section class="py-2">
       <div class="bg-white rounded-xl px-4 py-2">
         <div class="flex items-center justify-between border-b border-dashed border-gray-300 py-2">
           <div class="flex-grow">
-            <p v-if="true" class="text-green-500">Amount: 1200</p>
-            <p v-else class="text-red-500">Amount: 1200</p>
-            <time class="text-sm">Date: 12 Nov 2025</time>
+            <div class="flex items-center gap-2">
+              <span>Amount:</span>
+              <p v-if="customer.balance > 0" class="text-green-500">{{currency(customer.balance)}}</p>
+              <p v-else-if="customer.balance === 0" class="text-gray-500">{{currency(customer.balance)}}</p>
+              <p v-else class="text-red-500">{{currency(customer.balance)}}</p>
+            </div>
+            <time class="text-sm">{{customer.updated_at}}</time>
           </div>
-          <RouterLink to="/" class="bg-primary text-white px-4 py-1.5 rounded">Report</RouterLink>
+          <div class="">
+            <h2>{{customer.name}}</h2>
+            <small>Phone: {{customer.phone}}</small>
+          </div>
         </div>
-
-
         <div class="w-full mt-4">
-          <form class="w-full grid grid-cols-2 gap-4">
+          <form @submit.prevent="onSubmit" class="w-full grid grid-cols-2 gap-4">
             <div class="form__group">
               <label class="form__label">Due Amount</label>
               <input type="number" v-model="form.due" class="form__control" placeholder="Enter due amount"/>

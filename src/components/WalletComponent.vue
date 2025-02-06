@@ -42,7 +42,7 @@ onMounted(() => {
         </svg>
       </div>
       <div class="block font-semibold text-base ml-2">
-        <span class="block font-semibold">Total Accounts</span>
+        <span class="block font-semibold">Total Bank</span>
         <h2 v-if="balance.accounts" class="block">{{currency(balance.accounts)}}</h2>
         <h2 v-else class="block">Loading...</h2>
       </div>

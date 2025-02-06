@@ -10,6 +10,7 @@ export const useCustomerStore = defineStore('customer', {
     loading: false,
     modal: false,
     customers: {},
+    customer: {},
     errors: {},
   }),
 
@@ -48,6 +49,52 @@ export const useCustomerStore = defineStore('customer', {
         if (response.status === 201) {
           toastStore.success(response.data.message);
           this.modal = false;
+          return new Promise((resolve) => {
+            resolve(response.data);
+          });
+        }
+      }catch (error) {
+        if (error.response){
+          this.errors = error.response.data.errors;
+          toastStore.error(error.response.data.message);
+        }
+      }finally {
+        this.loading = false;
+      }
+    },
+
+
+    async show (id){
+      this.loading = true;
+      try {
+        const response = await axiosInstance.get(`/api/customer/${id}/show`);
+        if (response.status === 200) {
+          this.customer = response.data.data;
+          return new Promise((resolve) => {
+            resolve(response.data);
+          });
+        }
+      }catch (error) {
+        if (error.response){
+          this.errors = error.response.data.errors;
+          toastStore.error(error.response.data.message);
+        }
+      }finally {
+        this.loading = false;
+      }
+    },
+
+
+    async payment (form){
+      this.loading = true;
+      try {
+        const response = await axiosInstance.post(`/api/customer/${form.customer_id}/payment`, {
+          due: form.due,
+          payable: form.payable,
+          note: form.note,
+        });
+        if (response.status === 201) {
+          toastStore.success(response.data.message);
           return new Promise((resolve) => {
             resolve(response.data);
           });
