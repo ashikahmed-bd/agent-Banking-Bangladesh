@@ -2,36 +2,21 @@
 import {onMounted, ref} from "vue";
 import currency from "../utils/currency.js";
 import axiosInstance from "@/plugins/axios.js";
+import {storeToRefs} from "pinia";
+import {useAccountStore} from "@/stores/account.js";
 
-const cash = ref(0);
-const balance = ref(0);
-const wallet = ref({});
-const profit = ref({});
+const accountStore = useAccountStore();
+const { balance } = storeToRefs(accountStore);
 
-const getCash = async () => {
-  cash.value = await axiosInstance.get('/api/balance/cash');
-}
 
-const getAccountsBalance = async () => {
-  balance.value = await axiosInstance.get('/api/balance/accounts');
-}
-
-const getWalletBalance = async () => {
-  const response = await axiosInstance.get('/api/balance/wallet');
-  wallet.value = response.data;
-}
-
-const getProfitBalance = async () => {
-  const response = await axiosInstance.get('/api/balance/profit');
-  profit.value = response.data;
+const getBalance = async () => {
+  await accountStore.getBalance();
 }
 
 onMounted(() => {
-  getCash();
-  getAccountsBalance();
-  getWalletBalance();
-  getProfitBalance();
-})
+  getBalance();
+});
+
 </script>
 
 <template>
@@ -45,7 +30,7 @@ onMounted(() => {
 
       <div class="block font-semibold text-base ml-2">
         <span class="block font-semibold">Total Cash</span>
-        <h2 v-if="cash.data" class="block">{{currency(cash.data)}}</h2>
+        <h2 v-if="balance.cash" class="block">{{currency(balance.cash)}}</h2>
         <h2 v-else class="block">Loading...</h2>
       </div>
     </div>
@@ -57,8 +42,8 @@ onMounted(() => {
         </svg>
       </div>
       <div class="block font-semibold text-base ml-2">
-        <span class="block font-semibold">Total Wallet</span>
-        <h2 v-if="balance.data" class="block">{{currency(balance.data)}}</h2>
+        <span class="block font-semibold">Total Accounts</span>
+        <h2 v-if="balance.accounts" class="block">{{currency(balance.accounts)}}</h2>
         <h2 v-else class="block">Loading...</h2>
       </div>
     </div>
@@ -71,7 +56,7 @@ onMounted(() => {
       </div>
       <div class="block font-semibold text-base ml-2">
         <span class="block font-semibold">Total Due</span>
-        <h2 v-if="wallet.total_due" class="block text-red-500">{{currency(wallet.total_due)}}</h2>
+        <h2 v-if="balance.wallet" class="block text-red-500">{{currency(balance.wallet?.due)}}</h2>
         <h2 v-else class="block">Loading...</h2>
       </div>
     </div>
@@ -84,7 +69,7 @@ onMounted(() => {
       </div>
       <div class="block font-semibold text-base ml-2">
         <span class="block font-semibold">Total Payable</span>
-        <h2 v-if="wallet.total_payable" class="block text-green-500">{{currency(wallet.total_payable)}}</h2>
+        <h2 v-if="balance.wallet" class="block text-green-500">{{currency(balance.wallet?.payable)}}</h2>
         <h2 v-else class="block">Loading...</h2>
       </div>
     </div>
@@ -97,7 +82,7 @@ onMounted(() => {
       </div>
       <div class="block font-semibold text-base ml-2">
         <span class="block font-semibold">Today Profit</span>
-        <h2 v-if="profit.today" class="block">{{currency(profit.today)}}</h2>
+        <h2 v-if="balance.profit" class="block">{{currency(balance.profit?.today)}}</h2>
         <h2 v-else class="block">Loading...</h2>
       </div>
     </div>
@@ -110,7 +95,7 @@ onMounted(() => {
       </div>
       <div class="block font-semibold text-base ml-2">
         <span class="block font-semibold">Total Profit</span>
-        <h2 v-if="profit.total" class="block">{{currency(profit.total)}}</h2>
+        <h2 v-if="true" class="block">{{currency(balance.profit?.total)}}</h2>
         <h2 v-else class="block">Loading...</h2>
       </div>
     </div>

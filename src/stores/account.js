@@ -11,9 +11,9 @@ export const useAccountStore = defineStore('account', {
     deposit: false,
     withdraw: false,
     accounts: {},
-    cash: 0,
-    balance: 0,
+    balance: {},
     errors: {},
+    transactions: {},
   }),
 
   getters: {
@@ -21,6 +21,7 @@ export const useAccountStore = defineStore('account', {
   },
 
   actions: {
+
     async all (){
       try {
         const response = await axiosInstance.get('/api/accounts');
@@ -38,10 +39,11 @@ export const useAccountStore = defineStore('account', {
       }
     },
 
-    async getCash (){
+    async getBalance (){
       try {
-        const response = await axiosInstance.get('/api/balance/cash');
+        const response = await axiosInstance.get('/api/balance');
         if (response.status === 200) {
+          this.balance = response.data;
           return new Promise((resolve) => {
             resolve(response.data);
           });
@@ -54,26 +56,14 @@ export const useAccountStore = defineStore('account', {
       }
     },
 
-    async getAccountsBalance (){
-      try {
-        const response = await axiosInstance.get('/api/balance/accounts');
-        if (response.status === 200) {
-          return new Promise((resolve) => {
-            resolve(response.data);
-          });
-        }
-      }catch (error) {
-        if (error.response){
-          this.errors = error.response.data.errors;
-          toastStore.error(error.response.data.message);
-        }
-      }
-    },
 
-    async getLatestTransactions (){
-      this.loading = true;
+    async getHistory (id, date){
       try {
-        const response = await axiosInstance.get('/api/latest-transaction');
+        const response = await axiosInstance.get(`/api/account/${id}/history`, {
+          params: {
+            date: date,
+          }
+        });
         if (response.status === 200) {
           return new Promise((resolve) => {
             resolve(response.data);
@@ -84,8 +74,6 @@ export const useAccountStore = defineStore('account', {
           this.errors = error.response.data.errors;
           toastStore.error(error.response.data.message);
         }
-      }finally {
-        this.loading = false;
       }
     },
 
@@ -100,7 +88,6 @@ export const useAccountStore = defineStore('account', {
         if (response.status === 200) {
           toastStore.success(response.data.message);
           this.deposit = false;
-          await this.getCash();
           return new Promise((resolve) => {
             resolve(response.data);
           });
@@ -126,7 +113,6 @@ export const useAccountStore = defineStore('account', {
         if (response.status === 200) {
           toastStore.success(response.data.message);
           this.withdraw = false;
-          await this.getCash();
           return new Promise((resolve) => {
             resolve(response.data);
           });
@@ -140,6 +126,54 @@ export const useAccountStore = defineStore('account', {
         this.loading = false;
       }
     },
+
+    async getTransactions (){
+      this.loading = true;
+      try {
+        const response = await axiosInstance.get('/api/transactions');
+        if (response.status === 200) {
+          this.transactions = response.data;
+          return new Promise((resolve) => {
+            resolve(response.data);
+          });
+        }
+      }catch (error) {
+        if (error.response){
+          this.errors = error.response.data.errors;
+          toastStore.error(error.response.data.message);
+        }
+      }finally {
+        this.loading = false;
+      }
+    },
+
+
+    async getTransactionsPrint (){
+      this.loading = true;
+      try {
+        const { data } = await axiosInstance.get('/api/pdf/transactions', {
+          responseType: "blob",
+        });
+        const date = new Date().toISOString().slice(0, 10);
+        const fileName = `report_${date}.pdf`;
+
+        const url = URL.createObjectURL(data);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = fileName;
+        link.click();
+        URL.revokeObjectURL(url);
+
+      }catch (error) {
+        if (error.response){
+          this.errors = error.response.data.errors;
+          toastStore.error(error.response.data.message);
+        }
+      }finally {
+        this.loading = false;
+      }
+    },
+
 
 
   },

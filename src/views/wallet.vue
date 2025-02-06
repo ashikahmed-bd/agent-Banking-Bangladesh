@@ -2,30 +2,23 @@
 import Default from "@/layouts/Default.vue";
 import {useAccountStore} from "@/stores/account.js";
 import {storeToRefs} from "pinia";
-import {onMounted, reactive, ref} from "vue";
+import {onMounted, reactive} from "vue";
 import currency from "../utils/currency.js";
 import BaseButton from "@/components/BaseButton.vue";
 import {useWalletStore} from "@/stores/wallet.js";
 import BaseModal from "@/components/BaseModal.vue";
-import axiosInstance from "@/plugins/axios.js";
 
 const accountStore = useAccountStore();
 const walletStore = useWalletStore();
-const {accounts} = storeToRefs(accountStore);
+const {accounts, balance} = storeToRefs(accountStore);
 
-const cash = ref(0);
-const balance = ref(0);
 
 const getAccountsList = async () => {
   await accountStore.all();
 }
 
-const getCash = async () => {
-  cash.value = await axiosInstance.get('/api/balance/cash');
-}
-
-const getAccountsBalance = async () => {
-  balance.value = await axiosInstance.get('/api/balance/accounts');
+const getBalance = async () => {
+  await accountStore.getBalance();
 }
 
 
@@ -37,7 +30,7 @@ const form = reactive({
 
 const cashDeposit = async () => {
   await walletStore.getDeposit(form);
-  await getCash();
+  await getBalance();
   // Reset the form after submission
   form.amount = '';
   form.note = '';
@@ -46,15 +39,14 @@ const cashDeposit = async () => {
 
 const cashWithdraw = async () => {
   await walletStore.getWithdraw(form);
-  await getCash();
+  await getBalance();
   // Reset the form after submission
   form.amount = ''
 }
 
 onMounted(() => {
   getAccountsList();
-  getCash();
-  getAccountsBalance();
+  getBalance();
 })
 </script>
 
@@ -67,7 +59,7 @@ onMounted(() => {
             <img src="/cash.png" alt="cash" class="h-10 w-auto">
             <div class="block font-semibold text-base ml-2">
               <span class="block font-semibold text-base">Total Cash</span>
-              <h2 v-if="cash.data" class="block font-semibold text-xl">{{currency(cash.data)}}</h2>
+              <h2 v-if="balance.cash" class="block font-semibold text-xl">{{currency(balance.cash)}}</h2>
               <h2 v-else class="block font-semibold text-xl">Loading...</h2>
             </div>
           </div>
@@ -89,10 +81,10 @@ onMounted(() => {
 
     <section class="py-2">
       <div class="bg-white rounded-md p-4">
-        <h3 v-if="balance.data" class="font-semibold text-base">Total Balance: {{currency(balance.data)}}</h3>
+        <h3 v-if="balance.accounts" class="font-semibold text-base">Total Balance: {{currency(balance.accounts)}}</h3>
         <h2 v-else class="block font-semibold text-xl">Loading...</h2>
         <div class="w-full divide-y divide-dashed divide-gray-200">
-          <a href="#" v-for="account in accounts.data" :key="account.id" class="py-2  flex items-center justify-between">
+          <RouterLink :to="{name: 'account.show', params: {id: account.id}}" v-for="account in accounts.data" :key="account.id" class="py-2  flex items-center justify-between">
             <div class="flex items-center gap-2">
               <img :src="account.logo_url" alt="img" class="h-8 w-auto">
               <div class="mr-2">
@@ -103,7 +95,7 @@ onMounted(() => {
             <div class="flex-none">
               <span class="text-primary">{{currency(account.balance)}}</span>
             </div>
-          </a>
+          </RouterLink>
         </div>
       </div>
     </section>

@@ -9,11 +9,11 @@ import currency from "../utils/currency.js";
 import WalletComponent from "@/components/WalletComponent.vue";
 import DialogComponent from "@/components/DialogComponent.vue";
 import IconReload from "@/components/icons/IconReload.vue";
+import IconPrint from "@/components/icons/IconPrint.vue";
 
 const accountStore = useAccountStore();
-const {accounts} = storeToRefs(accountStore);
+const {accounts, transactions} = storeToRefs(accountStore);
 
-const transactions = ref({});
 const deposit = () => {
   accountStore.deposit = true;
 }
@@ -30,17 +30,20 @@ const getAccountsList = async () => {
   await accountStore.all();
 }
 
-const latestTransactions = async () => {
-  transactions.value = await accountStore.getLatestTransactions();
+const getTransactions = async () => {
+  await accountStore.getTransactions();
 }
 
-const reloadTransactions = async () => {
-  transactions.value = await accountStore.getLatestTransactions();
+const getTransactionsPrint = async () => {
+  confirm('Are you sure you went to print?')
+  {
+    await accountStore.getTransactionsPrint();
+  }
 }
 
 onMounted(() => {
   getAccountsList();
-  latestTransactions();
+  getTransactions();
 })
 </script>
 
@@ -78,16 +81,14 @@ onMounted(() => {
       <div class="bg-white rounded-xl">
         <div class="flex items-center justify-between p-4 border-b border-gray-300 border-dashed">
           <h3 class="flex items-center gap-2 font-semibold text-base">
-            Latest transactions
-            <button type="button" @click="reloadTransactions()" class="cursor-pointer text-primary">
+            Transactions
+            <button type="button" @click="getTransactions()" class="cursor-pointer text-primary">
               <IconReload :loading="accountStore.loading"/>
             </button>
           </h3>
-          <a href="#" class="text-right text-red-500">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
-            </svg>
-          </a>
+          <button type="button" @click="getTransactionsPrint()" class="cursor-pointer">
+            <IconPrint class="size-5"/>
+          </button>
         </div>
 
         <div class="w-full px-4 divide-y divide-dashed divide-gray-200 max-h-2xl overflow-y-auto">

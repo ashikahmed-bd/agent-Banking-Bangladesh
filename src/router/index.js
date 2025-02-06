@@ -34,6 +34,15 @@ const router = createRouter({
         auth: true
       },
     },
+    {
+      path: '/account/:id',
+      name: 'account.show',
+      component: () => import('../views/accounts/history.vue'),
+      meta: {
+        title: 'Wallet',
+        auth: true
+      },
+    },
 
     {
       path: '/customers',

@@ -8,7 +8,7 @@ import BaseModal from "@/components/BaseModal.vue";
 import {storeToRefs} from "pinia";
 
 const customerStore = useCustomerStore();
-const { customers } = storeToRefs(customerStore);
+const { balance } = storeToRefs(customerStore);
 
 const limit = ref(10);
 
@@ -32,7 +32,6 @@ const onSubmit = async () => {
   form.payable = '';
   await getCustomers();
 }
-
 
 
 onMounted(() => {

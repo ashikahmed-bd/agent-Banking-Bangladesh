@@ -37,3 +37,34 @@
 .form__control{
     @apply w-full px-2 py-1.5 border border-gray-200 focus:border-indigo-500 focus:outline-none focus:ring-0 rounded placeholder:text-sm disabled:bg-gray-100;
 }
+
+table{
+    width: 100%;
+    overflow-x: auto;
+    text-align: left;
+}
+
+thead{
+    text-transform: capitalize;
+}
+
+
+thead th{
+    padding: 6px 10px;
+    white-space: nowrap;
+    text-transform: capitalize;
+}
+
+tbody{
+    color: #1a202c;
+}
+
+tbody tr{
+    border-bottom: 1px dashed #333;
+}
+
+tbody td{
+    padding: 6px 10px;
+    white-space: nowrap;
+    text-transform: capitalize;
+}
