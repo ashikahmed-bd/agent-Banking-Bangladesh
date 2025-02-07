@@ -134,7 +134,7 @@ onMounted(() => {
           </div>
           <div class="form__group">
             <label class="form__label">Phone Number</label>
-            <input type="number" v-model="form.phone" class="form__control" placeholder="Enter phone"/>
+            <input type="tel" v-model="form.phone" class="form__control" placeholder="Enter phone"/>
           </div>
           <div class="form__group">
             <label class="form__label">Enter Due</label>

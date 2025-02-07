@@ -48,24 +48,15 @@ const cashWithdraw = async () => {
 
 const account = reactive({
   name: '',
-  logo: '',
   number: '',
   balance: '',
 });
 
 const addAccount = async () => {
-  const formData = new FormData();
-  formData.append('name', account.name);
-  formData.append('number', account.number);
-  formData.append('balance', account.balance);
-  if (account.logo) {
-    formData.append('logo', account.logo);
-  }
-  await accountStore.store(formData);
-}
-
-const onLogoChange = (event) => {
-  account.logo = event.target.files[0];
+  await accountStore.store(account);
+  account.name = '';
+  account.number = '';
+  account.balance = '';
 }
 
 onMounted(() => {
@@ -121,7 +112,7 @@ onMounted(() => {
         <div class="w-full divide-y divide-dashed divide-gray-200">
           <RouterLink :to="{name: 'account.show', params: {id: account.id}}" v-for="account in accounts.data" :key="account.id" class="py-2  flex items-center justify-between">
             <div class="flex items-center gap-2">
-              <img :src="account.logo_url" alt="img" class="h-8 w-auto">
+              <img :src="account.logo_url" alt="img" class="bg-primary/10 p-2 rounded h-10 w-auto">
               <div class="mr-2">
                 <strong>{{account.name}}</strong>
                 <p class="text-xs">{{account.number}}</p>
@@ -197,11 +188,7 @@ onMounted(() => {
         </div>
         <div class="form__group">
           <label class="form__label">Number</label>
-          <input type="number" v-model="account.number" class="form__control" placeholder="Enter number"/>
-        </div>
-        <div class="form__group">
-          <label class="form__label">Logo</label>
-          <input type="file" @input="onLogoChange" class="form__control"/>
+          <input type="tel" v-model="account.number" class="form__control" placeholder="Enter number"/>
         </div>
         <div class="form__group">
           <label class="form__label">Balance</label>

@@ -110,6 +110,22 @@ export const useCustomerStore = defineStore('customer', {
     },
 
 
+    async getReport (id){
+      try {
+        const response = await axiosInstance.get(`/api/customer/${id}/report`);
+        if (response.status === 200) {
+          return new Promise((resolve) => {
+            resolve(response.data);
+          });
+        }
+      }catch (error) {
+        if (error.response){
+          this.errors = error.response.data.errors;
+          toastStore.error(error.response.data.message);
+        }
+      }
+    },
+
 
 
 

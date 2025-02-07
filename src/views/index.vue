@@ -109,13 +109,14 @@ onMounted(() => {
           </template>
 
           <template v-else>
-            <div v-for="item in 5" role='status' class='flex max-w-full animate-pulse'>
+            <div v-for="item in 5" class='flex max-w-full animate-pulse py-3'>
               <div class='flex-shrink-0'>
-                <span class='flex justify-center items-center bg-gray-300 w-12 h-12 '></span>
+                <span class='flex justify-center items-center bg-gray-300 w-12 h-12 rounded-full'></span>
               </div>
-              <div class='ml-4 mt-2 w-full'>
-                <h3 class='h-3 bg-gray-300 rounded-full w-90 mb-4'></h3>
-                <p class='h-2 bg-gray-300 rounded-full w-80 mb-2.5'></p>
+              <div class='ml-4 w-full max-w-full'>
+                <h3 class='h-3 bg-gray-300 rounded-full mb-2'></h3>
+                <p class='h-2 bg-gray-300 rounded-full mb-1'></p>
+                <p class='h-2 bg-gray-300 rounded-full mb-1'></p>
               </div>
             </div>
           </template>

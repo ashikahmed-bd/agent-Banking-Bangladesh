@@ -40,6 +40,11 @@ onMounted(() => {
 
 <template>
   <Default>
+    <nav class="flex items-center justify-between">
+      <h4 class="font-semibold">Customer Details</h4>
+      <RouterLink :to="{name: 'customer.report', params: {id: route.params.id}}" class="bg-primary text-white px-4 py-1.5 rounded">Report</RouterLink>
+    </nav>
+
     <section class="py-2">
       <div class="bg-white rounded-xl px-4 py-2">
         <div class="flex items-center justify-between border-b border-dashed border-gray-300 py-2">

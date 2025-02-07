@@ -82,7 +82,7 @@ onMounted(() => {
       </div>
       <div class="block font-semibold text-base ml-2">
         <span class="block font-semibold">Today Profit</span>
-        <h2 v-if="balance.profit" class="block">{{currency(balance.profit?.today)}}</h2>
+        <h2 v-if="balance.commission" class="block">{{currency(balance.commission?.today)}}</h2>
         <h2 v-else class="block">Loading...</h2>
       </div>
     </div>
@@ -95,7 +95,7 @@ onMounted(() => {
       </div>
       <div class="block font-semibold text-base ml-2">
         <span class="block font-semibold">Total Profit</span>
-        <h2 v-if="balance.profit" class="block">{{currency(balance.profit?.total)}}</h2>
+        <h2 v-if="balance.commission" class="block">{{currency(balance.commission?.total)}}</h2>
         <h2 v-else class="block">Loading...</h2>
       </div>
     </div>

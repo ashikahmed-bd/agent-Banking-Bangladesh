@@ -55,11 +55,21 @@ const router = createRouter({
     },
 
     {
-      path: '/customer/:id',
+      path: '/customer/:id/show',
       name: 'customer.show',
       component: () => import('../views/customers/show.vue'),
       meta: {
         title: 'Customer show',
+        auth: true
+      },
+    },
+
+    {
+      path: '/customer/:id/report',
+      name: 'customer.report',
+      component: () => import('../views/customers/report.vue'),
+      meta: {
+        title: 'Customer report',
         auth: true
       },
     },
