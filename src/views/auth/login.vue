@@ -27,12 +27,12 @@ const onSubmit = async () => {
       <form @submit.prevent="onSubmit" class="w-full max-w-full px-6">
         <div class="mb-3">
           <label class="block text-white" for="phone">Phone Number</label>
-          <input type="tel" v-model="form.phone" id="phone" placeholder="Enter your phone" class="w-full bg-white px-2 py-1.5 border border-white focus:border-white focus:outline-none focus:ring-0 rounded disabled:bg-gray-100">
+          <input type="tel" v-model="form.phone" id="phone" placeholder="Enter your phone" class="w-full bg-white px-2 py-2 border border-white focus:border-white focus:outline-none focus:ring-0 rounded disabled:bg-gray-100">
         </div>
 
         <div class="mb-3">
           <label class="block text-white" for="password">Password</label>
-          <input type="password" v-model="form.password" id="password" placeholder="Enter your password" class="w-full bg-white px-2 py-1.5 border border-white focus:border-white focus:outline-none focus:ring-0 rounded disabled:bg-gray-100">
+          <input type="password" v-model="form.password" id="password" placeholder="Enter your password" class="w-full bg-white px-2 py-2 border border-white focus:border-white focus:outline-none focus:ring-0 rounded disabled:bg-gray-100">
         </div>
 
         <div class="flex justify-between items-center mb-4">

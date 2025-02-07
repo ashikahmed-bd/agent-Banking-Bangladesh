@@ -18,9 +18,9 @@ const {user} = storeToRefs(authStore);
           <h3 class="-mb-1">{{user.name}}</h3>
           <small class="text-xs">{{user.phone}}</small>
         </div>
-        <a href="/" class="header-user">
+        <RouterLink :to="{name: 'profile'}" class="header-user">
           <img :src="user.avatar_url" :alt="user.name" class="h-10 w-auto ring-2 rounded-full">
-        </a>
+        </RouterLink>
       </div>
     </div>
   </header>

@@ -17,7 +17,7 @@ const props = defineProps({
       :disabled="loading"
       :type="type"
       :class="[loading ? 'cursor-not-allowed' : 'cursor-allowed']"
-      class="bg-primary cursor-pointer text-sm text-white justify-center py-2 px-4 rounded inline-flex items-center focus:outline-none">
+      class="bg-primary cursor-pointer text-sm text-white justify-center py-3 px-4 rounded inline-flex items-center focus:outline-none">
     <template v-if="loading">
       <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

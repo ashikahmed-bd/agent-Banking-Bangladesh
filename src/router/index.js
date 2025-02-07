@@ -65,11 +65,11 @@ const router = createRouter({
     },
 
     {
-      path: '/settings',
-      name: 'settings',
-      component: () => import('../views/settings/index.vue'),
+      path: '/profile',
+      name: 'profile',
+      component: () => import('../views/settings/profile.vue'),
       meta: {
-        title: 'Settings',
+        title: 'Profile',
         auth: true
       },
     },
