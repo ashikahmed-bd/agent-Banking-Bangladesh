@@ -90,7 +90,7 @@ onMounted(() => {
           <template v-if="customers.data">
             <RouterLink :to="{name: 'customer.show', params: {id: customer.id}}" v-for="customer in customers.data" :key="customer.id" class="py-2  flex items-center justify-between">
               <div class="flex items-center gap-2">
-                <img src="/user.png" alt="img" class="h-8 w-auto">
+                <img :src="customer.avatar_url" :alt="customer.name" class="h-8 w-auto">
                 <div class="mr-2">
                   <strong>{{customer.name}}</strong>
                   <p class="text-xs">{{customer.phone ?? 'N/A'}}</p>

@@ -10,6 +10,7 @@ export const useAccountStore = defineStore('account', {
     loading: false,
     deposit: false,
     withdraw: false,
+    modal: false,
     accounts: {},
     balance: {},
     errors: {},
@@ -36,6 +37,27 @@ export const useAccountStore = defineStore('account', {
           this.errors = error.response.data.errors;
           toastStore.error(error.response.data.message);
         }
+      }
+    },
+
+    async store (form){
+      this.loading = true;
+      try {
+        const response = await axiosInstance.post('/api/account/store', form);
+        if (response.status === 201) {
+          this.modal = false;
+          toastStore.success(response.data.message);
+          return new Promise((resolve) => {
+            resolve(response.data);
+          });
+        }
+      }catch (error) {
+        if (error.response){
+          this.errors = error.response.data.errors;
+          toastStore.error(error.response.data.message);
+        }
+      }finally {
+        this.loading = false;
       }
     },
 

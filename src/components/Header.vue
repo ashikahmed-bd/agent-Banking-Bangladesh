@@ -1,4 +1,9 @@
 <script setup>
+import {useAuthStore} from "@/stores/auth.js";
+import {storeToRefs} from "pinia";
+
+const authStore = useAuthStore();
+const {user} = storeToRefs(authStore);
 
 </script>
 
@@ -8,12 +13,17 @@
       <a href="/" >
         <img src="/logo.svg" alt="logo" class="h-12 w-auto">
       </a>
-      <a href="/" class="header-user">
-        <img src="/user.png" alt="img">
-      </a>
+      <div class="flex items-center gap-2">
+        <div class="text-right mr-2">
+          <h3 class="-mb-1">{{user.name}}</h3>
+          <small class="text-xs">{{user.phone}}</small>
+        </div>
+        <a href="/" class="header-user">
+          <img :src="user.avatar_url" :alt="user.name" class="h-10 w-auto ring-2 rounded-full">
+        </a>
+      </div>
     </div>
   </header>
-
 </template>
 
 <style scoped>
