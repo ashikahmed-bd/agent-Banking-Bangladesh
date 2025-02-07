@@ -28,6 +28,7 @@ export const useAccountStore = defineStore('account', {
         const response = await axiosInstance.get('/api/accounts');
         if (response.status === 200) {
           this.accounts = response.data;
+          await this.getBalance();
           return new Promise((resolve) => {
             resolve(response.data);
           });
@@ -87,6 +88,7 @@ export const useAccountStore = defineStore('account', {
           }
         });
         if (response.status === 200) {
+          await this.getBalance();
           return new Promise((resolve) => {
             resolve(response.data);
           });
@@ -109,6 +111,7 @@ export const useAccountStore = defineStore('account', {
         });
         if (response.status === 200) {
           toastStore.success(response.data.message);
+          await this.getBalance();
           this.deposit = false;
           return new Promise((resolve) => {
             resolve(response.data);
@@ -133,6 +136,7 @@ export const useAccountStore = defineStore('account', {
           profit: formData.profit,
         });
         if (response.status === 200) {
+          await this.getBalance();
           toastStore.success(response.data.message);
           this.withdraw = false;
           return new Promise((resolve) => {
@@ -154,6 +158,7 @@ export const useAccountStore = defineStore('account', {
       try {
         const response = await axiosInstance.get('/api/transactions');
         if (response.status === 200) {
+          await this.getBalance();
           this.transactions = response.data;
           return new Promise((resolve) => {
             resolve(response.data);

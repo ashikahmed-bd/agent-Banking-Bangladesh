@@ -1,5 +1,4 @@
 <script setup>
-
 import Default from "@/layouts/Default.vue";
 import {onMounted, ref} from "vue";
 import { Carousel, Slide} from 'vue3-carousel'
@@ -16,6 +15,7 @@ const {accounts, transactions} = storeToRefs(accountStore);
 
 const deposit = () => {
   accountStore.deposit = true;
+
 }
 const withdraw = () => {
   accountStore.withdraw = true;
