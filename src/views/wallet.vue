@@ -2,16 +2,15 @@
 import Default from "@/layouts/Default.vue";
 import {useAccountStore} from "@/stores/account.js";
 import {storeToRefs} from "pinia";
-import {onMounted, reactive} from "vue";
+import {onMounted, reactive, ref} from "vue";
 import currency from "../utils/currency.js";
 import BaseButton from "@/components/BaseButton.vue";
-import {useWalletStore} from "@/stores/wallet.js";
 import BaseModal from "@/components/BaseModal.vue";
 import IconPlus from "@/components/icons/IconPlus.vue";
 
 const accountStore = useAccountStore();
-const walletStore = useWalletStore();
 const {accounts, balance} = storeToRefs(accountStore);
+
 
 
 const getAccountsList = async () => {
@@ -22,27 +21,37 @@ const getBalance = async () => {
   await accountStore.getBalance();
 }
 
+const selectedAccount = ref('');
 
 const form = reactive({
+  account_id: selectedAccount,
   amount: '',
+  commission: '',
   note: '',
 });
 
 
-const cashDeposit = async () => {
-  await walletStore.getDeposit(form);
+const deposit = async () => {
+  await accountStore.depositStore(form);
   await getBalance();
+  await getAccountsList();
   // Reset the form after submission
+  form.account_id = '';
   form.amount = '';
+  form.commission = '';
+
   form.note = '';
 }
 
 
-const cashWithdraw = async () => {
-  await walletStore.getWithdraw(form);
+const withdraw = async () => {
+  await accountStore.withdrawStore(form);
   await getBalance();
+  await getAccountsList();
   // Reset the form after submission
-  form.amount = ''
+  form.amount = '';
+  form.account_id = '';
+  form.note = '';
 }
 
 
@@ -54,6 +63,7 @@ const account = reactive({
 
 const addAccount = async () => {
   await accountStore.store(account);
+  await getAccountsList();
   account.name = '';
   account.number = '';
   account.balance = '';
@@ -76,18 +86,18 @@ onMounted(() => {
             </svg>
 
             <div class="block font-semibold ml-2">
-              <span class="block font-semibold">Total Cash</span>
-              <h2 v-if="balance.cash" class="block font-semibold">{{currency(balance.cash)}}</h2>
+              <span class="block font-semibold">Total Balance</span>
+              <h2 v-if="balance" class="block font-semibold">{{currency(balance)}}</h2>
               <h2 v-else class="block">Loading...</h2>
             </div>
           </div>
           <div class="flex items-center gap-2">
-            <button type="button" @click="walletStore.deposit = true" class="bg-green-500 text-white p-2 rounded cursor-pointer">
+            <button type="button" @click="accountStore.deposit = true" class="bg-green-500 text-white p-2 rounded cursor-pointer">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
               </svg>
             </button>
-            <button type="button" @click="walletStore.withdraw = true"  class="bg-red-500 text-white p-2 rounded cursor-pointer">
+            <button type="button" @click="accountStore.withdraw = true"  class="bg-red-500 text-white p-2 rounded cursor-pointer">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
               </svg>
@@ -101,8 +111,7 @@ onMounted(() => {
       <div class="bg-white rounded-md p-4">
         <div class="flex items-center justify-between border-b border-dashed border-gray-300 py-4">
           <div class="flex items-center">
-            <h3 v-if="balance.accounts" class="font-semibold text-lg">Total Balance: {{currency(balance.accounts)}}</h3>
-            <h2 v-else class="block font-semibold text-xl">Loading...</h2>
+            <h3 class="font-semibold text-lg">Accounts List</h3>
           </div>
           <button type="button" @click="accountStore.modal = !accountStore.modal" class="bg-primary text-white p-2 rounded-full cursor-pointer">
             <IconPlus class="size-5"/>
@@ -110,9 +119,9 @@ onMounted(() => {
         </div>
 
         <div class="w-full divide-y divide-dashed divide-gray-200">
-          <RouterLink :to="{name: 'account.show', params: {id: account.id}}" v-for="account in accounts.data" :key="account.id" class="py-2  flex items-center justify-between">
+          <RouterLink :to="{name: 'accounts.transactions', params: {id: account.id}}" v-for="account in accounts.data" :key="account.id" class="py-2  flex items-center justify-between">
             <div class="flex items-center gap-2">
-              <img :src="account.logo_url" alt="img" class="bg-primary/10 p-2 rounded h-10 w-auto">
+              <img :src="account.logo_url" alt="img" class="bg-primary/10 p-1 rounded h-10 w-auto">
               <div class="mr-2">
                 <strong>{{account.name}}</strong>
                 <p class="text-xs">{{account.number}}</p>
@@ -126,48 +135,71 @@ onMounted(() => {
       </div>
     </section>
 
-    <BaseModal :show="walletStore.deposit">
+    <BaseModal :show="accountStore.deposit">
       <div class="flex items-center justify-between border-b border-gray-300 border-dashed mb-3">
-        <h2 class="text-lg font-bold mb-4">Cash Deposit</h2>
-        <button type="button" class="cursor-pointer text-red-500" @click="walletStore.deposit = false">
+        <h2 class="text-lg font-bold mb-4">Deposit</h2>
+        <button type="button" class="cursor-pointer text-red-500" @click="accountStore.deposit = false">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
           </svg>
         </button>
       </div>
-      <form @submit.prevent="cashDeposit" class="w-full max-w-sm">
+
+      <form @submit.prevent="deposit" class="w-full max-w-sm">
+        <div class="form__group">
+          <label class="form__label">Select Account</label>
+          <select v-model="selectedAccount" class="form__control">
+            <option value="" disabled>Select Account</option>
+            <option :value="account.id" v-for="account in accounts.data" :key="account.id">{{account.name}} - {{account.number}}</option>
+          </select>
+        </div>
         <div class="form__group">
           <label class="form__label">Enter Amount</label>
           <input type="number" v-model="form.amount" class="form__control" placeholder="Enter amount"/>
         </div>
         <div class="form__group">
+          <label class="form__label">Commission</label>
+          <input type="number" v-model="form.commission" class="form__control" placeholder="Enter commission"/>
+        </div>
+        <div class="form__group">
           <label class="form__label">Note</label>
           <input type="text" v-model="form.note" class="form__control" placeholder="Enter note"/>
         </div>
-        <BaseButton class="w-full" :loading="walletStore.loading">submit</BaseButton>
+        <BaseButton class="w-full" :loading="accountStore.loading">submit</BaseButton>
       </form>
     </BaseModal>
 
 
-    <BaseModal :show="walletStore.withdraw">
+    <BaseModal :show="accountStore.withdraw">
       <div class="flex items-center justify-between border-b border-gray-300 border-dashed mb-3">
-        <h2 class="text-lg font-bold mb-4">Cash Withdraw</h2>
-        <button type="button" class="cursor-pointer text-red-500" @click="walletStore.withdraw = false">
+        <h2 class="text-lg font-bold mb-4">Withdraw</h2>
+        <button type="button" class="cursor-pointer text-red-500" @click="accountStore.withdraw = false">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
           </svg>
         </button>
       </div>
-      <form @submit.prevent="cashWithdraw" class="w-full max-w-sm">
+      <form @submit.prevent="withdraw" class="w-full max-w-sm">
+        <div class="form__group">
+          <label class="form__label">Select Account</label>
+          <select v-model="selectedAccount" class="form__control">
+            <option value="" disabled>Select Account</option>
+            <option :value="account.id" v-for="account in accounts.data" :key="account.id">{{account.name}} - {{account.number}}</option>
+          </select>
+        </div>
         <div class="form__group">
           <label class="form__label">Enter Amount</label>
           <input type="number" v-model="form.amount" class="form__control" placeholder="Enter amount"/>
         </div>
         <div class="form__group">
+          <label class="form__label">Commission</label>
+          <input type="number" v-model="form.commission" class="form__control" placeholder="Enter commission"/>
+        </div>
+        <div class="form__group">
           <label class="form__label">Note</label>
           <input type="text" v-model="form.note" class="form__control" placeholder="Enter note"/>
         </div>
-        <BaseButton class="w-full" :loading="walletStore.loading">submit</BaseButton>
+        <BaseButton class="w-full" :loading="accountStore.loading">submit</BaseButton>
       </form>
     </BaseModal>
 
@@ -191,7 +223,7 @@ onMounted(() => {
           <input type="tel" v-model="account.number" class="form__control" placeholder="Enter number"/>
         </div>
         <div class="form__group">
-          <label class="form__label">Balance</label>
+          <label class="form__label">Opening Balance</label>
           <input type="number" v-model="account.balance" class="form__control" placeholder="Enter balance"/>
         </div>
         <BaseButton class="w-full" :loading="accountStore.loading">submit</BaseButton>

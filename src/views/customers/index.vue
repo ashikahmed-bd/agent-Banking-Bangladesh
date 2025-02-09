@@ -6,15 +6,13 @@ import BaseButton from "@/components/BaseButton.vue";
 import {useCustomerStore} from "@/stores/customer.js";
 import BaseModal from "@/components/BaseModal.vue";
 import {storeToRefs} from "pinia";
-import {useAccountStore} from "@/stores/account.js";
 import currency from "../../utils/currency.js";
 
 const customerStore = useCustomerStore();
-const accountStore = useAccountStore();
 const { customers } = storeToRefs(customerStore);
-const { balance } = storeToRefs(accountStore);
 
 const limit = ref(10);
+const wallet = ref({});
 
 const getCustomers = async () => {
   await customerStore.all(limit.value);
@@ -37,13 +35,13 @@ const onSubmit = async () => {
   await getCustomers();
 }
 
-const getBalance = async () => {
-  await accountStore.getBalance();
+const getWallet = async () => {
+  wallet.value = await customerStore.getWallet();
 }
 
 onMounted(() => {
   getCustomers();
-  getBalance();
+  getWallet();
 })
 </script>
 
@@ -58,7 +56,7 @@ onMounted(() => {
             </svg>
             <div class="block font-semibold text-base ml-4">
               <span class="block font-semibold text-base">Total Due</span>
-              <h2 v-if="balance.wallet" class="block text-red-500">{{currency(balance.wallet?.due)}}</h2>
+              <h2 v-if="wallet" class="block text-red-500">{{currency(wallet.total_due)}}</h2>
               <h2 v-else class="block font-semibold">loading...</h2>
             </div>
           </div>
@@ -69,7 +67,7 @@ onMounted(() => {
             </svg>
             <div class="block font-semibold text-base ml-4">
               <span class="block font-semibold text-base">Total Payable</span>
-              <h2 v-if="balance.wallet" class="block text-green-500">{{currency(balance.wallet?.payable)}}</h2>
+              <h2 v-if="wallet" class="block text-green-500">{{currency(wallet.total_payable)}}</h2>
               <h2 v-else class="block font-semibold">loading...</h2>
             </div>
           </div>

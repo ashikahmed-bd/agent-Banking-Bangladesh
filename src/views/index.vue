@@ -52,10 +52,6 @@ onMounted(() => {
     <section class="py-4">
       <div class="bg-white rounded-xl p-4">
         <WalletComponent/>
-        <div class="flex items-center justify-between">
-          <button type="button" @click="deposit" class="bg-primary text-white px-6 py-1.5 rounded-md cursor-pointer">Deposit</button>
-          <button type="button" @click="withdraw" class="bg-red-500 text-white px-6 py-1.5 rounded-md cursor-pointer">Withdraw</button>
-        </div>
       </div>
     </section>
 

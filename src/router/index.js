@@ -35,11 +35,11 @@ const router = createRouter({
       },
     },
     {
-      path: '/account/:id',
-      name: 'account.show',
-      component: () => import('../views/accounts/history.vue'),
+      path: '/accounts/:id/transactions',
+      name: 'accounts.transactions',
+      component: () => import('../views/accounts/transactions.vue'),
       meta: {
-        title: 'Wallet',
+        title: 'Transactions',
         auth: true
       },
     },

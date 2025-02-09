@@ -22,7 +22,7 @@ export const useCustomerStore = defineStore('customer', {
 
     async all (limit){
       try {
-        const response = await axiosInstance.get('/api/customers', {
+        const response = await axiosInstance.get('/api/customers/all', {
           params: {
             limit: limit,
           }
@@ -45,7 +45,7 @@ export const useCustomerStore = defineStore('customer', {
     async store (formData){
       this.loading = true;
       try {
-        const response = await axiosInstance.post('/api/customer/store',formData);
+        const response = await axiosInstance.post('/api/customers/store',formData);
         if (response.status === 201) {
           toastStore.success(response.data.message);
           this.modal = false;
@@ -67,7 +67,7 @@ export const useCustomerStore = defineStore('customer', {
     async show (id){
       this.loading = true;
       try {
-        const response = await axiosInstance.get(`/api/customer/${id}/show`);
+        const response = await axiosInstance.get(`/api/customers/${id}/show`);
         if (response.status === 200) {
           this.customer = response.data.data;
           return new Promise((resolve) => {
@@ -88,7 +88,7 @@ export const useCustomerStore = defineStore('customer', {
     async payment (form){
       this.loading = true;
       try {
-        const response = await axiosInstance.post(`/api/customer/${form.customer_id}/payment`, {
+        const response = await axiosInstance.post(`/api/customers/${form.customer_id}/payment`, {
           due: form.due,
           payable: form.payable,
           note: form.note,
@@ -112,7 +112,7 @@ export const useCustomerStore = defineStore('customer', {
 
     async getReport (id){
       try {
-        const response = await axiosInstance.get(`/api/customer/${id}/report`);
+        const response = await axiosInstance.get(`/api/customers/${id}/report`);
         if (response.status === 200) {
           return new Promise((resolve) => {
             resolve(response.data);
@@ -126,6 +126,22 @@ export const useCustomerStore = defineStore('customer', {
       }
     },
 
+
+    async getWallet (){
+      try {
+        const response = await axiosInstance.get(`/api/customers/wallet`);
+        if (response.status === 200) {
+          return new Promise((resolve) => {
+            resolve(response.data);
+          });
+        }
+      }catch (error) {
+        if (error.response){
+          this.errors = error.response.data.errors;
+          toastStore.error(error.response.data.message);
+        }
+      }
+    },
 
 
 

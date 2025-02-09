@@ -12,7 +12,7 @@ export const useAccountStore = defineStore('account', {
     withdraw: false,
     modal: false,
     accounts: {},
-    balance: {},
+    balance: 0,
     errors: {},
     transactions: {},
   }),
@@ -25,7 +25,7 @@ export const useAccountStore = defineStore('account', {
 
     async all (){
       try {
-        const response = await axiosInstance.get('/api/accounts');
+        const response = await axiosInstance.get('/api/accounts/all');
         if (response.status === 200) {
           this.accounts = response.data;
           await this.getBalance();
@@ -44,7 +44,7 @@ export const useAccountStore = defineStore('account', {
     async store (form){
       this.loading = true;
       try {
-        const response = await axiosInstance.post('/api/account/store', form);
+        const response = await axiosInstance.post('/api/accounts/store', form);
         if (response.status === 201) {
           this.modal = false;
           toastStore.success(response.data.message);
@@ -64,7 +64,7 @@ export const useAccountStore = defineStore('account', {
 
     async getBalance (){
       try {
-        const response = await axiosInstance.get('/api/balance');
+        const response = await axiosInstance.get('/api/accounts/balance');
         if (response.status === 200) {
           this.balance = response.data;
           return new Promise((resolve) => {
@@ -79,39 +79,16 @@ export const useAccountStore = defineStore('account', {
       }
     },
 
-
-    async getHistory (id, date){
-      try {
-        const response = await axiosInstance.get(`/api/account/${id}/history`, {
-          params: {
-            date: date,
-          }
-        });
-        if (response.status === 200) {
-          await this.getBalance();
-          return new Promise((resolve) => {
-            resolve(response.data);
-          });
-        }
-      }catch (error) {
-        if (error.response){
-          this.errors = error.response.data.errors;
-          toastStore.error(error.response.data.message);
-        }
-      }
-    },
-
     async depositStore (formData){
       this.loading = true;
-
       try {
-        const response = await axiosInstance.post(`/api/account/${formData.account_id}/deposit`, {
+        const response = await axiosInstance.post(`/api/accounts/${formData.account_id}/deposit`, {
           amount: formData.amount,
-          profit: formData.profit,
+          commission: formData.commission,
+          note: formData.note,
         });
         if (response.status === 200) {
           toastStore.success(response.data.message);
-          await this.getBalance();
           this.deposit = false;
           return new Promise((resolve) => {
             resolve(response.data);
@@ -129,14 +106,13 @@ export const useAccountStore = defineStore('account', {
 
     async withdrawStore (formData){
       this.loading = true;
-
       try {
-        const response = await axiosInstance.post(`/api/account/${formData.account_id}/withdraw`, {
+        const response = await axiosInstance.post(`/api/accounts/${formData.account_id}/withdraw`, {
           amount: formData.amount,
-          profit: formData.profit,
+          commission: formData.commission,
+          note: formData.note,
         });
         if (response.status === 200) {
-          await this.getBalance();
           toastStore.success(response.data.message);
           this.withdraw = false;
           return new Promise((resolve) => {
@@ -153,13 +129,16 @@ export const useAccountStore = defineStore('account', {
       }
     },
 
-    async getTransactions (){
-      this.loading = true;
+    async getTransactions (formData){
       try {
-        const response = await axiosInstance.get('/api/transactions');
+        const response = await axiosInstance.get(`/api/accounts/${formData.account_id}/transactions`, {
+          params: {
+            date: formData.date,
+          }
+        });
         if (response.status === 200) {
-          await this.getBalance();
           this.transactions = response.data;
+          await this.getBalance();
           return new Promise((resolve) => {
             resolve(response.data);
           });
@@ -169,11 +148,8 @@ export const useAccountStore = defineStore('account', {
           this.errors = error.response.data.errors;
           toastStore.error(error.response.data.message);
         }
-      }finally {
-        this.loading = false;
       }
     },
-
 
     async getTransactionsPrint (){
       this.loading = true;
@@ -200,8 +176,6 @@ export const useAccountStore = defineStore('account', {
         this.loading = false;
       }
     },
-
-
 
   },
 })
