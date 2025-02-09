@@ -35,6 +35,7 @@ const onSubmit = async () => {
   form.due = '';
   form.payable = '';
   await getCustomers();
+  await getWallet();
 }
 
 const getWallet = async () => {

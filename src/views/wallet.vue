@@ -164,7 +164,7 @@ onMounted(() => {
           <label class="form__label">Note</label>
           <input type="text" v-model="form.note" class="form__control" placeholder="Enter note"/>
         </div>
-        <BaseButton class="w-full" :loading="accountStore.loading">submit</BaseButton>
+        <BaseButton class="w-full bg-primary text-white" :loading="accountStore.loading">submit</BaseButton>
       </form>
     </BaseModal>
 
@@ -198,7 +198,7 @@ onMounted(() => {
           <label class="form__label">Note</label>
           <input type="text" v-model="form.note" class="form__control" placeholder="Enter note"/>
         </div>
-        <BaseButton class="w-full" :loading="accountStore.loading">submit</BaseButton>
+        <BaseButton class="w-full bg-primary text-white" :loading="accountStore.loading">submit</BaseButton>
       </form>
     </BaseModal>
 
@@ -225,7 +225,7 @@ onMounted(() => {
           <label class="form__label">Opening Balance</label>
           <input type="number" v-model="account.balance" class="form__control" placeholder="Enter balance"/>
         </div>
-        <BaseButton class="w-full" :loading="accountStore.loading">submit</BaseButton>
+        <BaseButton class="w-full bg-primary text-white" :loading="accountStore.loading">submit</BaseButton>
       </form>
     </BaseModal>
 
