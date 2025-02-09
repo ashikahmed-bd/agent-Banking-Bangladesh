@@ -151,6 +151,27 @@ export const useAccountStore = defineStore('account', {
       }
     },
 
+
+    async getLatestTransactions (){
+      this.loading = true;
+      try {
+        const response = await axiosInstance.get(`/api/transactions`);
+        if (response.status === 200) {
+          this.transactions = response.data;
+          return new Promise((resolve) => {
+            resolve(response.data);
+          });
+        }
+      }catch (error) {
+        if (error.response){
+          this.errors = error.response.data.errors;
+          toastStore.error(error.response.data.message);
+        }
+      }finally {
+        this.loading = false;
+      }
+    },
+
     async getTransactionsPrint (){
       this.loading = true;
       try {

@@ -1,6 +1,6 @@
 <script setup>
 import Default from "@/layouts/Default.vue";
-import {onMounted, ref} from "vue";
+import {onMounted} from "vue";
 import { Carousel, Slide} from 'vue3-carousel'
 import {useAccountStore} from "@/stores/account.js";
 import {storeToRefs} from "pinia";
@@ -9,17 +9,11 @@ import WalletComponent from "@/components/WalletComponent.vue";
 import DialogComponent from "@/components/DialogComponent.vue";
 import IconReload from "@/components/icons/IconReload.vue";
 import IconPrint from "@/components/icons/IconPrint.vue";
+import Swal from "sweetalert2";
 
 const accountStore = useAccountStore();
 const {accounts, transactions} = storeToRefs(accountStore);
 
-const deposit = () => {
-  accountStore.deposit = true;
-
-}
-const withdraw = () => {
-  accountStore.withdraw = true;
-}
 const carouselConfig = {
   itemsToShow: 2,
   wrapAround: true,
@@ -31,12 +25,22 @@ const getAccountsList = async () => {
 }
 
 const getTransactions = async () => {
-  await accountStore.getTransactions();
+  await accountStore.getLatestTransactions();
 }
 
 const getTransactionsPrint = async () => {
-  confirm('Are you sure you went to print?')
-  {
+  const result = await Swal.fire({
+    title: 'Are you sure?',
+    text: 'Do you want to proceed with downloading the file?',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, download it!',
+    cancelButtonText: 'Cancel',
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#4513bb',
+  });
+
+  if (result.isConfirmed) {
     await accountStore.getTransactionsPrint();
   }
 }
@@ -89,9 +93,9 @@ onMounted(() => {
 
         <div class="w-full px-4 divide-y divide-dashed divide-gray-200 max-h-2xl overflow-y-auto">
           <template v-if="transactions.data">
-            <a href="#" v-for="item in transactions.data" class="py-2 flex items-center justify-between">
+            <article v-for="item in transactions.data" class="py-2 flex items-center justify-between">
               <div class="flex items-center gap-2">
-                <img :src="item.account?.logo_url" alt="img" class="h-8 w-auto">
+                <img :src="item.account?.logo_url" alt="img" class="bg-primary/10 p-1 rounded h-10 w-auto">
                 <div class="mr-2">
                   <strong>{{item.account?.name}}</strong>
                   <p class="text-xs">{{item.account?.number}}</p>
@@ -101,7 +105,7 @@ onMounted(() => {
                 <span v-if="item.type === 'credit'" class="text-green-500">{{currency(item.amount)}}</span>
                 <span v-if="item.type === 'debit'" class="text-red-500">{{currency(item.amount)}}</span>
               </div>
-            </a>
+            </article>
           </template>
 
           <template v-else>

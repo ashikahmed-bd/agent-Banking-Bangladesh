@@ -84,7 +84,7 @@ onMounted(() => {
           </button>
         </div>
 
-        <div class="w-full h-1/2 overflow-auto scrollbar divide-y divide-dashed divide-gray-200">
+        <div class="w-full h-1/2 overflow-y-auto scrollbar divide-y divide-dashed divide-gray-200">
           <template v-if="customers.data">
             <RouterLink :to="{name: 'customer.show', params: {id: customer.id}}" v-for="customer in customers.data" :key="customer.id" class="py-2  flex items-center justify-between">
               <div class="flex items-center gap-2">

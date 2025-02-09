@@ -68,7 +68,6 @@ onMounted(() => {
           <tr>
             <th>Amount</th>
             <th>Commission</th>
-            <th>Type</th>
             <th>created by</th>
           </tr>
           </thead>
@@ -76,9 +75,9 @@ onMounted(() => {
           <tbody>
           <template v-if="transactions.data">
             <tr v-for="item in transactions.data" :key="item.id">
-              <td>{{currency(item.amount)}}</td>
+              <td v-if="item.type === 'credit'" class="text-green-500">{{currency(item.amount)}}</td>
+              <td v-else class="text-red-500">{{currency(item.amount)}}</td>
               <td>{{item.commission ?? 0}}</td>
-              <td>{{item.type}}</td>
               <td>{{item.created_by?.name}}</td>
             </tr>
           </template>
