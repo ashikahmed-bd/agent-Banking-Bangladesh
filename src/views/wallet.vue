@@ -87,8 +87,7 @@ onMounted(() => {
 
             <div class="block font-semibold ml-2">
               <span class="block font-semibold">Total Balance</span>
-              <h2 v-if="balance" class="block font-semibold">{{currency(balance)}}</h2>
-              <h2 v-else class="block">Loading...</h2>
+              <h2 class="block font-semibold">{{currency(balance)}}</h2>
             </div>
           </div>
           <div class="flex items-center gap-2">

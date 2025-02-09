@@ -6,6 +6,8 @@ import {useCustomerStore} from "@/stores/customer.js";
 import {storeToRefs} from "pinia";
 import IconPrint from "@/components/icons/IconPrint.vue";
 import {useRoute} from "vue-router";
+import currency from "../../utils/currency.js";
+import Swal from "sweetalert2";
 
 const accountStore = useAccountStore();
 const customerStore = useCustomerStore();
@@ -27,8 +29,18 @@ const getAccountTransactions = async () => {
 
 
 const getAccountHistoryPrint = async () => {
-  confirm('Are you sure you went to print?')
-  {
+  const result = await Swal.fire({
+    title: 'Are you sure?',
+    text: 'Do you want to proceed with downloading the file?',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, download it!',
+    cancelButtonText: 'Cancel',
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#4513bb',
+  });
+
+  if (result.isConfirmed) {
     await accountStore.getTransactionsPrint();
   }
 }
@@ -64,7 +76,7 @@ onMounted(() => {
           <tbody>
           <template v-if="transactions.data">
             <tr v-for="item in transactions.data" :key="item.id">
-              <td>{{item.amount}}</td>
+              <td>{{currency(item.amount)}}</td>
               <td>{{item.commission ?? 0}}</td>
               <td>{{item.type}}</td>
               <td>{{item.created_by?.name}}</td>
