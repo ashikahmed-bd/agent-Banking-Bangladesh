@@ -6,8 +6,8 @@ import {useAuthStore} from "@/stores/auth.js";
 const authStore = useAuthStore();
 
 const form = reactive({
-  phone: '01911742233',
-  password: 'password',
+  phone: '',
+  password: '',
 });
 
 
