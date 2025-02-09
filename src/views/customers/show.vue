@@ -76,7 +76,7 @@ onMounted(() => {
               <label class="form__label">Note</label>
               <input type="text" v-model="form.note" class="form__control" placeholder="Enter note"/>
             </div>
-            <BaseButton class="w-full col-span-2" :loading="customerStore.loading">submit</BaseButton>
+            <BaseButton class="w-full bg-primary text-white col-span-2" :loading="customerStore.loading">submit</BaseButton>
           </form>
         </div>
       </div>

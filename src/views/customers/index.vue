@@ -167,7 +167,7 @@ onMounted(() => {
             <label class="form__label">Enter Payable</label>
             <input type="number" v-model="form.payable" class="form__control" placeholder="Enter payable"/>
           </div>
-          <BaseButton class="w-full" :loading="customerStore.loading">submit</BaseButton>
+          <BaseButton class="w-full bg-primary text-white" :loading="customerStore.loading">submit</BaseButton>
         </form>
       </div>
     </BaseModal>

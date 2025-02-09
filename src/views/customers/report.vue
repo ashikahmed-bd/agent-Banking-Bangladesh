@@ -26,7 +26,6 @@ onMounted(() => {
   <Default>
     <nav class="flex items-center justify-between">
       <h4 class="font-semibold">Customer Report</h4>
-      <span class="text-primary">Report</span>
     </nav>
 
     <section class="py-2">
@@ -36,15 +35,14 @@ onMounted(() => {
             <thead>
             <tr>
               <th>Amount</th>
-              <th>Type</th>
               <th>created</th>
               <th>Note</th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="item in report.data">
-              <td>{{item.amount}}</td>
-              <td>{{item.type}}</td>
+              <td v-if="item.type === 'credit'" class="text-green-500">{{item.amount}}</td>
+              <td v-else class="text-red-500">{{item.amount}}</td>
               <td>{{item.created_by?.name}}</td>
               <td>{{item.note}}</td>
             </tr>
