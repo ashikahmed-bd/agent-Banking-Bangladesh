@@ -20,7 +20,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="grid grid-cols-2 gap-4 mb-4 border-b border-dashed border-gray-300 py-4">
+  <div class="grid grid-cols-2 gap-4">
     <div class="w-full flex items-center">
       <div class="flex-none h-10 w-auto">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="bg-indigo-500 rounded-full text-white p-2 size-10">

@@ -144,6 +144,31 @@ export const useCustomerStore = defineStore('customer', {
     },
 
 
+    async getReportPrint (){
+      this.loading = true;
+      try {
+        const { data } = await axiosInstance.get('/api/pdf/customers', {
+          responseType: "blob",
+        });
+        const date = new Date().toISOString().slice(0, 10);
+        const fileName = `customers-report_${date}.pdf`;
+
+        const url = URL.createObjectURL(data);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = fileName;
+        link.click();
+        URL.revokeObjectURL(url);
+
+      }catch (error) {
+        if (error.response){
+          this.errors = error.response.data.errors;
+          toastStore.error(error.response.data.message);
+        }
+      }finally {
+        this.loading = false;
+      }
+    },
 
 
 

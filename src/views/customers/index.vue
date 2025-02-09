@@ -7,6 +7,8 @@ import {useCustomerStore} from "@/stores/customer.js";
 import BaseModal from "@/components/BaseModal.vue";
 import {storeToRefs} from "pinia";
 import currency from "../../utils/currency.js";
+import IconPrint from "@/components/icons/IconPrint.vue";
+import Swal from "sweetalert2";
 
 const customerStore = useCustomerStore();
 const { customers } = storeToRefs(customerStore);
@@ -37,6 +39,23 @@ const onSubmit = async () => {
 
 const getWallet = async () => {
   wallet.value = await customerStore.getWallet();
+}
+
+const customersReport = async () => {
+  const result = await Swal.fire({
+    title: 'Are you sure?',
+    text: 'Do you want to proceed with downloading the file?',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, download it!',
+    cancelButtonText: 'Cancel',
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#4513bb',
+  });
+
+  if (result.isConfirmed) {
+    await customerStore.getReportPrint();
+  }
 }
 
 onMounted(() => {
@@ -79,9 +98,14 @@ onMounted(() => {
       <div class="bg-white rounded-xl px-4 py-2">
         <div class="flex items-center justify-between border-b border-dashed border-gray-300 py-4">
           <h3 class="font-semibold text-lg">Customer List</h3>
-          <button type="button" @click="customerStore.modal = !customerStore.modal" class="bg-primary text-white p-2 rounded-full cursor-pointer">
-            <IconPlus class="size-5"/>
-          </button>
+          <div class="flex items-center gap-2">
+            <button type="button" @click="customerStore.modal = !customerStore.modal" class="bg-primary text-white p-2 rounded-full cursor-pointer">
+              <IconPlus class="size-5"/>
+            </button>
+            <button type="button" @click="customersReport()" class="bg-green-500 text-white p-2 rounded-full cursor-pointer">
+              <IconPrint class="size-5"/>
+            </button>
+          </div>
         </div>
 
         <div class="w-full h-1/2 overflow-y-auto scrollbar divide-y divide-dashed divide-gray-200">
