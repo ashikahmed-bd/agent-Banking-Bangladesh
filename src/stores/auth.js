@@ -26,10 +26,15 @@ export const useAuthStore = defineStore('auth', {
       const toastStore = useToastStore();
       try {
         const response = await axiosInstance.post("/api/auth/login", formData);
+        if (response.data.redirect_url) {
+          window.location.href = response.data.redirect_url; // Redirect user
+        }
+
         if (response.status === 200){
           this.token = response.data?.token;
           this.user = response.data?.user;
           toastStore.success(response.data.message);
+
           setTimeout(() => {
             window.location.replace(import.meta.env.BASE_URL);
           }, 1000);
@@ -55,9 +60,6 @@ export const useAuthStore = defineStore('auth', {
       try {
         const response = await axiosInstance.post("/api/auth/register", formData);
         if (response.status === 200){
-          setTimeout(() => {
-            window.location.replace(import.meta.env.BASE_URL);
-          }, 1000);
           toastStore.success(response.data.message);
           return new Promise((resolve) =>{
             resolve(response.data)

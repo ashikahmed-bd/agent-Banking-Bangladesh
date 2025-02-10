@@ -6,13 +6,15 @@ import {useAuthStore} from "@/stores/auth.js";
 const authStore = useAuthStore();
 
 const form = reactive({
-  phone: '',
-  password: '',
+  phone: '01511742233',
+  password: 'password',
 });
 
 
 const onSubmit = async () => {
-  await authStore.login(form);
+  const response = await authStore.login(form);
+
+  console.log(response);
 }
 
 
@@ -45,7 +47,7 @@ const onSubmit = async () => {
         <BaseButton :loading="authStore.loading" class="w-full bg-primary rounded-full border border-gray-200 text-white">Submit</BaseButton>
       </form>
       <p class="py-6">
-        Don’t have an account yet? <a href="#" class="font-medium text-primary hover:underline">Sign up</a>
+        Don’t have an account yet? <RouterLink :to="{name: 'register'}" class="font-medium text-primary hover:underline">Sign up</RouterLink>
       </p>
     </div>
   </main>

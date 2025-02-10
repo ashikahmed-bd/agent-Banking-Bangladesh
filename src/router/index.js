@@ -15,6 +15,16 @@ const router = createRouter({
         guest: true
       },
     },
+
+    {
+      path: '/companies/create',
+      name: 'companies.create',
+      component: () => import('../views/companies/create.vue'),
+      meta: {
+        title: 'Companies Create',
+        guest: true
+      },
+    },
     {
       path: '/login',
       name: 'login',
@@ -87,6 +97,16 @@ const router = createRouter({
       path: '/profile',
       name: 'profile',
       component: () => import('../views/settings/profile.vue'),
+      meta: {
+        title: 'Profile',
+        auth: true
+      },
+    },
+
+    {
+      path: '/settings',
+      name: 'settings',
+      component: () => import('../views/settings/index.vue'),
       meta: {
         title: 'Profile',
         auth: true

@@ -6,22 +6,6 @@ import Swal from "sweetalert2";
 const authStore = useAuthStore();
 const {user} = storeToRefs(authStore);
 
-const logout = async () => {
-  const result = await Swal.fire({
-    title: 'Are you sure?',
-    text: 'You will be logged out.',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonText: 'Yes, logout',
-    cancelButtonText: 'Cancel',
-    confirmButtonColor: '#d33',
-    cancelButtonColor: '#4513bb',
-  });
-
-  if (result.isConfirmed) {
-    await authStore.logout();
-  }
-};
 
 </script>
 
@@ -36,7 +20,7 @@ const logout = async () => {
           <h3 class="-mb-1">{{user.name}}</h3>
           <small class="text-xs">{{user.phone}}</small>
         </div>
-        <RouterLink :to="{name: 'profile'}" @click.prevent="logout()" class="header-user">
+        <RouterLink :to="{name: 'profile'}" class="header-user">
           <img :src="user.avatar_url" :alt="user.name" class="h-10 w-auto ring-2 rounded-full">
         </RouterLink>
       </div>
