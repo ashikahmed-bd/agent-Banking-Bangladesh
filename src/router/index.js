@@ -7,6 +7,15 @@ const router = createRouter({
 
   routes: [
     {
+      path: '/register',
+      name: 'register',
+      component: () => import('../views/auth/register.vue'),
+      meta: {
+        title: 'Register',
+        guest: true
+      },
+    },
+    {
       path: '/login',
       name: 'login',
       component: () => import('../views/auth/login.vue'),

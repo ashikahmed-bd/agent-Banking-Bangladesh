@@ -48,6 +48,28 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
+
+    async register(formData) {
+      this.loading = true;
+      const toastStore = useToastStore();
+      try {
+        const response = await axiosInstance.post("/api/auth/register", formData);
+        if (response.status === 200){
+          toastStore.success(response.data.message);
+          return new Promise((resolve) =>{
+            resolve(response.data)
+          });
+        }
+      } catch (error) {
+        if (error.response){
+          this.errors = error.response.data.errors;
+          toastStore.error(error.response.data.message);
+        }
+      }finally {
+        this.loading = false
+      }
+    },
+
     async getUser(){
       const toastStore = useToastStore();
       try {
