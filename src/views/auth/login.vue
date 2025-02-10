@@ -19,31 +19,34 @@ const onSubmit = async () => {
 </script>
 
 <template>
-  <main class="bg-primary">
+  <main class="bg-body text-base">
     <div class="h-screen flex flex-col items-center justify-center">
-      <h2 class="text-2xl font-bold text-center text-white">Welcome Back</h2>
-      <p class="text-white text-center mb-6">Sign in to continue</p>
+      <h2 class="text-2xl font-bold text-center text-primary">Welcome Back</h2>
+      <p class="text-primary text-center mb-6">Sign in to continue</p>
 
       <form @submit.prevent="onSubmit" class="w-full max-w-full px-6">
         <div class="mb-3">
-          <label class="block text-white" for="phone">Phone Number</label>
-          <input type="tel" v-model="form.phone" id="phone" placeholder="Enter your phone" class="w-full bg-light px-2 py-2 border border-light focus:border-light focus:outline-none focus:ring-0 rounded disabled:bg-gray-100">
+          <label class="block mb-2" for="phone">Phone Number</label>
+          <input type="tel" v-model="form.phone" id="phone" placeholder="Enter your phone" class="w-full bg-white rounded-full px-4 py-2 border border-light focus:border-light focus:outline-none focus:ring-0 rounded disabled:bg-gray-100">
         </div>
 
         <div class="mb-3">
-          <label class="block text-white" for="password">Password</label>
-          <input type="password" v-model="form.password" id="password" placeholder="Enter your password" class="w-full bg-light px-2 py-2 border border-light focus:border-light focus:outline-none focus:ring-0 rounded disabled:bg-gray-100">
+          <label class="block mb-2" for="password">Password</label>
+          <input type="password" v-model="form.password" id="password" placeholder="Enter your password" class="w-full bg-white rounded-full px-4 py-2 border border-light focus:border-light focus:outline-none focus:ring-0 rounded disabled:bg-gray-100">
         </div>
 
         <div class="flex justify-between items-center mb-4">
           <label class="flex items-center">
             <input type="checkbox" class="text-white focus:ring-white">
-            <span class="ml-2 text-white">Remember me</span>
+            <span class="ml-2 text-primary">Remember me</span>
           </label>
-          <a href="#" class="text-white hover:underline">Forgot password?</a>
+          <a href="#" class="text-primary hover:underline">Forgot password?</a>
         </div>
-        <BaseButton :loading="authStore.loading" class="w-full bg-light text-primary">Submit</BaseButton>
+        <BaseButton :loading="authStore.loading" class="w-full bg-primary rounded-full border border-gray-200 text-white">Submit</BaseButton>
       </form>
+      <p class="py-6">
+        Don’t have an account yet? <a href="#" class="font-medium text-primary hover:underline">Sign up</a>
+      </p>
     </div>
   </main>
 

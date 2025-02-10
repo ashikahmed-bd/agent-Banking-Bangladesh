@@ -55,6 +55,9 @@ export const useAuthStore = defineStore('auth', {
       try {
         const response = await axiosInstance.post("/api/auth/register", formData);
         if (response.status === 200){
+          setTimeout(() => {
+            window.location.replace(import.meta.env.BASE_URL);
+          }, 1000);
           toastStore.success(response.data.message);
           return new Promise((resolve) =>{
             resolve(response.data)

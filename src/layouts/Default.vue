@@ -1,26 +1,11 @@
 <script setup>
 import Header from "@/components/Header.vue";
 import {useAuthStore} from "@/stores/auth.js";
-import Swal from 'sweetalert2'
+
 
 const authStore = useAuthStore();
 
-const logout = async () => {
-  const result = await Swal.fire({
-    title: 'Are you sure?',
-    text: 'You will be logged out.',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonText: 'Yes, logout',
-    cancelButtonText: 'Cancel',
-    confirmButtonColor: '#d33',
-    cancelButtonColor: '#4513bb',
-  });
 
-  if (result.isConfirmed) {
-    await authStore.logout();
-  }
-};
 
 
 </script>
