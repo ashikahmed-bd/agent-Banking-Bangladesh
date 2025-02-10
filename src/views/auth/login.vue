@@ -20,7 +20,9 @@ const onSubmit = async () => {
   const response = await authStore.login(form);
   if (response.status === 200){
     toastStore.success(response.data.message);
-    await router.push({name: 'home'})
+    setTimeout(() => {
+      window.location.replace(response.data?.redirect_url);
+    }, 1000);
   }
 }
 

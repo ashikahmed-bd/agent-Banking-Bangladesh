@@ -1,7 +1,6 @@
 <script setup>
-
 import Default from "@/layouts/Default.vue";
-import {ref} from "vue";
+import BaseButton from "@/components/BaseButton.vue";
 
 </script>
 
@@ -30,11 +29,7 @@ import {ref} from "vue";
               <input type="password" class="form__control" placeholder="Enter password">
             </div>
             <div class="form__group">
-              <label for="password" class="form__label">Confirm Password</label>
-              <input type="password" class="form__control" placeholder="Confirm password">
-            </div>
-            <div class="form__group">
-              <button type="button" class="bg-indigo-500 text-white px-6 py-1.5 rounded-md cursor-pointer">Submit</button>
+              <BaseButton :loading="true">Submit</BaseButton>
             </div>
           </form>
         </div>
