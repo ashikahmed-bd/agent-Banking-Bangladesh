@@ -4,7 +4,7 @@ import {useToastStore} from "@/stores/toast.js";
 
 const toastStore = useToastStore();
 
-export const useInvitationStore = defineStore('invitation', {
+export const useUsersStore = defineStore('users', {
 
   state: () => ({
     loading: false,
@@ -18,16 +18,23 @@ export const useInvitationStore = defineStore('invitation', {
   actions: {
 
 
-    async validateInvitation (token){
+    async store (form){
+      this.loading = true;
       try {
-        const response = await axiosInstance.get(`/api/validate/${token}`);
-        console.log(response)
-
+        const response = await axiosInstance.post(`/api/users/store`, form);
+        if (response.status === 201){
+          toastStore.success(response.data.message);
+          return new Promise((resolve) =>{
+            resolve(response.data)
+          });
+        }
       }catch (error) {
         if (error.response){
           this.errors = error.response.data.errors;
           toastStore.error(error.response.data.message);
         }
+      }finally {
+        this.loading = false;
       }
     },
 
