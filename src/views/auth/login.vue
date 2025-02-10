@@ -2,8 +2,13 @@
 import {reactive} from "vue";
 import BaseButton from "@/components/BaseButton.vue";
 import {useAuthStore} from "@/stores/auth.js";
+import {useToastStore} from "@/stores/toast.js";
+import {useRouter} from "vue-router";
 
+
+const toastStore = useToastStore();
 const authStore = useAuthStore();
+const router = useRouter();
 
 const form = reactive({
   phone: '01511742233',
@@ -13,8 +18,10 @@ const form = reactive({
 
 const onSubmit = async () => {
   const response = await authStore.login(form);
-
-  console.log(response);
+  if (response.status === 200){
+    toastStore.success(response.data.message);
+    await router.push({name: 'home'})
+  }
 }
 
 

@@ -3,8 +3,10 @@ import {reactive} from 'vue';
 import {useRoute, useRouter} from 'vue-router';
 import BaseButton from "@/components/BaseButton.vue";
 import {useAuthStore} from "@/stores/auth.js";
+import {useToastStore} from "@/stores/toast.js";
 
 const authStore = useAuthStore();
+const toastStore = useToastStore();
 
 const route = useRoute();
 const router = useRouter();
@@ -18,7 +20,11 @@ const form = reactive({
 
 
 const onSubmit = async () => {
-  await authStore.register(form);
+  const response = await authStore.register(form);
+  if (response.status === 201){
+    toastStore.success(response.data.message);
+    await router.push({name: 'login'})
+  }
 }
 
 </script>

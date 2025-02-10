@@ -1,12 +1,14 @@
 <script setup>
 import {reactive} from 'vue';
-import { useRoute } from 'vue-router';
+import {useRoute, useRouter} from 'vue-router';
 import BaseButton from "@/components/BaseButton.vue";
 import {useCompaniesStore} from "@/stores/companies.js";
+import {useToastStore} from "@/stores/toast.js";
 
 const companiesStore = useCompaniesStore();
-
+const toastStore = useToastStore();
 const route = useRoute();
+const router = useRouter();
 
 const form = reactive({
   name: '',
@@ -16,7 +18,11 @@ const form = reactive({
 
 
 const onSubmit = async () => {
-  await companiesStore.store(form);
+  const response = await companiesStore.store(form);
+  if (response.status === 201){
+    toastStore.success(response.data.message);
+    await router.push({name: 'home'})
+  }
 }
 
 </script>

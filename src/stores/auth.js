@@ -1,6 +1,7 @@
 import {defineStore} from 'pinia'
 import axiosInstance from "@/plugins/axios.js";
 import {useToastStore} from "@/stores/toast.js";
+import { useRouter } from 'vue-router';
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -26,21 +27,11 @@ export const useAuthStore = defineStore('auth', {
       const toastStore = useToastStore();
       try {
         const response = await axiosInstance.post("/api/auth/login", formData);
-        if (response.data.redirect_url) {
-          window.location.href = response.data.redirect_url; // Redirect user
-        }
-
         if (response.status === 200){
           this.token = response.data?.token;
           this.user = response.data?.user;
-          toastStore.success(response.data.message);
-
-          setTimeout(() => {
-            window.location.replace(import.meta.env.BASE_URL);
-          }, 1000);
-
           return new Promise((resolve) =>{
-            resolve(response.data)
+            resolve(response)
           });
         }
       } catch (error) {
@@ -59,10 +50,10 @@ export const useAuthStore = defineStore('auth', {
       const toastStore = useToastStore();
       try {
         const response = await axiosInstance.post("/api/auth/register", formData);
-        if (response.status === 200){
-          toastStore.success(response.data.message);
+        if (response.status === 201){
+
           return new Promise((resolve) =>{
-            resolve(response.data)
+            resolve(response)
           });
         }
       } catch (error) {
