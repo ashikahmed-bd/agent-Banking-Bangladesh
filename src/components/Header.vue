@@ -17,7 +17,7 @@ const {user} = storeToRefs(authStore);
       </a>
       <div class="flex items-center gap-2">
         <div class="text-right mr-2">
-          <h3 class="-mb-1">{{user.name}}</h3>
+          <h3 class="-mb-1 capitalize">{{user.name}}</h3>
           <small class="text-xs">{{user.phone}}</small>
         </div>
         <RouterLink :to="{name: 'profile'}" class="header-user">

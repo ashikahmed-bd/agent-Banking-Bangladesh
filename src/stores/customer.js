@@ -171,6 +171,24 @@ export const useCustomerStore = defineStore('customer', {
     },
 
 
+    async delete (id){
+      try {
+        const response = await axiosInstance.delete(`/api/customers/${id}/delete`);
+        if (response.status === 200) {
+          toastStore.success(response.data.message);
+          return new Promise((resolve) => {
+            resolve(response.data);
+          });
+        }
+      }catch (error) {
+        if (error.response){
+          this.errors = error.response.data.errors;
+          toastStore.error(error.response.data.message);
+        }
+      }
+    },
+
+
 
   },
 })

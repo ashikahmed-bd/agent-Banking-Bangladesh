@@ -4,12 +4,14 @@ import {onMounted, reactive, ref} from "vue";
 import BaseButton from "@/components/BaseButton.vue";
 import {useCustomerStore} from "@/stores/customer.js";
 import {storeToRefs} from "pinia";
-import {useRoute} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import currency from "../../utils/currency.js";
+import Swal from "sweetalert2";
 
 const customerStore = useCustomerStore();
 const { customer } = storeToRefs(customerStore);
 const route = useRoute();
+const router = useRouter();
 
 
 const getCustomer = async () => {
@@ -31,7 +33,23 @@ const onSubmit = async () => {
   await getCustomer();
 }
 
+const customerDeleted = async (id) => {
+  const result = await Swal.fire({
+    title: 'Are you sure?',
+    text: 'You won’t be able to revert this!',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#00dc82',
+    confirmButtonText: 'Yes, delete it!'
+  });
 
+  if (result.isConfirmed) {
+    await customerStore.delete(id);
+    await router.push({name: 'customers'})
+  }
+  console.log(id);
+}
 
 onMounted(() => {
   getCustomer();
@@ -42,7 +60,12 @@ onMounted(() => {
   <Default>
     <nav class="flex items-center justify-between">
       <h4 class="font-semibold">Customer Details</h4>
-      <RouterLink :to="{name: 'customer.report', params: {id: route.params.id}}" class="bg-primary text-white px-4 py-1.5 rounded">Report</RouterLink>
+      <div class="flex items-center gap-2">
+        <RouterLink :to="{name: 'customer.report', params: {id: route.params.id}}" class="bg-primary text-white px-3 py-1 rounded">Report</RouterLink>
+        <button type="button" @click.prevent="customerDeleted(route.params.id)" class="bg-danger text-white rounded cursor-pointer px-3 py-1">
+          Delete
+        </button>
+      </div>
     </nav>
 
     <section class="py-2">
