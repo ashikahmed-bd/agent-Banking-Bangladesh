@@ -7,7 +7,7 @@ import Header from "@/components/Header.vue";
   <div class="min-h-screen w-full flex flex-col bg-gray-100 text-gray-900">
     <Header/>
 
-    <main class="flex-1 p-4 min-h-full max-h-[calc(100vh-8rem)] overflow-auto">
+    <main class="flex-1 p-4 min-h-full max-h-[calc(100vh-8rem)] overflow-hidden">
       <slot/>
     </main>
 
