@@ -29,7 +29,7 @@ const logout = async () => {
 
 <template>
   <Default>
-    
+
     <section class="py-2">
       <div class="bg-white h-screen rounded-md p-4">
         <h3 class="font-semibold text-lg border-b border-dashed border-gray-300 ">Profile info</h3>

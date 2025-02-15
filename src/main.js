@@ -30,3 +30,10 @@ app.use(Toast);
 app.use(VueSweetalert2, options);
 
 app.mount('#app')
+
+
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/sw.js").then(() => {
+        console.log("Service Worker registered!");
+    });
+}

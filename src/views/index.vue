@@ -1,7 +1,6 @@
 <script setup>
 import Default from "@/layouts/Default.vue";
 import {onMounted} from "vue";
-import { Carousel, Slide} from 'vue3-carousel'
 import {useAccountStore} from "@/stores/account.js";
 import {storeToRefs} from "pinia";
 import currency from "../utils/currency.js";
@@ -13,16 +12,6 @@ import Swal from "sweetalert2";
 
 const accountStore = useAccountStore();
 const {accounts, transactions} = storeToRefs(accountStore);
-
-const carouselConfig = {
-  itemsToShow: 2,
-  wrapAround: true,
-  gap: 10
-}
-
-const getAccountsList = async () => {
-  await accountStore.all();
-}
 
 const getTransactions = async () => {
   await accountStore.getLatestTransactions();
@@ -46,7 +35,6 @@ const getTransactionsPrint = async () => {
 }
 
 onMounted(() => {
-  getAccountsList();
   getTransactions();
 })
 </script>
@@ -59,23 +47,6 @@ onMounted(() => {
       </div>
     </section>
 
-    <section class="py-2">
-      <div class="container">
-        <Carousel v-bind="carouselConfig">
-          <Slide v-for="account in accounts.data" :key="account.id">
-            <div class="carousel__item overflow-hidden z-10 relative gap-4">
-              <img alt="card" src="/wallet-bg.png" class="object-cover rounded-xl">
-              <div class="min-h-full flex flex-col absolute top-0 p-2.5">
-                <div class="flex-1 text-white">
-                  <h3 class="font-semibold">{{account.name}}</h3>
-                  <small class="font-semibold">{{currency(account.balance)}}</small>
-                </div>
-              </div>
-            </div>
-          </Slide>
-        </Carousel>
-      </div>
-    </section>
 
     <section class="py-4 flex flex-col flex-grow">
       <div class="bg-white rounded-xl">
