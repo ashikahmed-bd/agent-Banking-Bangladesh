@@ -11,7 +11,7 @@ const {user} = storeToRefs(authStore);
 
 <template>
   <header class="bg-primary sticky top-0 text-white py-4 px-4">
-    <div class="container mx-auto flex items-center justify-between">
+    <div class="max-w-5xl mx-auto flex items-center justify-between">
       <a href="/" >
         <img src="/logo.svg" alt="logo" class="h-12 w-auto">
       </a>
