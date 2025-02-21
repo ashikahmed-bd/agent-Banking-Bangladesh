@@ -11,8 +11,7 @@ export const useWalletStore = defineStore('wallet', {
     deposit: false,
     withdraw: false,
     modal: false,
-    accounts: {},
-    balance: 0,
+    wallets: {},
     errors: {},
     transactions: {},
   }),
@@ -25,10 +24,9 @@ export const useWalletStore = defineStore('wallet', {
 
     async all (){
       try {
-        const response = await axiosInstance.get('/api/wallets/all');
+        const response = await axiosInstance.get('api/wallet/all');
         if (response.status === 200) {
-          this.accounts = response.data;
-          await this.getBalance();
+          this.wallets = response.data;
           return new Promise((resolve) => {
             resolve(response.data);
           });

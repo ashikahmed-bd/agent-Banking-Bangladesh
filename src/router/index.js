@@ -55,34 +55,14 @@ const router = createRouter({
     },
 
     {
-      path: '/wallet',
-      name: 'wallet',
-      component: () => import('../views/wallet.vue'),
-      meta: {
-        title: 'Wallet',
-        auth: true
-      },
-    },
-    {
-      path: '/accounts/:id/transactions',
-      name: 'accounts.transactions',
-      component: () => import('../views/accounts/transactions.vue'),
+      path: '/transactions',
+      name: 'transactions',
+      component: () => import('../views/transactions.vue'),
       meta: {
         title: 'Transactions',
         auth: true
       },
     },
-
-    {
-      path: '/transactions/all',
-      name: 'transactions.all',
-      component: () => import('../views/transactions/index.vue'),
-      meta: {
-        title: 'Transactions List',
-        auth: true
-      },
-    },
-
 
     {
       path: '/customer/:id/show',
