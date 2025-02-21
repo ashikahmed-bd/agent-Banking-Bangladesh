@@ -45,6 +45,16 @@ const router = createRouter({
     },
 
     {
+      path: '/cashbox',
+      name: 'cashbox',
+      component: () => import('../views/cashbox.vue'),
+      meta: {
+        title: 'Cashbox',
+        auth: true
+      },
+    },
+
+    {
       path: '/wallet',
       name: 'wallet',
       component: () => import('../views/wallet.vue'),
@@ -73,15 +83,6 @@ const router = createRouter({
       },
     },
 
-    {
-      path: '/customers',
-      name: 'customers',
-      component: () => import('../views/customers/index.vue'),
-      meta: {
-        title: 'Customers',
-        auth: true
-      },
-    },
 
     {
       path: '/customer/:id/show',

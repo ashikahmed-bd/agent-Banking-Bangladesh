@@ -4,7 +4,7 @@ import {useToastStore} from "@/stores/toast.js";
 
 const toastStore = useToastStore();
 
-export const useAccountStore = defineStore('account', {
+export const useWalletStore = defineStore('wallet', {
 
   state: () => ({
     loading: false,
@@ -25,7 +25,7 @@ export const useAccountStore = defineStore('account', {
 
     async all (){
       try {
-        const response = await axiosInstance.get('/api/accounts/all');
+        const response = await axiosInstance.get('/api/wallets/all');
         if (response.status === 200) {
           this.accounts = response.data;
           await this.getBalance();

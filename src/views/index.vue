@@ -46,7 +46,7 @@ onMounted(() => {
 
 <template>
   <Default>
-    <section class="py-4">
+    <section class="">
       <div class="bg-white rounded-xl p-4">
         <div class="grid grid-cols-2 gap-4">
           <article class="w-full flex items-center">

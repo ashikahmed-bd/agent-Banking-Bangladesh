@@ -1,6 +1,6 @@
 <script setup>
 import Default from "@/layouts/Default.vue";
-import {useAccountStore} from "@/stores/account.js";
+import {useAccountStore} from "@/stores/wallet.js";
 import {storeToRefs} from "pinia";
 import {onMounted, reactive, ref} from "vue";
 import Swal from "sweetalert2";
