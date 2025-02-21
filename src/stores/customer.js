@@ -20,13 +20,9 @@ export const useCustomerStore = defineStore('customer', {
 
   actions: {
 
-    async all (limit){
+    async all (){
       try {
-        const response = await axiosInstance.get('/api/customers/all', {
-          params: {
-            limit: limit,
-          }
-        });
+        const response = await axiosInstance.get('/api/customers/all');
         if (response.status === 200) {
           this.customers = response.data;
           return new Promise((resolve) => {
@@ -147,26 +143,26 @@ export const useCustomerStore = defineStore('customer', {
     async getReportPrint (){
       this.loading = true;
       try {
-        const { data } = await axiosInstance.get('/api/pdf/customers', {
+
+        const response = await axiosInstance.get('/api/pdf/customers', {
           responseType: "blob",
         });
-        const date = new Date().toISOString().slice(0, 10);
-        const fileName = `customers-report_${date}.pdf`;
 
-        const url = URL.createObjectURL(data);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = fileName;
+        // Create a Blob from response data
+        const blob = new Blob([response.data], { type: "application/pdf" });
+
+        // Create a link element and trigger download
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `report_${new Date().toISOString().slice(0, 10)}.pdf`;
+        document.body.appendChild(link);
         link.click();
-        URL.revokeObjectURL(url);
 
-      }catch (error) {
-        if (error.response){
-          this.errors = error.response.data.errors;
-          toastStore.error(error.response.data.message);
-        }
-      }finally {
-        this.loading = false;
+        // Cleanup
+        document.body.removeChild(link);
+        URL.revokeObjectURL(link.href);
+      } catch (error) {
+        console.error("Error downloading PDF:", error);
       }
     },
 

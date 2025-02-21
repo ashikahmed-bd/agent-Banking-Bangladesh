@@ -1,37 +1,42 @@
 <script setup>
 import Default from "@/layouts/Default.vue";
-import {onMounted} from "vue";
-import {useAccountStore} from "@/stores/account.js";
+import {onMounted, reactive} from "vue";
 import {storeToRefs} from "pinia";
 import currency from "../utils/currency.js";
 import WalletComponent from "@/components/WalletComponent.vue";
-import DialogComponent from "@/components/DialogComponent.vue";
-import IconReload from "@/components/icons/IconReload.vue";
-import IconPrint from "@/components/icons/IconPrint.vue";
-import Swal from "sweetalert2";
+import IconDown from "@/components/icons/IconDown.vue";
+import {useCustomerStore} from "@/stores/customer.js";
+import IconUp from "@/components/icons/IconUp.vue";
+import IconPlus from "@/components/icons/IconPlus.vue";
+import IconUserPlus from "@/components/icons/IconUserPlus.vue";
+import BaseButton from "@/components/BaseButton.vue";
+import BaseModal from "@/components/BaseModal.vue";
 
-const accountStore = useAccountStore();
-const {accounts, transactions} = storeToRefs(accountStore);
+const customerStore = useCustomerStore();
+const {customers} = storeToRefs(customerStore);
 
 const getTransactions = async () => {
-  await accountStore.getLatestTransactions();
+  await customerStore.all();
 }
 
-const getTransactionsPrint = async () => {
-  const result = await Swal.fire({
-    title: 'Are you sure?',
-    text: 'Do you want to proceed with downloading the file?',
-    icon: 'question',
-    showCancelButton: true,
-    confirmButtonText: 'Yes, download it!',
-    cancelButtonText: 'Cancel',
-    confirmButtonColor: '#d33',
-    cancelButtonColor: '#4513bb',
-  });
+const customersReport = () => {
+  customerStore.getReportPrint();
+}
 
-  if (result.isConfirmed) {
-    await accountStore.getTransactionsPrint();
-  }
+const form = reactive({
+  name: '',
+  phone: '',
+  due: '',
+  payable: '',
+});
+
+const onSubmit = async () => {
+  await customerStore.store(form);
+
+  form.name = '';
+  form.phone = '';
+  form.due = '';
+  form.payable = '';
 }
 
 onMounted(() => {
@@ -43,7 +48,29 @@ onMounted(() => {
   <Default>
     <section class="py-4">
       <div class="bg-white rounded-xl p-4">
-        <WalletComponent/>
+        <div class="grid grid-cols-2 gap-4">
+          <article class="w-full flex items-center">
+            <div class="flex-none h-10 w-auto">
+              <IconDown class="bg-success rounded-full text-white p-2 size-10"/>
+            </div>
+            <div class="block font-semibold text-base ml-2">
+              <span class="block font-semibold">Due</span>
+              <h2 v-if="true" class="block">{{currency(5622)}}</h2>
+              <h2 v-else class="block">Loading...</h2>
+            </div>
+          </article>
+
+          <article class="w-full flex items-center">
+            <div class="flex-none h-10 w-auto">
+              <IconUp class="bg-danger rounded-full text-white p-2 size-10"/>
+            </div>
+            <div class="block font-semibold text-base ml-2">
+              <span class="block font-semibold">Payable</span>
+              <h2 v-if="true" class="block">{{currency(5622)}}</h2>
+              <h2 v-else class="block">Loading...</h2>
+            </div>
+          </article>
+        </div>
       </div>
     </section>
 
@@ -51,32 +78,39 @@ onMounted(() => {
     <section class="py-4 flex flex-col flex-grow">
       <div class="bg-white rounded-xl">
         <div class="flex items-center justify-between p-4 border-b border-gray-300 border-dashed">
-          <h3 class="flex items-center gap-2 font-semibold text-base">
-            Transactions
-            <button type="button" @click="getTransactions()" class="cursor-pointer text-primary">
-              <IconReload :loading="accountStore.loading"/>
+          <h3 class="flex items-center gap-2 font-semibold text-base">Customers (50)</h3>
+          <div class="flex items-center gap-2">
+            <button type="button" @click="customerStore.modal = !customerStore.modal" class="bg-red-50 p-2 rounded-full cursor-pointer">
+              <IconUserPlus class="size-5"/>
             </button>
-          </h3>
-          <button type="button" @click="getTransactionsPrint()" class="cursor-pointer">
-            <IconPrint class="size-5"/>
-          </button>
+            <button type="button" @click="customersReport()" class="bg-red-50 p-2 rounded-full cursor-pointer">
+              <IconDown class="size-5"/>
+            </button>
+          </div>
         </div>
 
         <div class="w-full px-4 divide-y divide-dashed divide-gray-200 max-h-2xl overflow-y-auto">
-          <template v-if="transactions.data">
-            <article v-for="item in transactions.data" class="py-2 flex items-center justify-between">
+          <template v-if="true">
+            <RouterLink :to="{name: 'customer.show', params: {id: 1}}" v-for="item in 10" class="py-2 flex items-center justify-between">
               <div class="flex items-center gap-2">
-                <img :src="item.account?.logo_url" alt="img" class="bg-primary/10 p-1 rounded h-10 w-auto">
+                <img src="/users.png" alt="img" class="ring-2 ring-red-50 rounded-full h-8 w-auto">
                 <div class="mr-2">
-                  <strong>{{item.account?.name}}</strong>
-                  <p class="text-xs">{{item.account?.number}}</p>
+                  <h3 class="font-semibold">Abu Toha</h3>
+                  <small class="text-xs">01211</small>
                 </div>
               </div>
-              <div class="flex-none">
-                <span v-if="item.type === 'credit'" class="text-green-500">{{currency(item.amount)}}</span>
-                <span v-if="item.type === 'debit'" class="text-red-500">{{currency(item.amount)}}</span>
+              <div class="flex-none flex items-center gap-2">
+                <div class="flex  items-center gap-2">
+                  <div class="flex-none text-right">
+                    <h4 class="text-green-500">{{currency(500)}}</h4>
+                    <small class="text-xs">12 Jan 2025</small>
+                  </div>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 text-primary">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                </svg>
               </div>
-            </article>
+            </RouterLink>
           </template>
 
           <template v-else>
@@ -95,7 +129,40 @@ onMounted(() => {
       </div>
     </section>
 
-    <DialogComponent/>
+
+    <BaseModal :show="customerStore.modal">
+      <div class="flex justify-between items-center border-b border-gray-300 border-dashed pb-3">
+        <h2 class="text-xl font-semibold">Add Customer</h2>
+        <button type="button" class="cursor-pointer text-red-500" @click="customerStore.modal = false">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="mt-4">
+        <form @submit.prevent="onSubmit" class="w-full max-w-sm">
+          <div class="form__group">
+            <label class="form__label">Enter Name</label>
+            <input type="text" v-model="form.name" class="form__control" placeholder="Enter name"/>
+          </div>
+          <div class="form__group">
+            <label class="form__label">Phone Number</label>
+            <input type="tel" v-model="form.phone" class="form__control" placeholder="Enter phone"/>
+          </div>
+          <div class="form__group">
+            <label class="form__label">Enter Due</label>
+            <input type="number" v-model="form.due" class="form__control" placeholder="Enter due"/>
+          </div>
+
+          <div class="form__group">
+            <label class="form__label">Enter Payable</label>
+            <input type="number" v-model="form.payable" class="form__control" placeholder="Enter payable"/>
+          </div>
+          <BaseButton class="w-full bg-primary text-white" :loading="customerStore.loading">submit</BaseButton>
+        </form>
+      </div>
+    </BaseModal>
 
   </Default>
 </template>

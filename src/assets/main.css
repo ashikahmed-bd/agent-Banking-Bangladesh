@@ -1,9 +1,9 @@
 @import "tailwindcss";
 @theme {
-    --color-primary: #493D9E;
+    --color-primary: #c4161c;
     --color-light: #dcd8f2;
     --color-white: #fff;
-    --color-success: #3e9d24;
+    --color-success: #0e9a5f;
     --color-warning: #fdae1c;
     --color-danger: #ff4040;
     --color-body: #f7f7f7;
@@ -41,7 +41,7 @@
 }
 
 .form__control{
-    @apply w-full px-2 py-1.5 border border-gray-200 focus:border-indigo-500 focus:outline-none focus:ring-0 rounded placeholder:text-sm disabled:bg-gray-100;
+    @apply w-full px-2 py-1.5 border border-primary/10 focus:border-primary focus:outline-none focus:ring-0 rounded placeholder:text-sm disabled:bg-gray-100;
 }
 
 table{

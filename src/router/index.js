@@ -64,6 +64,16 @@ const router = createRouter({
     },
 
     {
+      path: '/transactions/all',
+      name: 'transactions.all',
+      component: () => import('../views/transactions/index.vue'),
+      meta: {
+        title: 'Transactions List',
+        auth: true
+      },
+    },
+
+    {
       path: '/customers',
       name: 'customers',
       component: () => import('../views/customers/index.vue'),

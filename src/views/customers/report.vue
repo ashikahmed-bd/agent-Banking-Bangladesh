@@ -36,15 +36,15 @@ onMounted(() => {
             <tr>
               <th>Amount</th>
               <th>created</th>
-              <th>Note</th>
+              <th>Remark</th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="item in report.data">
-              <td v-if="item.type === 'credit'" class="text-green-500">{{item.amount}}</td>
+              <td v-if="item.credit" class="text-green-500">{{item.amount}}</td>
               <td v-else class="text-red-500">{{item.amount}}</td>
               <td>{{item.created_by?.name}}</td>
-              <td>{{item.note}}</td>
+              <td>{{item.remark}}</td>
             </tr>
             </tbody>
           </table>

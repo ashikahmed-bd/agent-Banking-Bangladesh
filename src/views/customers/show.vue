@@ -22,14 +22,14 @@ const form = reactive({
   customer_id: route.params.id,
   due: '',
   payable: '',
-  note: '',
+  remark: '',
 });
 
 const onSubmit = async () => {
   await customerStore.payment(form);
   form.due = '';
   form.payable = '';
-  form.note = '';
+  form.remark = '';
   await getCustomer();
 }
 
@@ -48,7 +48,6 @@ const customerDeleted = async (id) => {
     await customerStore.delete(id);
     await router.push({name: 'customers'})
   }
-  console.log(id);
 }
 
 onMounted(() => {
@@ -96,8 +95,8 @@ onMounted(() => {
               <input type="number" v-model="form.payable" class="form__control" placeholder="Enter payable amount"/>
             </div>
             <div class="form__group col-span-2">
-              <label class="form__label">Note</label>
-              <input type="text" v-model="form.note" class="form__control" placeholder="Enter note"/>
+              <label class="form__label">Remark</label>
+              <input type="text" v-model="form.remark" class="form__control" placeholder="Enter remark"/>
             </div>
             <BaseButton class="w-full bg-primary text-white col-span-2" :loading="customerStore.loading">submit</BaseButton>
           </form>
