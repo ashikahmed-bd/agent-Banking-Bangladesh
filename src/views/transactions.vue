@@ -8,6 +8,7 @@ import BaseModal from "@/components/BaseModal.vue";
 import IconPlus from "@/components/icons/IconPlus.vue";
 import {useWalletStore} from "@/stores/wallet.js";
 import IconSearch from "@/components/icons/IconSearch.vue";
+import IconPrint from "@/components/icons/IconPrint.vue";
 
 const walletStore = useWalletStore();
 const {wallets} = storeToRefs(walletStore);
@@ -75,7 +76,7 @@ onMounted(() => {
           <div class="flex items-center gap-2">
             <input type="date" v-model="selectedDate" class="px-2 py-1 border border-gray-200 focus:border-primary focus:outline-none focus:ring-0 rounded placeholder:text-sm disabled:bg-gray-100 appearance-none">
             <button type="button" class="cursor-pointer">
-              <IconSearch class="size-5"/>
+              <IconPrint class="size-5"/>
             </button>
           </div>
         </div>

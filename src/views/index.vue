@@ -46,37 +46,42 @@ onMounted(() => {
 
 <template>
   <Default>
-    <section class="">
-      <div class="bg-white rounded-xl p-4">
-        <div class="grid grid-cols-2 gap-4">
-          <article class="w-full flex items-center">
-            <div class="flex-none h-10 w-auto">
-              <IconDown class="bg-success rounded-full text-white p-2 size-10"/>
-            </div>
-            <div class="block font-semibold text-base ml-2">
-              <span class="block font-semibold">Due</span>
-              <h2 v-if="true" class="block">{{currency(5622)}}</h2>
-              <h2 v-else class="block">Loading...</h2>
-            </div>
-          </article>
 
-          <article class="w-full flex items-center">
-            <div class="flex-none h-10 w-auto">
-              <IconUp class="bg-danger rounded-full text-white p-2 size-10"/>
-            </div>
-            <div class="block font-semibold text-base ml-2">
-              <span class="block font-semibold">Payable</span>
-              <h2 v-if="true" class="block">{{currency(5622)}}</h2>
-              <h2 v-else class="block">Loading...</h2>
-            </div>
-          </article>
-        </div>
+    <section class="bg-indigo-700 rounded-b-2xl text-white p-4">
+      <div class="flex flex-col items-center justify-center mb-4">
+        <h3 class="text-2xl font-bold">Balance</h3>
+        <span class="font-bold">$50020</span>
+      </div>
+
+      <div class="flex items-center justify-center gap-4">
+        <article class="w-full flex items-center">
+          <div class="flex-none h-10 w-auto">
+            <IconDown class="bg-success rounded-full text-white p-2 size-10"/>
+          </div>
+          <div class="block font-semibold text-base ml-2">
+            <span class="block font-semibold">Due</span>
+            <h2 v-if="true" class="block">{{currency(5622)}}</h2>
+            <h2 v-else class="block">Loading...</h2>
+          </div>
+        </article>
+
+        <article class="w-full flex items-center">
+          <div class="flex-none h-10 w-auto">
+            <IconUp class="bg-danger rounded-full text-white p-2 size-10"/>
+          </div>
+          <div class="block font-semibold text-base ml-2">
+            <span class="block font-semibold">Payable</span>
+            <h2 v-if="true" class="block">{{currency(5622)}}</h2>
+            <h2 v-else class="block">Loading...</h2>
+          </div>
+        </article>
       </div>
     </section>
 
 
-    <section class="py-4 flex flex-col flex-grow">
-      <div class="bg-white rounded-xl">
+
+    <section class="bg-white">
+      <div class=" flex flex-col flex-grow">
         <div class="flex items-center justify-between p-4 border-b border-gray-300 border-dashed">
           <h3 class="flex items-center gap-2 font-semibold text-base">Customers (50)</h3>
           <div class="flex items-center gap-2">
@@ -91,7 +96,7 @@ onMounted(() => {
 
         <div class="w-full px-4 divide-y divide-dashed divide-gray-200 max-h-2xl overflow-y-auto">
           <template v-if="true">
-            <RouterLink :to="{name: 'customer.show', params: {id: 1}}" v-for="item in 10" class="py-2 flex items-center justify-between">
+            <RouterLink :to="{name: 'customer.show', params: {id: 1}}" v-for="item in 20" class="py-2 flex items-center justify-between">
               <div class="flex items-center gap-2">
                 <img src="/users.png" alt="img" class="ring-2 ring-red-50 rounded-full h-8 w-auto">
                 <div class="mr-2">
