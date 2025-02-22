@@ -11,6 +11,7 @@ import IconPlus from "@/components/icons/IconPlus.vue";
 import IconUserPlus from "@/components/icons/IconUserPlus.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import BaseModal from "@/components/BaseModal.vue";
+import IconPrint from "@/components/icons/IconPrint.vue";
 
 const customerStore = useCustomerStore();
 const {customers} = storeToRefs(customerStore);
@@ -80,7 +81,7 @@ onMounted(() => {
 
 
 
-    <section class="bg-white">
+    <section class="bg-white rounded-2xl">
       <div class=" flex flex-col flex-grow">
         <div class="flex items-center justify-between p-4 border-b border-gray-300 border-dashed">
           <h3 class="flex items-center gap-2 font-semibold text-base">Customers (50)</h3>
@@ -89,12 +90,12 @@ onMounted(() => {
               <IconUserPlus class="size-5"/>
             </button>
             <button type="button" @click="customersReport()" class="bg-red-50 p-2 rounded-full cursor-pointer">
-              <IconDown class="size-5"/>
+              <IconPrint class="size-5"/>
             </button>
           </div>
         </div>
 
-        <div class="w-full px-4 divide-y divide-dashed divide-gray-200 max-h-2xl overflow-y-auto">
+        <div class="w-full px-4 divide-y divide-dashed divide-gray-200 h-96 scrollbar overflow-y-auto">
           <template v-if="true">
             <RouterLink :to="{name: 'customer.show', params: {id: 1}}" v-for="item in 20" class="py-2 flex items-center justify-between">
               <div class="flex items-center gap-2">

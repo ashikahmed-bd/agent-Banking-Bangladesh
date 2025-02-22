@@ -38,7 +38,7 @@ onMounted(() => {
               <IconDown class="bg-success rounded-full text-white p-2 size-10"/>
             </div>
             <div class="block font-semibold text-base ml-2">
-              <span class="block font-semibold">Cash</span>
+              <span class="block font-semibold">Income</span>
               <h2 v-if="true" class="block">{{currency(5622)}}</h2>
               <h2 v-else class="block">Loading...</h2>
             </div>
