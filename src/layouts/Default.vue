@@ -4,7 +4,7 @@ import Header from "@/components/Header.vue";
 </script>
 
 <template>
-  <main class="bg-indigo-800 min-h-screen w-full max-w-full mx-auto">
+  <main class="bg-red-50 min-h-screen w-full max-w-full mx-auto">
     <Header/>
 
     <slot/>

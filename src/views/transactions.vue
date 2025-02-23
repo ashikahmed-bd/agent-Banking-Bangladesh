@@ -1,7 +1,7 @@
 <script setup>
 import Default from "@/layouts/Default.vue";
 import {storeToRefs} from "pinia";
-import {onMounted, reactive, ref} from "vue";
+import {onMounted, ref} from "vue";
 import currency from "../utils/currency.js";
 import IconPrint from "@/components/icons/IconPrint.vue";
 import {useAccountStore} from "@/stores/account.js";

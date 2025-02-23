@@ -46,12 +46,7 @@ onMounted(() => {
 <template>
   <Default>
     <main class="px-4">
-      <section class="bg-indigo-700 rounded-b-2xl text-white p-4">
-        <div class="flex flex-col items-center justify-center mb-4">
-          <h3 class="text-2xl font-bold">Balance</h3>
-          <span class="font-bold">$50020</span>
-        </div>
-
+      <section class="bg-white rounded-2xl text-dark p-4 my-4">
         <div class="flex items-center justify-center gap-4">
           <article class="w-full flex items-center">
             <div class="flex-none h-10 w-auto">
@@ -77,8 +72,6 @@ onMounted(() => {
         </div>
       </section>
 
-
-
       <section class="bg-white rounded-2xl">
         <div class=" flex flex-col flex-grow">
           <div class="flex items-center justify-between p-4 border-b border-gray-300 border-dashed">
@@ -93,7 +86,7 @@ onMounted(() => {
             </div>
           </div>
 
-          <div class="w-full px-4 divide-y divide-dashed divide-gray-200 max-h-[calc(100vh-23.25rem)] scrollbar overflow-y-auto">
+          <div class="w-full px-4 divide-y divide-dashed divide-gray-200 max-h-[calc(100vh-21rem)] scrollbar overflow-y-auto">
             <template v-if="true">
               <RouterLink :to="{name: 'customer.show', params: {id: 1}}" v-for="item in 20" class="py-2 flex items-center justify-between">
                 <div class="flex items-center gap-2">
