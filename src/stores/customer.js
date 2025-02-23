@@ -62,7 +62,7 @@ export const useCustomerStore = defineStore('customer', {
     async show (id){
       this.loading = true;
       try {
-        const response = await axiosInstance.get(`/api/customers/${id}/show`);
+        const response = await axiosInstance.get(`/api/customer/${id}/show`);
         if (response.status === 200) {
           this.customer = response.data.data;
           return new Promise((resolve) => {

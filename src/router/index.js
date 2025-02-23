@@ -7,25 +7,6 @@ const router = createRouter({
 
   routes: [
     {
-      path: '/register',
-      name: 'register',
-      component: () => import('../views/auth/register.vue'),
-      meta: {
-        title: 'Register',
-        guest: true
-      },
-    },
-
-    {
-      path: '/companies/create',
-      name: 'companies.create',
-      component: () => import('../views/companies/create.vue'),
-      meta: {
-        title: 'Companies Create',
-        guest: true
-      },
-    },
-    {
       path: '/login',
       name: 'login',
       component: () => import('../views/auth/login.vue'),
@@ -40,6 +21,16 @@ const router = createRouter({
       component: () => import('../views/index.vue'),
       meta: {
         title: 'Home',
+        auth: true
+      },
+    },
+
+    {
+      path: '/customer/:id/show',
+      name: 'customer.show',
+      component: () => import('../views/customers/show.vue'),
+      meta: {
+        title: 'Customer show',
         auth: true
       },
     },
@@ -64,15 +55,7 @@ const router = createRouter({
       },
     },
 
-    {
-      path: '/customer/:id/show',
-      name: 'customer.show',
-      component: () => import('../views/customers/show.vue'),
-      meta: {
-        title: 'Customer show',
-        auth: true
-      },
-    },
+
 
     {
       path: '/customer/:id/report',
@@ -90,16 +73,6 @@ const router = createRouter({
       component: () => import('../views/settings/profile.vue'),
       meta: {
         title: 'Profile',
-        auth: true
-      },
-    },
-
-    {
-      path: '/users/create',
-      name: 'users.create',
-      component: () => import('../views/users/create.vue'),
-      meta: {
-        title: 'Create Users',
         auth: true
       },
     },
