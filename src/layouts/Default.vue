@@ -1,5 +1,40 @@
 <script setup>
 import Header from "@/components/Header.vue";
+import {usePaymentStore} from "@/stores/payment.js";
+import BaseModal from "@/components/BaseModal.vue";
+import BaseButton from "@/components/BaseButton.vue";
+import {onMounted, reactive, ref} from "vue";
+import {useAccountStore} from "@/stores/account.js";
+import {storeToRefs} from "pinia";
+
+const paymentStore = usePaymentStore();
+const accountStore = useAccountStore();
+
+const {accounts} = storeToRefs(accountStore);
+
+const selectedSender = ref('');
+const selectedReceiver = ref('');
+
+const form = reactive({
+  sender_id: selectedSender,
+  receiver_id: selectedReceiver,
+  amount: '',
+  commission: '',
+  reference: '',
+  remark: '',
+});
+
+const onSubmit = async () => {
+  await paymentStore.getTransfer(form);
+}
+
+const getAccounts = () => {
+  accountStore.all();
+}
+
+onMounted(() => {
+  getAccounts();
+})
 
 </script>
 
@@ -10,8 +45,7 @@ import Header from "@/components/Header.vue";
     <slot/>
 
     <!-- Bottom Navigation max-w-sm mx-auto-->
-
-    <nav v-if="true" class="fixed bg-white bottom-0 w-full max-w-full mx-auto flex justify-around items-center py-2">
+    <nav class="fixed bg-white bottom-0 w-full max-w-full mx-auto flex justify-around items-center py-2">
       <RouterLink :to="{name: 'home'}" class="flex flex-col items-center">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
           <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
@@ -24,6 +58,13 @@ import Header from "@/components/Header.vue";
         </svg>
         <span>Cash box</span>
       </RouterLink>
+
+      <button type="button" @click="paymentStore.modal = true" class="flex flex-col items-center cursor-pointer">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-10 bg-primary text-white p-1 rounded-full">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+        </svg>
+      </button>
+
       <RouterLink :to="{name: 'transactions'}" class="flex flex-col items-center">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
           <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" />
@@ -38,6 +79,64 @@ import Header from "@/components/Header.vue";
         <span>Settings</span>
       </RouterLink>
     </nav>
+
+
+    <BaseModal :show="paymentStore.modal">
+      <div class="flex justify-between items-center border-b border-gray-300 border-dashed pb-3">
+        <h2 class="text-xl font-semibold">Add Transfer</h2>
+        <button type="button" class="cursor-pointer text-red-500" @click="paymentStore.modal = false">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="mt-4">
+        <form @submit.prevent="onSubmit" class="w-full max-w-sm">
+          <div class="grid grid-cols-2 gap-4">
+            <div class="form__group">
+              <label class="form__label">Sender</label>
+              <select v-model="selectedSender" class="form__control">
+                <option value="" disabled>Select Sender</option>
+                <option :value="account.id" v-for="account in accounts.data" :key="account.id">{{account.name +' - '+account.number}}</option>
+              </select>
+            </div>
+            <div class="form__group">
+              <label class="form__label">Receiver</label>
+              <select v-model="selectedReceiver" class="form__control">
+                <option value="" disabled>Select Receiver</option>
+                <option :value="account.id" v-for="account in accounts.data" :key="account.id">{{account.name +' - '+account.number}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div class="form__group">
+              <label class="form__label">Amount</label>
+              <input type="number" v-model="form.amount" class="form__control" placeholder="Enter amount"/>
+            </div>
+
+            <div class="form__group">
+              <label class="form__label">Commission</label>
+              <input type="number" v-model="form.commission" class="form__control" placeholder="Enter commission"/>
+            </div>
+          </div>
+
+          <div class="form__group">
+            <label class="form__label">Reference</label>
+            <input type="text" v-model="form.reference" class="form__control" placeholder="Enter reference"/>
+          </div>
+
+          <div class="form__group">
+            <label class="form__label">Remark</label>
+            <input type="text" v-model="form.remark" class="form__control" placeholder="Enter remark"/>
+          </div>
+
+          <BaseButton class="w-full bg-primary text-white" :loading="paymentStore.loading">submit</BaseButton>
+        </form>
+      </div>
+    </BaseModal>
+
   </main>
 
 

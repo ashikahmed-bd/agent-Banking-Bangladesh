@@ -1,11 +1,15 @@
 <script setup>
 import Default from "@/layouts/Default.vue";
 import {storeToRefs} from "pinia";
-import {onMounted} from "vue";
+import {onMounted, reactive} from "vue";
 import currency from "../utils/currency.js";
 import IconDown from "@/components/icons/IconDown.vue";
 import IconUp from "@/components/icons/IconUp.vue";
 import {useAccountStore} from "@/stores/account.js";
+import IconPrint from "@/components/icons/IconPrint.vue";
+import IconPlus from "@/components/icons/IconPlus.vue";
+import BaseModal from "@/components/BaseModal.vue";
+import BaseButton from "@/components/BaseButton.vue";
 
 const accountStore = useAccountStore();
 const {accounts} = storeToRefs(accountStore);
@@ -14,6 +18,20 @@ const {accounts} = storeToRefs(accountStore);
 const getAccounts = async () => {
   await accountStore.all();
 }
+
+const form = reactive({
+  name: '',
+  number: '',
+  opening_balance: '',
+});
+
+const onSubmit = async () => {
+  await accountStore.store(form);
+  form.name = '';
+  form.number = '';
+  form.opening_balance = '';
+}
+
 
 onMounted(() => {
   getAccounts();
@@ -77,6 +95,14 @@ onMounted(() => {
         <div class="bg-white rounded-2xl p-4">
           <div class="flex items-center justify-between border-b border-dashed border-gray-300 py-4">
             <h3 class="font-semibold text-lg">Accounts List</h3>
+            <div class="flex items-center gap-2">
+              <button type="button" @click="accountStore.modal = !accountStore.modal" class="bg-red-50 p-2 rounded-full cursor-pointer">
+                <IconPlus class="size-5"/>
+              </button>
+              <button type="button" class="bg-red-50 p-2 rounded-full cursor-pointer">
+                <IconPrint class="size-5"/>
+              </button>
+            </div>
           </div>
 
           <div class="w-full divide-y divide-dashed divide-gray-200 max-h-[calc(100vh-21rem)] scrollbar overflow-y-auto">
@@ -108,6 +134,41 @@ onMounted(() => {
           </div>
         </div>
       </section>
+
+      <BaseModal :show="accountStore.modal">
+        <div class="flex justify-between items-center border-b border-gray-300 border-dashed pb-3">
+          <h2 class="text-xl font-semibold">Add Account</h2>
+          <button type="button" class="cursor-pointer text-red-500" @click="accountStore.modal = false">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="mt-4">
+          <form @submit.prevent="onSubmit" class="w-full max-w-sm">
+            <div class="form__group">
+              <label class="form__label">Name</label>
+              <input type="text" v-model="form.name" class="form__control" placeholder="Enter name"/>
+            </div>
+            <div class="form__group">
+              <label class="form__label">Number</label>
+              <input type="tel" v-model="form.number" class="form__control" placeholder="Enter number"/>
+            </div>
+
+
+            <div class="form__group">
+              <label class="form__label">Opening Balance</label>
+              <input type="number" v-model="form.opening_balance" class="form__control" placeholder="Enter balance"/>
+            </div>
+            <BaseButton class="w-full bg-primary text-white" :loading="accountStore.loading">submit</BaseButton>
+          </form>
+        </div>
+      </BaseModal>
+
     </main>
+
+
+
   </Default>
 </template>

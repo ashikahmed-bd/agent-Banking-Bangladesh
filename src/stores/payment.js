@@ -4,14 +4,12 @@ import {useToastStore} from "@/stores/toast.js";
 
 const toastStore = useToastStore();
 
-export const useAccountStore = defineStore('account', {
+export const usePaymentStore = defineStore('payment', {
 
   state: () => ({
     loading: false,
     modal: false,
     errors: {},
-    accounts: {},
-    transactions: {},
   }),
 
   getters: {
@@ -20,27 +18,11 @@ export const useAccountStore = defineStore('account', {
 
   actions: {
 
-    async all (){
-      try {
-        const response = await axiosInstance.get('api/accounts');
-        if (response.status === 200) {
-          this.accounts = response.data;
-          return new Promise((resolve) => {
-            resolve(response.data);
-          });
-        }
-      }catch (error) {
-        if (error.response){
-          this.errors = error.response.data.errors;
-          toastStore.error(error.response.data.message);
-        }
-      }
-    },
 
-    async store (form){
+    async getTransfer (form){
       this.loading = true;
       try {
-        const response = await axiosInstance.post('/api/account/store', form);
+        const response = await axiosInstance.post('/api/account/transfer', form);
         if (response.status === 201) {
           this.modal = false;
           toastStore.success(response.data.message);
@@ -55,28 +37,6 @@ export const useAccountStore = defineStore('account', {
         }
       }finally {
         this.loading = false;
-      }
-    },
-
-
-    async getTransactions (date){
-      try {
-        const response = await axiosInstance.get(`/api/transactions`, {
-          params: {
-            date: date,
-          }
-        });
-        if (response.status === 200) {
-          this.transactions = response.data;
-          return new Promise((resolve) => {
-            resolve(response.data);
-          });
-        }
-      }catch (error) {
-        if (error.response){
-          this.errors = error.response.data.errors;
-          toastStore.error(error.response.data.message);
-        }
       }
     },
 

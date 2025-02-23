@@ -8,6 +8,7 @@ export const useAccountStore = defineStore('account', {
 
   state: () => ({
     loading: false,
+    modal: false,
     errors: {},
     accounts: {},
     transactions: {},

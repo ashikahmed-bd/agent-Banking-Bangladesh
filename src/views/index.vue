@@ -31,7 +31,6 @@ const form = reactive({
 
 const onSubmit = async () => {
   await customerStore.store(form);
-
   form.name = '';
   form.phone = '';
   form.due = '';
