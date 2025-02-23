@@ -21,7 +21,7 @@ const onSubmit = async () => {
   if (response.status === 200){
     toastStore.success(response.data.message);
     setTimeout(() => {
-      window.location.replace(response.data?.redirect_url);
+      router.push({name: 'home'});
     }, 1000);
   }
 }

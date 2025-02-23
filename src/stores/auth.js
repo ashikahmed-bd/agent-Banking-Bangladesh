@@ -28,7 +28,7 @@ export const useAuthStore = defineStore('auth', {
       try {
         const response = await axiosInstance.post("/api/auth/login", formData);
         if (response.status === 200){
-          this.token = response.data?.token;
+          this.token = response.data?.access_token;
           this.user = response.data?.user;
           return new Promise((resolve) =>{
             resolve(response)

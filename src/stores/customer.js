@@ -10,7 +10,6 @@ export const useCustomerStore = defineStore('customer', {
     loading: false,
     modal: false,
     customers: {},
-    customer: {},
     errors: {},
   }),
 
@@ -22,7 +21,7 @@ export const useCustomerStore = defineStore('customer', {
 
     async all (){
       try {
-        const response = await axiosInstance.get('/api/customers/all');
+        const response = await axiosInstance.get('/api/customers');
         if (response.status === 200) {
           this.customers = response.data;
           return new Promise((resolve) => {

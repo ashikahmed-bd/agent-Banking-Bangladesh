@@ -1,6 +1,6 @@
 <script setup>
 import {onMounted, reactive, ref} from "vue";
-import {useAccountStore} from "@/stores/wallet.js";
+import {useAccountStore} from "@/stores/account.js";
 import {storeToRefs} from "pinia";
 import BaseButton from "@/components/BaseButton.vue";
 import BaseModal from "@/components/BaseModal.vue";

@@ -7,9 +7,7 @@ import Header from "@/components/Header.vue";
   <main class="bg-indigo-800 min-h-screen w-full max-w-full mx-auto">
     <Header/>
 
-    <main class="h-[calc(100%-50px)]">
-      <slot/>
-    </main>
+    <slot/>
 
     <!-- Bottom Navigation max-w-sm mx-auto-->
 
