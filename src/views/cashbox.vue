@@ -37,6 +37,7 @@ const onSubmit = async () => {
   form.name = '';
   form.number = '';
   form.opening_balance = '';
+  await getAccounts();
 }
 
 const deposit = reactive({

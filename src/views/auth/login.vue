@@ -5,7 +5,6 @@ import {useAuthStore} from "@/stores/auth.js";
 import {useToastStore} from "@/stores/toast.js";
 import {useRouter} from "vue-router";
 
-
 const toastStore = useToastStore();
 const authStore = useAuthStore();
 const router = useRouter();
@@ -56,7 +55,7 @@ const onSubmit = async () => {
         <BaseButton :loading="authStore.loading" class="w-full bg-primary rounded-full border border-gray-200 text-white">Submit</BaseButton>
       </form>
       <p class="py-6">
-        Don’t have an account yet? <RouterLink :to="{name: 'register'}" class="font-medium text-primary hover:underline">Sign up</RouterLink>
+        Don’t have an account yet? <RouterLink to="#" class="font-medium text-primary hover:underline">Sign up</RouterLink>
       </p>
     </div>
   </main>
