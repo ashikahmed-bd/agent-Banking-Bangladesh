@@ -24,6 +24,7 @@ const getAccounts = async () => {
 
 const selectedDeposit = ref('');
 const selectedWithdraw = ref('');
+const selectedType = ref('');
 
 const form = reactive({
   name: '',
@@ -41,7 +42,6 @@ const onSubmit = async () => {
 const deposit = reactive({
   account_id: selectedDeposit,
   amount: '',
-  commission: '',
   reference: '',
   remark: '',
 });
@@ -50,7 +50,6 @@ const depositStore = async () => {
   await paymentStore.depositStore(deposit);
   deposit.account_id = '';
   deposit.amount = '';
-  deposit.commission = '';
   deposit.reference = '';
   deposit.remark = '';
   await getAccounts();
@@ -59,16 +58,14 @@ const depositStore = async () => {
 const withdraw = reactive({
   account_id: selectedWithdraw,
   amount: '',
-  commission: '',
-  reference: '',
+  type: selectedType,
   remark: '',
 });
 const withdrawStore = async () => {
   await paymentStore.withdrawStore(withdraw);
   withdraw.account_id = '';
   withdraw.amount = '';
-  withdraw.commission = '';
-  withdraw.reference = '';
+  withdraw.type = '';
   withdraw.remark = '';
   await getAccounts();
 }
@@ -237,17 +234,10 @@ onMounted(() => {
                 <option :value="account.id" v-for="account in accounts.data" :key="account.id">{{account.name+ ' - '+account.number}}</option>
               </select>
             </div>
-            <div class="grid grid-cols-2 gap-4">
-              <div class="form__group">
-                <label class="form__label">Amount</label>
-                <input type="number" v-model="deposit.amount" class="form__control" placeholder="Enter amount"/>
-              </div>
-              <div class="form__group">
-                <label class="form__label">Commission</label>
-                <input type="number" v-model="deposit.commission" class="form__control" placeholder="Enter commission"/>
-              </div>
+            <div class="form__group">
+              <label class="form__label">Amount</label>
+              <input type="number" v-model="deposit.amount" class="form__control" placeholder="Enter amount"/>
             </div>
-
             <div class="form__group">
               <label class="form__label">Reference</label>
               <input type="text" v-model="deposit.reference" class="form__control" placeholder="Enter reference"/>
@@ -280,20 +270,18 @@ onMounted(() => {
                 <option :value="account.id" v-for="account in accounts.data" :key="account.id">{{account.name+ ' - '+account.number}}</option>
               </select>
             </div>
-            <div class="grid grid-cols-2 gap-4">
-              <div class="form__group">
-                <label class="form__label">Amount</label>
-                <input type="number" v-model="withdraw.amount" class="form__control" placeholder="Enter amount"/>
-              </div>
-              <div class="form__group">
-                <label class="form__label">Commission</label>
-                <input type="number" v-model="withdraw.commission" class="form__control" placeholder="Enter commission"/>
-              </div>
-            </div>
-
             <div class="form__group">
-              <label class="form__label">Reference</label>
-              <input type="text" v-model="withdraw.reference" class="form__control" placeholder="Enter reference"/>
+              <label class="form__label">Amount</label>
+              <input type="number" v-model="withdraw.amount" class="form__control" placeholder="Enter amount"/>
+            </div>
+            <div class="form__group">
+              <label class="form__label">Type</label>
+              <select v-model="selectedType" class="form__control">
+                <option value="">Select option</option>
+                <option value="withdraw">Withdraw</option>
+                <option value="bill">Bill</option>
+                <option value="expense">Expense</option>
+              </select>
             </div>
             <div class="form__group">
               <label class="form__label">Remark</label>
