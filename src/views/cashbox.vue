@@ -1,7 +1,7 @@
 <script setup>
 import Default from "@/layouts/Default.vue";
 import {storeToRefs} from "pinia";
-import {onMounted, reactive} from "vue";
+import {onMounted, reactive, ref} from "vue";
 import currency from "../utils/currency.js";
 import IconDown from "@/components/icons/IconDown.vue";
 import IconUp from "@/components/icons/IconUp.vue";
@@ -10,14 +10,20 @@ import IconPrint from "@/components/icons/IconPrint.vue";
 import IconPlus from "@/components/icons/IconPlus.vue";
 import BaseModal from "@/components/BaseModal.vue";
 import BaseButton from "@/components/BaseButton.vue";
+import {usePaymentStore} from "@/stores/payment.js";
 
 const accountStore = useAccountStore();
+const paymentStore = usePaymentStore();
 const {accounts} = storeToRefs(accountStore);
 
 
 const getAccounts = async () => {
   await accountStore.all();
 }
+
+
+const selectedDeposit = ref('');
+const selectedWithdraw = ref('');
 
 const form = reactive({
   name: '',
@@ -32,6 +38,40 @@ const onSubmit = async () => {
   form.opening_balance = '';
 }
 
+const deposit = reactive({
+  account_id: selectedDeposit,
+  amount: '',
+  commission: '',
+  reference: '',
+  remark: '',
+});
+
+const depositStore = async () => {
+  await paymentStore.depositStore(deposit);
+  deposit.account_id = '';
+  deposit.amount = '';
+  deposit.commission = '';
+  deposit.reference = '';
+  deposit.remark = '';
+  await getAccounts();
+}
+
+const withdraw = reactive({
+  account_id: selectedWithdraw,
+  amount: '',
+  commission: '',
+  reference: '',
+  remark: '',
+});
+const withdrawStore = async () => {
+  await paymentStore.withdrawStore(withdraw);
+  withdraw.account_id = '';
+  withdraw.amount = '';
+  withdraw.commission = '';
+  withdraw.reference = '';
+  withdraw.remark = '';
+  await getAccounts();
+}
 
 onMounted(() => {
   getAccounts();
@@ -87,6 +127,19 @@ onMounted(() => {
                 <h2 v-else class="block">Loading...</h2>
               </div>
             </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="py-2">
+        <div class="bg-white rounded-2xl p-4">
+          <div class="flex items-center justify-between">
+            <button type="button" @click="paymentStore.deposit = true" class="cursor-pointer bg-green-500 text-white px-4 py-2 rounded">
+              Deposit
+            </button>
+            <button type="button" @click="paymentStore.withdraw = true" class="cursor-pointer bg-red-500 text-white px-4 py-2 rounded">
+              Withdraw
+            </button>
           </div>
         </div>
       </section>
@@ -156,12 +209,97 @@ onMounted(() => {
               <input type="tel" v-model="form.number" class="form__control" placeholder="Enter number"/>
             </div>
 
-
             <div class="form__group">
               <label class="form__label">Opening Balance</label>
               <input type="number" v-model="form.opening_balance" class="form__control" placeholder="Enter balance"/>
             </div>
             <BaseButton class="w-full bg-primary text-white" :loading="accountStore.loading">submit</BaseButton>
+          </form>
+        </div>
+      </BaseModal>
+
+      <BaseModal :show="paymentStore.deposit">
+        <div class="flex justify-between items-center border-b border-gray-300 border-dashed pb-3">
+          <h2 class="text-xl font-semibold">Deposit</h2>
+          <button type="button" class="cursor-pointer text-red-500" @click="paymentStore.deposit = false">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="mt-4">
+          <form @submit.prevent="depositStore" class="w-full max-w-sm">
+            <div class="form__group">
+              <label class="form__label">Select Account</label>
+              <select v-model="selectedDeposit" class="form__control">
+                <option value="">Select option</option>
+                <option :value="account.id" v-for="account in accounts.data" :key="account.id">{{account.name+ ' - '+account.number}}</option>
+              </select>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div class="form__group">
+                <label class="form__label">Amount</label>
+                <input type="number" v-model="deposit.amount" class="form__control" placeholder="Enter amount"/>
+              </div>
+              <div class="form__group">
+                <label class="form__label">Commission</label>
+                <input type="number" v-model="deposit.commission" class="form__control" placeholder="Enter commission"/>
+              </div>
+            </div>
+
+            <div class="form__group">
+              <label class="form__label">Reference</label>
+              <input type="text" v-model="deposit.reference" class="form__control" placeholder="Enter reference"/>
+            </div>
+            <div class="form__group">
+              <label class="form__label">Remark</label>
+              <input type="text" v-model="deposit.remark" class="form__control" placeholder="Enter remark"/>
+            </div>
+            <BaseButton class="w-full bg-primary text-white" :loading="paymentStore.loading">submit</BaseButton>
+          </form>
+        </div>
+      </BaseModal>
+
+      <BaseModal :show="paymentStore.withdraw">
+        <div class="flex justify-between items-center border-b border-gray-300 border-dashed pb-3">
+          <h2 class="text-xl font-semibold">Withdraw</h2>
+          <button type="button" class="cursor-pointer text-red-500" @click="paymentStore.withdraw = false">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="mt-4">
+          <form @submit.prevent="withdrawStore" class="w-full max-w-sm">
+            <div class="form__group">
+              <label class="form__label">Select Account</label>
+              <select v-model="selectedWithdraw" class="form__control">
+                <option value="">Select option</option>
+                <option :value="account.id" v-for="account in accounts.data" :key="account.id">{{account.name+ ' - '+account.number}}</option>
+              </select>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div class="form__group">
+                <label class="form__label">Amount</label>
+                <input type="number" v-model="withdraw.amount" class="form__control" placeholder="Enter amount"/>
+              </div>
+              <div class="form__group">
+                <label class="form__label">Commission</label>
+                <input type="number" v-model="withdraw.commission" class="form__control" placeholder="Enter commission"/>
+              </div>
+            </div>
+
+            <div class="form__group">
+              <label class="form__label">Reference</label>
+              <input type="text" v-model="withdraw.reference" class="form__control" placeholder="Enter reference"/>
+            </div>
+            <div class="form__group">
+              <label class="form__label">Remark</label>
+              <input type="text" v-model="withdraw.remark" class="form__control" placeholder="Enter remark"/>
+            </div>
+            <BaseButton class="w-full bg-primary text-white" :loading="paymentStore.loading">submit</BaseButton>
           </form>
         </div>
       </BaseModal>

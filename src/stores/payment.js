@@ -9,6 +9,8 @@ export const usePaymentStore = defineStore('payment', {
   state: () => ({
     loading: false,
     modal: false,
+    deposit: false,
+    withdraw: false,
     errors: {},
   }),
 
@@ -18,6 +20,47 @@ export const usePaymentStore = defineStore('payment', {
 
   actions: {
 
+    async depositStore (form){
+      this.loading = true;
+      try {
+        const response = await axiosInstance.post('/api/account/deposit', form);
+        if (response.status === 201) {
+          this.deposit = false;
+          toastStore.success(response.data.message);
+          return new Promise((resolve) => {
+            resolve(response.data);
+          });
+        }
+      }catch (error) {
+        if (error.response){
+          this.errors = error.response.data.errors;
+          toastStore.error(error.response.data.message);
+        }
+      }finally {
+        this.loading = false;
+      }
+    },
+
+    async withdrawStore (form){
+      this.loading = true;
+      try {
+        const response = await axiosInstance.post('/api/account/withdraw', form);
+        if (response.status === 201) {
+          this.withdraw = false;
+          toastStore.success(response.data.message);
+          return new Promise((resolve) => {
+            resolve(response.data);
+          });
+        }
+      }catch (error) {
+        if (error.response){
+          this.errors = error.response.data.errors;
+          toastStore.error(error.response.data.message);
+        }
+      }finally {
+        this.loading = false;
+      }
+    },
 
     async getTransfer (form){
       this.loading = true;
