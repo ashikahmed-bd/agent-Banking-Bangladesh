@@ -158,7 +158,7 @@ onMounted(() => {
 
           <div class="w-full divide-y divide-dashed divide-gray-200 max-h-[calc(100vh-21rem)] scrollbar overflow-y-auto">
             <template v-if="accounts.data">
-              <RouterLink to="" v-for="account in accounts.data" class="py-2  flex items-center justify-between">
+              <RouterLink :to="{name: 'account.statement', params: {id: account.id}}" v-for="account in accounts.data" class="py-2  flex items-center justify-between">
                 <div class="flex items-center gap-2">
                   <img src="/icons/deposit.png" alt="img" class="bg-primary/10 p-1 rounded h-10 w-auto">
                   <div>
@@ -199,16 +199,16 @@ onMounted(() => {
         <div class="mt-4">
           <form @submit.prevent="onSubmit" class="w-full max-w-sm">
             <div class="form__group">
-              <label class="form__label">Name</label>
+              <label class="form__label">Name <span class="text-danger">*</span></label>
               <input type="text" v-model="form.name" class="form__control" placeholder="Enter name"/>
             </div>
             <div class="form__group">
-              <label class="form__label">Number</label>
+              <label class="form__label">Number <span class="text-danger">*</span></label>
               <input type="tel" v-model="form.number" class="form__control" placeholder="Enter number"/>
             </div>
 
             <div class="form__group">
-              <label class="form__label">Opening Balance</label>
+              <label class="form__label">Opening Balance <span class="text-danger">*</span></label>
               <input type="number" v-model="form.opening_balance" class="form__control" placeholder="Enter balance"/>
             </div>
             <BaseButton class="w-full bg-primary text-white" :loading="accountStore.loading">submit</BaseButton>
@@ -229,18 +229,18 @@ onMounted(() => {
         <div class="mt-4">
           <form @submit.prevent="depositStore" class="w-full max-w-sm">
             <div class="form__group">
-              <label class="form__label">Select Account</label>
+              <label class="form__label">Select Account <span class="text-danger">*</span></label>
               <select v-model="selectedDeposit" class="form__control">
-                <option value="">Select option</option>
+                <option value="" disabled>Select option</option>
                 <option :value="account.id" v-for="account in accounts.data" :key="account.id">{{account.name+ ' - '+account.number}}</option>
               </select>
             </div>
             <div class="form__group">
-              <label class="form__label">Amount</label>
+              <label class="form__label">Amount <span class="text-danger">*</span></label>
               <input type="number" v-model="deposit.amount" class="form__control" placeholder="Enter amount"/>
             </div>
             <div class="form__group">
-              <label class="form__label">Reference</label>
+              <label class="form__label">Reference (TrxID)</label>
               <input type="text" v-model="deposit.reference" class="form__control" placeholder="Enter reference"/>
             </div>
             <div class="form__group">
@@ -265,20 +265,20 @@ onMounted(() => {
         <div class="mt-4">
           <form @submit.prevent="withdrawStore" class="w-full max-w-sm">
             <div class="form__group">
-              <label class="form__label">Select Account</label>
+              <label class="form__label">Select Account <span class="text-danger">*</span></label>
               <select v-model="selectedWithdraw" class="form__control">
-                <option value="">Select option</option>
+                <option value="" disabled>Select option</option>
                 <option :value="account.id" v-for="account in accounts.data" :key="account.id">{{account.name+ ' - '+account.number}}</option>
               </select>
             </div>
             <div class="form__group">
-              <label class="form__label">Amount</label>
+              <label class="form__label">Amount <span class="text-danger">*</span></label>
               <input type="number" v-model="withdraw.amount" class="form__control" placeholder="Enter amount"/>
             </div>
             <div class="form__group">
               <label class="form__label">Type</label>
               <select v-model="selectedType" class="form__control">
-                <option value="">Select option</option>
+                <option value="" disabled>Select option <span class="text-danger">*</span></option>
                 <option value="withdraw">Withdraw</option>
                 <option value="bill">Bill</option>
                 <option value="expense">Expense</option>

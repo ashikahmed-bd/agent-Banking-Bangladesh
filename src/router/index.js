@@ -46,6 +46,16 @@ const router = createRouter({
     },
 
     {
+      path: '/account/:id/statement',
+      name: 'account.statement',
+      component: () => import('../views/accounts/statement.vue'),
+      meta: {
+        title: 'Statement',
+        auth: true
+      },
+    },
+
+    {
       path: '/transactions',
       name: 'transactions',
       component: () => import('../views/transactions.vue'),

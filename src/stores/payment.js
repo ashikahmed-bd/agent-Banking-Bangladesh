@@ -23,7 +23,7 @@ export const usePaymentStore = defineStore('payment', {
     async depositStore (form){
       this.loading = true;
       try {
-        const response = await axiosInstance.post('/api/account/deposit', form);
+        const response = await axiosInstance.post(`/api/account/${form.account_id}/deposit`, form);
         if (response.status === 201) {
           this.deposit = false;
           toastStore.success(response.data.message);
@@ -44,7 +44,7 @@ export const usePaymentStore = defineStore('payment', {
     async withdrawStore (form){
       this.loading = true;
       try {
-        const response = await axiosInstance.post('/api/account/withdraw', form);
+        const response = await axiosInstance.post(`/api/account/${form.account_id}/withdraw`, form);
         if (response.status === 201) {
           this.withdraw = false;
           toastStore.success(response.data.message);
@@ -62,10 +62,10 @@ export const usePaymentStore = defineStore('payment', {
       }
     },
 
-    async getTransfer (form){
+    async getExchange (form){
       this.loading = true;
       try {
-        const response = await axiosInstance.post('/api/account/transfer', form);
+        const response = await axiosInstance.post('/api/account/exchange', form);
         if (response.status === 201) {
           this.modal = false;
           toastStore.success(response.data.message);

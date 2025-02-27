@@ -12,6 +12,7 @@ export const useAccountStore = defineStore('account', {
     errors: {},
     accounts: {},
     transactions: {},
+    statement: {},
   }),
 
   getters: {
@@ -68,6 +69,28 @@ export const useAccountStore = defineStore('account', {
         });
         if (response.status === 200) {
           this.transactions = response.data;
+          return new Promise((resolve) => {
+            resolve(response.data);
+          });
+        }
+      }catch (error) {
+        if (error.response){
+          this.errors = error.response.data.errors;
+          toastStore.error(error.response.data.message);
+        }
+      }
+    },
+
+
+    async getStatement (form){
+      try {
+        const response = await axiosInstance.get(`/api/account/${form.account_id}/statement`, {
+          params: {
+            date: form.date,
+          }
+        });
+        if (response.status === 200) {
+          this.statement = response.data;
           return new Promise((resolve) => {
             resolve(response.data);
           });

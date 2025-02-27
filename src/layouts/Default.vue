@@ -19,17 +19,18 @@ const form = reactive({
   sender_id: selectedSender,
   receiver_id: selectedReceiver,
   amount: '',
-  commission: '',
+  fee: '',
   reference: '',
   remark: '',
 });
 
 const onSubmit = async () => {
-  await paymentStore.getTransfer(form);
+  await paymentStore.getExchange(form);
+  await getAccounts();
 }
 
-const getAccounts = () => {
-  accountStore.all();
+const getAccounts = async () => {
+  await accountStore.all();
 }
 
 onMounted(() => {
@@ -83,7 +84,7 @@ onMounted(() => {
 
     <BaseModal :show="paymentStore.modal">
       <div class="flex justify-between items-center border-b border-gray-300 border-dashed pb-3">
-        <h2 class="text-xl font-semibold">Add Transfer</h2>
+        <h2 class="text-xl font-semibold">Add Exchange</h2>
         <button type="button" class="cursor-pointer text-red-500" @click="paymentStore.modal = false">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
@@ -95,14 +96,14 @@ onMounted(() => {
         <form @submit.prevent="onSubmit" class="w-full max-w-sm">
           <div class="grid grid-cols-2 gap-4">
             <div class="form__group">
-              <label class="form__label">Sender</label>
+              <label class="form__label">Send <span class="text-danger">*</span></label>
               <select v-model="selectedSender" class="form__control">
                 <option value="" disabled>Select Sender</option>
                 <option :value="account.id" v-for="account in accounts.data" :key="account.id">{{account.name +' - '+account.number}}</option>
               </select>
             </div>
             <div class="form__group">
-              <label class="form__label">Receiver</label>
+              <label class="form__label">Received <span class="text-danger">*</span></label>
               <select v-model="selectedReceiver" class="form__control">
                 <option value="" disabled>Select Receiver</option>
                 <option :value="account.id" v-for="account in accounts.data" :key="account.id">{{account.name +' - '+account.number}}</option>
@@ -112,18 +113,18 @@ onMounted(() => {
 
           <div class="grid grid-cols-2 gap-4">
             <div class="form__group">
-              <label class="form__label">Amount</label>
+              <label class="form__label">Amount <span class="text-danger">*</span></label>
               <input type="number" v-model="form.amount" class="form__control" placeholder="Enter amount"/>
             </div>
 
             <div class="form__group">
-              <label class="form__label">Commission</label>
-              <input type="number" v-model="form.commission" class="form__control" placeholder="Enter commission"/>
+              <label class="form__label">Fee <span class="text-danger">*</span></label>
+              <input type="number" v-model="form.fee" class="form__control" placeholder="Enter fee"/>
             </div>
           </div>
 
           <div class="form__group">
-            <label class="form__label">Reference</label>
+            <label class="form__label">Reference (TrxID)</label>
             <input type="text" v-model="form.reference" class="form__control" placeholder="Enter reference"/>
           </div>
 
