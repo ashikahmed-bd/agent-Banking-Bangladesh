@@ -64,15 +64,14 @@ onMounted(() => {
               <th>Sender</th>
               <th>type</th>
               <th>Amount</th>
-              <th>Commission</th>
-              <th>Reference</th>
+              <th>fee</th>
             </tr>
             </thead>
 
             <tbody>
             <template v-if="statement.data">
               <tr v-for="item in statement.data" :key="item.id">
-                <td>{{item.sender?.name+' - '+item.receiver?.name ?? 'Other'}}</td>
+                <td>{{item.sender?.name}}</td>
                 <td class="capitalize">{{item.type}}</td>
                 <td>{{currency(item.amount)}}</td>
                 <td>{{item.commission ?? 'N/A'}}</td>
