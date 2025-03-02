@@ -3,7 +3,6 @@ import {useAuthStore} from "@/stores/auth.js";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  linkActiveClass: 'text-primary font-semibold',
 
   routes: [
     {
@@ -26,6 +25,16 @@ const router = createRouter({
     },
 
     {
+      path: '/customers',
+      name: 'customers',
+      component: () => import('../views/customers/index.vue'),
+      meta: {
+        title: 'Customers',
+        auth: true
+      },
+    },
+
+    {
       path: '/customer/:id/show',
       name: 'customer.show',
       component: () => import('../views/customers/show.vue'),
@@ -36,11 +45,21 @@ const router = createRouter({
     },
 
     {
-      path: '/cashbox',
-      name: 'cashbox',
-      component: () => import('../views/cashbox.vue'),
+      path: '/accounts',
+      name: 'accounts',
+      component: () => import('../views/accounts/index.vue'),
       meta: {
-        title: 'Cashbox',
+        title: 'accounts',
+        auth: true
+      },
+    },
+
+    {
+      path: '/transactions',
+      name: 'index.vue',
+      component: () => import('../views/transactions/index.vue'),
+      meta: {
+        title: 'Transactions',
         auth: true
       },
     },
@@ -55,15 +74,7 @@ const router = createRouter({
       },
     },
 
-    {
-      path: '/transactions',
-      name: 'transactions',
-      component: () => import('../views/transactions.vue'),
-      meta: {
-        title: 'Transactions',
-        auth: true
-      },
-    },
+
 
 
 

@@ -74,8 +74,7 @@ onMounted(() => {
                 <td>{{item.sender?.name}}</td>
                 <td class="capitalize">{{item.type}}</td>
                 <td>{{currency(item.amount)}}</td>
-                <td>{{item.commission ?? 'N/A'}}</td>
-                <td>{{item.reference ?? 'N/A'}}</td>
+                <td>{{item.fee ?? 'N/A'}}</td>
               </tr>
             </template>
 

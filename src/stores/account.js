@@ -13,6 +13,9 @@ export const useAccountStore = defineStore('account', {
     accounts: {},
     transactions: {},
     statement: {},
+    balance: 0,
+    income: 0,
+    expense: 0,
   }),
 
   getters: {
@@ -91,6 +94,24 @@ export const useAccountStore = defineStore('account', {
         });
         if (response.status === 200) {
           this.statement = response.data;
+          return new Promise((resolve) => {
+            resolve(response.data);
+          });
+        }
+      }catch (error) {
+        if (error.response){
+          this.errors = error.response.data.errors;
+          toastStore.error(error.response.data.message);
+        }
+      }
+    },
+
+
+    async getBalance (company){
+      try {
+        const response = await axiosInstance.get(`/api/companies/${company}/balance`);
+        if (response.status === 200) {
+          this.balance = response.data;
           return new Promise((resolve) => {
             resolve(response.data);
           });
